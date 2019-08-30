@@ -5,16 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Prototipo Histopatologías(1)</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css?h=c0134a2b5b7013ff5532192d6c906d7d">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
-    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
-    <link rel="stylesheet" href="assets/css/Descriptivo-Paciente-Compacto.css">
-    <link rel="stylesheet" href="assets/css/estilos.css">
-    <link rel="stylesheet" href="assets/css/Footer-Dark.css">
-    <link rel="stylesheet" href="assets/css/Graficos-Paciente.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
-    <link rel="stylesheet" href="assets/css/smoothproducts.css">
+    <link rel="stylesheet" href="/assets/css/styles.min.css?h=b3862b56ca5388ed7e84521dd96401a1">
 </head>
 
 <body style="max-height: 1000px;height: 1000px;">
@@ -23,9 +19,9 @@
             <div
                 class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="dashboard_pacientes.html"><img src="assets/img/icons8-home-50.png"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">Inicio</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href=""><img src="assets/img/icons8-help-50.png"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">AYUDA</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" style="margin-left: 5px;color: rgba(0,0,0,0.5);"><img src="assets/img/icons8-logout-rounded-left-50.png"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/dashboard_pacientes.html"><img src="/assets/img/icons8-home-50.png?h=8c557fdc800de06986ce8892dfeb8e80"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">Inicio</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href=""><img src="/assets/img/icons8-help-50.png?h=7175a2d7a4c7ae84dacd9f96e6b66900"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">AYUDA</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" style="margin-left: 5px;color: rgba(0,0,0,0.5);"><img src="/assets/img/icons8-logout-rounded-left-50.png?h=8d507478df113ddd9a14dc429c83bbb0"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span></a></li>
                 </ul>
         </div>
         </div>
@@ -34,11 +30,13 @@
         <div class="text-center" style="padding-bottom: 15px;"><span class="text-center" style="color: rgb(0,123,255);font-size: 28px;">Tablero de Sesiones</span></div>
         <div class="container-fluid d-flex" style="max-width: 100%;min-width: 100%;width: 100%;max-height: auto;height: auto;min-height: 300px;">
             <div class="row d-flex" style="max-width: 100%;min-width: 100%;width: 100%;max-height: auto;min-height: 300px;height: 100%;">
+                <!-- Start: Contenedor-Listas -->
                 <div class="col-md-6 flex-grow-1 contenedor_descriptivos" style="max-width: 100%;min-width: 450px;max-height: 1000px;width: 100%;">
                     <div class="row text-center" style="padding-bottom: 10px;">
-                        <div class="col" style="padding-left: 0%;padding-right: 0px;width: 50%;min-width: 50%;max-width: 50%;"><a href="#"><img src="assets/img/icons8-plus-50.png"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Sesión</span></a></div>
-                        <div class="col" style="padding-left: 0px;"><a href="#"><img src="assets/img/icons8-trash-can-50.png"><span style="margin-left: 5px;color: rgb(0,0,0);">Eliminar Sesión</span></a></div>
+                        <div class="col" style="padding-left: 0%;padding-right: 0px;width: 50%;min-width: 50%;max-width: 50%;"><a href="#"><img src="/assets/img/icons8-plus-50.png?h=bce9d2c459d6b9defce3934d9549f85d"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Sesión</span></a></div>
+                        <div class="col" style="padding-left: 0px;"><a href="#"><img src="/assets/img/icons8-trash-can-50.png?h=b4350077976d49c3c3a1575b66e9497c"><span style="margin-left: 5px;color: rgb(0,0,0);">Eliminar Sesión</span></a></div>
                     </div>
+                    <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light sesion_compacto" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
@@ -59,6 +57,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Compacto -->
+                    <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
@@ -79,6 +79,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Compacto -->
+                    <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
@@ -99,6 +101,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Compacto -->
+                    <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
@@ -119,6 +123,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Compacto -->
+                    <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
@@ -139,6 +145,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Compacto -->
+                    <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
@@ -159,6 +167,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Compacto -->
+                    <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
@@ -179,6 +189,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Compacto -->
+                    <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
@@ -199,6 +211,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Compacto -->
+                    <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
@@ -219,6 +233,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Compacto -->
+                    <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
@@ -239,8 +255,12 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Compacto -->
                 </div>
+                <!-- End: Contenedor-Listas -->
+                <!-- Start: Contenedor-Sesion -->
                 <div class="col-md-6 contenedor_sesion_completo" style="max-width: 100%;min-width: 450px;max-height: none;min-height: auto;width: 450px;">
+                    <!-- Start: Descriptivo-Sesion-Completo -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 225px;max-height: 225px;">
                         <div class="row">
                             <div class="col">
@@ -267,17 +287,23 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End: Descriptivo-Sesion-Completo -->
+                    <!-- Start: Contenedor Muestra -->
                     <div class="text-center border-light shadow-lg contenedor_muestras" style="max-height: 325px;padding-top: 0px;padding-bottom: 0px;margin-top: 15px;min-height: 325px;">
+                        <!-- Start: Muestra-Agregada -->
                         <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);max-height: 320px;min-height: 320px;max-width: 600 px;min-width: 600px;width: 600px;height: 320px;padding-bottom: 10px;">
                             <div class="card" style="max-width: 600px;">
                                 <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
                                     <div class="row no-gutter" style="max-width: 100%;">
-                                        <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="assets/img/sample-tissue.png" style="max-height: 128px;">
+                                        <!-- Start: Imagen -->
+                                        <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="/assets/img/sample-tissue.png?h=ba63ed3a9befba752cee8a0dc995d1c2" style="max-height: 128px;">
                                             <div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div><input class="form-control" type="text" style="min-width: 100px;">
                                                 <div class="input-group-append"></div>
                                             </div>
                                         </div>
+                                        <!-- End: Imagen -->
+                                        <!-- Start: correcto -->
                                         <div class="col-md-4" style="max-width: 250px;min-width: 350px;">
                                             <div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text" style="max-height: 80px;min-height: 80px;height: 80px;">Observación</span></div><textarea class="form-control" style="height: 80px;min-width: 50px;max-height: 80px;min-height: 80px;"></textarea>
@@ -301,20 +327,26 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- End: correcto -->
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- End: Muestra-Agregada -->
+                    <!-- Start: Muestra-Agregada -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);max-height: 320px;min-height: 320px;max-width: 600 px;min-width: 600px;width: 600px;height: 320px;padding-bottom: 10px;">
                         <div class="card" style="max-width: 600px;">
                             <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
                                 <div class="row no-gutter" style="max-width: 100%;">
-                                    <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="assets/img/sample-tissue.png" style="max-height: 128px;">
+                                    <!-- Start: Imagen -->
+                                    <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="/assets/img/sample-tissue.png?h=ba63ed3a9befba752cee8a0dc995d1c2" style="max-height: 128px;">
                                         <div class="input-group">
                                             <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div><input class="form-control" type="text" style="min-width: 100px;">
                                             <div class="input-group-append"></div>
                                         </div>
                                     </div>
+                                    <!-- End: Imagen -->
+                                    <!-- Start: correcto -->
                                     <div class="col-md-4" style="max-width: 250px;min-width: 350px;">
                                         <div class="input-group">
                                             <div class="input-group-prepend"><span class="input-group-text" style="max-height: 80px;min-height: 80px;height: 80px;">Observación</span></div><textarea class="form-control" style="height: 80px;min-width: 50px;max-height: 80px;min-height: 80px;"></textarea>
@@ -338,20 +370,26 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- End: correcto -->
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- End: Muestra-Agregada -->
+                <!-- Start: Muestra-Agregada -->
                 <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);max-height: 320px;min-height: 320px;max-width: 600 px;min-width: 600px;width: 600px;height: 320px;padding-bottom: 10px;">
                     <div class="card" style="max-width: 600px;">
                         <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
                             <div class="row no-gutter" style="max-width: 100%;">
-                                <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="assets/img/sample-tissue.png" style="max-height: 128px;">
+                                <!-- Start: Imagen -->
+                                <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="/assets/img/sample-tissue.png?h=ba63ed3a9befba752cee8a0dc995d1c2" style="max-height: 128px;">
                                     <div class="input-group">
                                         <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div><input class="form-control" type="text" style="min-width: 100px;">
                                         <div class="input-group-append"></div>
                                     </div>
                                 </div>
+                                <!-- End: Imagen -->
+                                <!-- Start: correcto -->
                                 <div class="col-md-4" style="max-width: 250px;min-width: 350px;">
                                     <div class="input-group">
                                         <div class="input-group-prepend"><span class="input-group-text" style="max-height: 80px;min-height: 80px;height: 80px;">Observación</span></div><textarea class="form-control" style="height: 80px;min-width: 50px;max-height: 80px;min-height: 80px;"></textarea>
@@ -375,11 +413,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- End: correcto -->
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- End: Muestra-Agregada -->
         </div>
+        <!-- End: Contenedor Muestra -->
+        <!-- Start: Graficos-Paciente -->
         <div class="border-light shadow-lg comp-paciente bg-light" style="max-width: 100%;max-height: 100%;padding-top: 10px;margin-top: 20px;margin-bottom: 10px;">
             <div class="row">
                 <div class="col" style="max-width: 50%;"><span class="text-left list-group-item">Clase de Tumor con más probabilidad.</span>
@@ -391,16 +433,18 @@
                     </ol>
                 </div>
                 <div class="col text-center" style="max-width: 50%;">
-                    <div class="text-center"><span class="text-center" style="min-width: 100%;">Visualización de Probabilidades</span></div><img src="assets/img/Grafico-Dona.png" style="min-width: 50%;max-width: 100%;"></div>
+                    <div class="text-center"><span class="text-center" style="min-width: 100%;">Visualización de Probabilidades</span></div><img src="/assets/img/Grafico-Dona.png?h=d8c5ecf57ba3b60772f48376f2fe3c7f" style="min-width: 50%;max-width: 100%;"></div>
             </div>
             <div class="row">
                 <div class="col text-center" style="min-width: 100%;"><span style="min-width: 100%;width: 100%;">Línea del Tiempo</span></div>
             </div>
             <div class="row" style="max-width: 100%;">
-                <div class="col"><img src="assets/img/Grafico-Timeline.png" style="min-width: 75%;max-width: 100%;"></div>
+                <div class="col"><img src="/assets/img/Grafico-Timeline.png?h=97c1f2a4605652f50971dceee7be0b66" style="min-width: 75%;max-width: 100%;"></div>
             </div>
         </div>
+        <!-- End: Graficos-Paciente -->
         </div>
+        <!-- End: Contenedor-Sesion -->
         </div>
         </div>
     </section>
@@ -445,12 +489,10 @@
             <p></p>
         </div>
     </footer>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
-    <script src="assets/js/smoothproducts.min.js"></script>
-    <script src="assets/js/theme.js"></script>
-    <script src="assets/js/scripts_aux.js"></script>
+    <script src="/assets/js/script.min.js?h=055d40d3b601bba111c0a0d92830a3d7"></script>
 </body>
 
 </html>

@@ -25,7 +25,7 @@ SECRET_KEY = '37=zono#zyc=5ttbau4xfmdu$!=w@uet_th(&+bglxicu0mxsh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['martinvc96.pythonanywhere.com']
+ALLOWED_HOSTS = ['martinvc96.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition

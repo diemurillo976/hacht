@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from djongo import models
+from django.db import models
 
 
 ## User object definition

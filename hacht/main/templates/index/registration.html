@@ -42,7 +42,7 @@
                 <form style="height: 803px;" method='POST' action="{% url 'registration' %}">
                     {% csrf_token %}
                     <div class="form-group"><label for="name">Nombre</label><label for="name" style="color: rgb(255,0,0);">*</label> {{ form.nombre }} </div>
-                    <div class="form-group"><label for="email">Email</label><label for="email" style="color: rgb(255,0,0);">*</label><input class="form-control item" type="email" id="email">{{ form.correo }}</div>
+                    <div class="form-group"><label for="email">Email</label><label for="email" style="color: rgb(255,0,0);">*</label> {{ form.correo }} </div>
                     <div class="form-group"><label for="password">Contraseña</label><label for="password" style="color: rgb(255,0,0);">*</label> {{ form.password }} </div><label>Rol</label><label style="color: rgb(255,0,0);">*</label>
                     <div
                         class="dropdown" style="height: 49px;"> {{ form.rol}}

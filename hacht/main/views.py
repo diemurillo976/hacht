@@ -31,6 +31,7 @@ def registration(request):
 
     context = {'form' : form}
     return render(request, 'index/registration.html', context)
+    
 
 #def registration_success(request):
 #    return render(request, 'index/registration_success.html')

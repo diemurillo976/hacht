@@ -24,7 +24,7 @@ def registration(request):
             new_user.salt = 'prueba'
             new_user.save()
             print('NUEVO REGISTRO USER AGREGADO')
-            return redirect('registration_success')
+            return redirect('index')
 
     if(request.method == 'GET'):
         form = RegistrationForm()

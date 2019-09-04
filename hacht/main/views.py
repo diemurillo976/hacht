@@ -24,13 +24,17 @@ def registration(request):
             new_user.salt = 'prueba'
             new_user.save()
             print('NUEVO REGISTRO USER AGREGADO')
-            return redirect('index')
+            return redirect('registration_success')
 
     if(request.method == 'GET'):
         form = RegistrationForm()
 
     context = {'form' : form}
     return render(request, 'index/registration.html', context)
+
+
+def registration_success(request):
+    return render(request, 'index/registration_success.html')
 
 def dashboard_pacientes(request):
     return render(request, 'index/dashboard_pacientes.html')

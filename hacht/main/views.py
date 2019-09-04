@@ -41,3 +41,6 @@ def dashboard_pacientes(request):
 
 def dashboard_sesiones(request):
     return render(request, 'index/dashboard_sesiones.html')
+
+def contact_us(request):
+    return render(request, 'index/contact-us.html')

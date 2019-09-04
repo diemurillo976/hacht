@@ -6,12 +6,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Prototipo Histopatologías</title>
-    <link rel="stylesheet" href="{% static 'index/assets/bootstrap/css/bootstrap.min.css?h=6551a782d67d55f88476a7390879837d' %}">
+    <link rel="stylesheet" href="{% static 'index/assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
-    <link rel="stylesheet" href="{% static 'index/assets/css/styles.min.css?h=b3862b56ca5388ed7e84521dd96401a1' %}">
+    <link rel="stylesheet" href="{% static 'index/assets/css/styles.min.css' %}">
 </head>
 
 <body style="max-height: 1000px;height: 1000px;">
@@ -20,9 +20,9 @@
             <div
                 class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'dashboard_pacientes' %}"><img src="{% static 'index/assets/img/icons8-home-50.png?h=8c557fdc800de06986ce8892dfeb8e80' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">Inicio</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href=""><img src="{% static 'index/assets/img/icons8-help-50.png?h=7175a2d7a4c7ae84dacd9f96e6b66900' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">AYUDA</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'index' %}" style="margin-left: 5px;color: rgba(0,0,0,0.5);"><img src="{% static 'index/assets/img/icons8-logout-rounded-left-50.png?h=8d507478df113ddd9a14dc429c83bbb0' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'dashboard_pacientes' %}"><img src="{% static 'index/assets/img/icons8-home-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">Inicio</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href=""><img src="{% static 'index/assets/img/icons8-help-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">AYUDA</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'index' %}" style="margin-left: 5px;color: rgba(0,0,0,0.5);"><img src="{% static 'index/assets/img/icons8-logout-rounded-left-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span></a></li>
                 </ul>
         </div>
         </div>
@@ -34,8 +34,8 @@
                 <!-- Start: Contenedor-Listas -->
                 <div class="col-md-6 flex-grow-1 contenedor_descriptivos" style="max-width: 100%;min-width: 450px;max-height: 1000px;width: 100%;">
                     <div class="row text-center" style="padding-bottom: 10px;">
-                        <div class="col" style="padding-left: 0%;padding-right: 0px;width: 50%;min-width: 50%;max-width: 50%;"><a href="#"><img src="{% static 'index/assets/img/icons8-plus-50.png?h=bce9d2c459d6b9defce3934d9549f85d' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Sesión</span></a></div>
-                        <div class="col" style="padding-left: 0px;"><a href="#"><img src="{% static 'index/assets/img/icons8-trash-can-50.png?h=b4350077976d49c3c3a1575b66e9497c' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Eliminar Sesión</span></a></div>
+                        <div class="col" style="padding-left: 0%;padding-right: 0px;width: 50%;min-width: 50%;max-width: 50%;"><a href="#"><img src="{% static 'index/assets/img/icons8-plus-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Sesión</span></a></div>
+                        <div class="col" style="padding-left: 0px;"><a href="#"><img src="{% static 'index/assets/img/icons8-trash-can-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Eliminar Sesión</span></a></div>
                     </div>
                     <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light sesion_compacto" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
@@ -297,7 +297,7 @@
                                 <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
                                     <div class="row no-gutter" style="max-width: 100%;">
                                         <!-- Start: Imagen -->
-                                        <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="{% static 'index/assets/img/sample-tissue.png?h=ba63ed3a9befba752cee8a0dc995d1c2' %}" style="max-height: 128px;">
+                                        <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="{% static 'index/assets/img/sample-tissue.png' %}" style="max-height: 128px;">
                                             <div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div><input class="form-control" type="text" style="min-width: 100px;">
                                                 <div class="input-group-append"></div>
@@ -340,7 +340,7 @@
                             <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
                                 <div class="row no-gutter" style="max-width: 100%;">
                                     <!-- Start: Imagen -->
-                                    <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="{% static 'index/assets/img/sample-tissue.png?h=ba63ed3a9befba752cee8a0dc995d1c2' %}" style="max-height: 128px;">
+                                    <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="{% static 'index/assets/img/sample-tissue.png' %}" style="max-height: 128px;">
                                         <div class="input-group">
                                             <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div><input class="form-control" type="text" style="min-width: 100px;">
                                             <div class="input-group-append"></div>
@@ -383,7 +383,7 @@
                         <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
                             <div class="row no-gutter" style="max-width: 100%;">
                                 <!-- Start: Imagen -->
-                                <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="{% static 'index/assets/img/sample-tissue.png?h=ba63ed3a9befba752cee8a0dc995d1c2' %}" style="max-height: 128px;">
+                                <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="{% static 'index/assets/img/sample-tissue.png' %}" style="max-height: 128px;">
                                     <div class="input-group">
                                         <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div><input class="form-control" type="text" style="min-width: 100px;">
                                         <div class="input-group-append"></div>
@@ -434,13 +434,13 @@
                     </ol>
                 </div>
                 <div class="col text-center" style="max-width: 50%;">
-                    <div class="text-center"><span class="text-center" style="min-width: 100%;">Visualización de Probabilidades</span></div><img src="{% static 'index/assets/img/Grafico-Dona.png?h=d8c5ecf57ba3b60772f48376f2fe3c7f' %}" style="min-width: 50%;max-width: 100%;"></div>
+                    <div class="text-center"><span class="text-center" style="min-width: 100%;">Visualización de Probabilidades</span></div><img src="{% static 'index/assets/img/Grafico-Dona.png' %}" style="min-width: 50%;max-width: 100%;"></div>
             </div>
             <div class="row">
                 <div class="col text-center" style="min-width: 100%;"><span style="min-width: 100%;width: 100%;">Línea del Tiempo</span></div>
             </div>
             <div class="row" style="max-width: 100%;">
-                <div class="col"><img src="{% static 'index/assets/img/Grafico-Timeline.png?h=97c1f2a4605652f50971dceee7be0b66' %}" style="min-width: 75%;max-width: 100%;"></div>
+                <div class="col"><img src="{% static 'index/assets/img/Grafico-Timeline.png' %}" style="min-width: 75%;max-width: 100%;"></div>
             </div>
         </div>
         <!-- End: Graficos-Paciente -->
@@ -492,7 +492,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
-    <script src="{% static 'index/assets/js/script.min.js?h=c7e8704276d66dfa5ad391e5ef053a25' %}"></script>
+    <script src="{% static 'index/assets/js/script.min.js' %}"></script>
 </body>
 
 </html>

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Prototipo Histopatologías(1)</title>
+    <title>Prototipo Histopatologías</title>
     <link rel="stylesheet" href="{% static 'index/assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
@@ -16,13 +16,13 @@
 
 <body>
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-        <div class="container"><a class="navbar-brand logo" href="#" style="color: rgb(0,123,255);">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(0,123,255);">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div
                 class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="/dashboard_pacientes.html"><img src="{% static 'index/assets/img/icons8-home-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">Inicio</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'dashboard_pacientes' %}"><img src="{% static 'index/assets/img/icons8-home-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">Inicio</span></a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href=""><img src="{% static 'index/assets/img/icons8-help-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">AYUDA</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" style="margin-left: 5px;color: rgba(0,0,0,0.5);"><img src="{% static 'index/assets/img/icons8-logout-rounded-left-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'index' %}" style="margin-left: 5px;color: rgba(0,0,0,0.5);"><img src="{% static 'index/assets/img/icons8-logout-rounded-left-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span></a></li>
                 </ul>
         </div>
         </div>
@@ -56,6 +56,7 @@
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
+                            <div class="col text-center" style="max-width: 200px;min-width: 200px;width: 100px;"><a href="{% url 'dashboard_sesiones' %}" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Ver Sesiones</span></a></div>
                         </div>
                     </div>
                     <!-- End: Descriptivo-Paciente-Compacto -->
@@ -154,35 +155,34 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-3">
-                    <h5>Get started</h5>
+                    <h5>Comenzar</h5>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Sign up</a></li>
-                        <li><a href="#">Downloads</a></li>
+                        <li><a href="{% url 'index' %}">Inicio</a></li>
+                        <li><a href="{% url 'login' %}">Ingresar</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
-                    <h5>About us</h5>
+                    <h5>Acerca de nosotros</h5>
                     <ul>
-                        <li><a href="#">Company Information</a></li>
-                        <li><a href="#">Contact us</a></li>
-                        <li><a href="#">Reviews</a></li>
+                        <li><a href="#">Information</a></li>
+                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
+                        <li><a href="#">Reseñas</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
-                    <h5>Support</h5>
+                    <h5>Soporte</h5>
                     <ul>
                         <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Help desk</a></li>
-                        <li><a href="#">Forums</a></li>
+                        <li><a href="#">Ayuda</a></li>
+                        <li><a href="#">Foros</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
                     <h5>Legal</h5>
                     <ul>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Terms of Use</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Términos de servicio</a></li>
+                        <li><a href="#">Términos de uso</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
                     </ul>
                 </div>
             </div>

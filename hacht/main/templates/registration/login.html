@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Register - Brand</title>
+    <title>Login - Brand</title>
     <link rel="stylesheet" href="{% static 'index/assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="{% static 'index/assets/fonts/simple-line-icons.min.css' %}">
@@ -24,30 +24,27 @@
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'index' %}">INICIO</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="#">Demo</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="features.html" style="color: rgba(0,0,0,0.9);">características</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'contact_us' %}" style="color: rgba(0,0,0,0.9);">Contacto</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'registration' %}" style="color: rgba(0,0,0,0.9);">Registrarse</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'login' %}" style="color: rgba(0,0,0,0.9);">Ingresar</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="contact-us.html" style="color: rgba(0,0,0,0.9);">Contacto</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'registration' %}" style="color: rgba(0,0,0,0.9);">Registrarse</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'login' %}" style="color: rgba(0,0,0,0.9);">Ingresar</a></li>
                 </ul>
         </div>
         </div>
     </nav>
-    <main class="page registration-page">
+    <main class="page login-page">
         <section class="clean-block clean-form dark">
             <div class="container">
-                <div class="block-heading" style="height: 324px;">
-                    <h2 class="text-info">Registro</h2>
-                    <p>Al registrarse, es muy importante que seleccione el rol que desempeñará al dar uso a esta herramienta, el cual se divide en MÉDICO o INVESTIGADOR.</p>
-                    <p style="padding: 1px;"><br>Es importante que agregue el nombre o el sitio web de la organización a la que pertenece y opcionalmente una pequeña descripción del uso que tiene en mente para la herramienta.</p>
+                <div class="block-heading">
+                    <h2 class="text-info">Inicio de sesión</h2>
+                    <p>Al iniciar sesión, tendrá acceso a su ambiente de trabajo, acorde al rol que seleccionó en el proceso de registro.</p>
                 </div>
-                <form style="height: 803px;" method='POST' action="{% url 'registration' %}">
-                    {% csrf_token %}
-                    <div class="form-group"><label for="name">Nombre</label><label for="name" style="color: rgb(255,0,0);">*</label> {{ form.nombre }} </div>
-                    <div class="form-group"><label for="email">Email</label><label for="email" style="color: rgb(255,0,0);">*</label>{{ form.correo }}</div>
-                    <div class="form-group"><label for="password">Contraseña</label><label for="password" style="color: rgb(255,0,0);">*</label> {{ form.password }} </div><label>Rol</label><label style="color: rgb(255,0,0);">*</label>
-                    <div class="dropdown" style="height: 49px;"> {{ form.rol }} </div>
+                <form>
+                    <div class="form-group"><label for="email">Email</label><input class="form-control item" type="email" id="email"></div>
+                    <div class="form-group"><label for="password">Contraseña</label><input class="form-control" type="password" id="password"></div>
+                    <div class="form-group">
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox"><label class="form-check-label" for="checkbox">Mantener Ingresado</label></div>
+                    </div><button class="btn btn-primary btn-block" type="submit">Iniciar sesión</a>
                 </form>
-            <div class="form-group"><label for="name" style="height: 20px;">Organización</label><label for="name" style="height: 20px;color: rgb(255,0,0);">*</label> {{ form.org }} </div>
-            <div class="form-group"><label for="name">¿Qué uso dará a la herramienta?</label></div><textarea class="form-control" style="height: 142px;margin: 29px;width: 367px;" re></textarea><button  class="btn btn-primary btn-block" type='submit'>Completar Registro</button><label style="height: 55px;width: 201px;font-size: 12px;color: rgb(255,0,0);"><br>*campos obligatorios</label></form>
             </div>
         </section>
     </main>
@@ -57,15 +54,15 @@
                 <div class="col-sm-3">
                     <h5>Comenzar</h5>
                     <ul>
-                        <li><a href="{% url 'index' %}">Inicio</a></li>
-                        <li><a href="{% url 'login' %}">Ingresar</a></li>
+                        <li><a href="#">Inicio</a></li>
+                        <li><a href="#">Ingresar</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
                     <h5>Acerca de nosotros</h5>
                     <ul>
                         <li><a href="#">Information</a></li>
-                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
+                        <li><a href="contact-us.html">Contacto</a></li>
                         <li><a href="#">Reseñas</a></li>
                     </ul>
                 </div>

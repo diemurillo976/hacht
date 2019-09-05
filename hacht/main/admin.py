@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import User, Paciente_N, Paciente_A, Sesion, Muestra
+from .models import Profile, Paciente_N, Paciente_A, Sesion, Muestra
 
-admin.site.register(User)
+admin.site.register(Profile)
 admin.site.register(Paciente_N)
 admin.site.register(Paciente_A)
 admin.site.register(Sesion)

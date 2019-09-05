@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import User
+from .models import Profile
 from .forms import RegistrationForm
 
 
@@ -15,15 +16,22 @@ def registration(request):
         form = RegistrationForm(request.POST)
 
         if(form.is_valid()):
-            new_user = User(nombre=request.POST['nombre'],
-                            correo=request.POST['correo'],
+
+            # Creates the django's user
+            new_user = User(username=request.POST['correo'],
                             password=request.POST['password'],
-                            org=request.POST['org'],
-                            rol=request.POST['rol'],
-                            salt='default')
-            new_user.salt = 'prueba'
+                            email=request.POST['correo'],
+                            first_name=request.POST['nombre'])
+
+            new_user.save()
+
+            new_user.profile.rol = 1
+            new_user.profile.org = "prueba"
+
             new_user.save()
             print('NUEVO REGISTRO USER AGREGADO')
+            #messages.success(request, _('El usuario ha sido creado con éxito'))
+
             return redirect('registration_success')
 
     if(request.method == 'GET'):

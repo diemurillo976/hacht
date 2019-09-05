@@ -15,6 +15,7 @@
 </head>
 
 <body>
+    
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
         <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(0,123,255);">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div
@@ -22,12 +23,22 @@
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'dashboard_pacientes' %}"><img src="{% static 'index/assets/img/icons8-home-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">Inicio</span></a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href=""><img src="{% static 'index/assets/img/icons8-help-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">AYUDA</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'index' %}" style="margin-left: 5px;color: rgba(0,0,0,0.5);"><img src="{% static 'index/assets/img/icons8-logout-rounded-left-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'logout' %}" style="margin-left: 5px;color: rgba(0,0,0,0.5);"><img src="{% static 'index/assets/img/icons8-logout-rounded-left-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span></a></li>
                 </ul>
         </div>
         </div>
     </nav>
     <section style="margin-top: 12%;">
+
+        <div>
+            {% if user.is_authenticated %}
+                <div>Hi {{ user.username }}!</div>
+            {% else %}
+                <p>You are not logged in</p>
+                <a href="{% url 'login' %}">login</a>
+            {% endif %}
+        </div>
+
         <div class="container">
             <div class="text-center" style="padding-bottom: 20px;"><span style="font-size: 28px;color: rgb(0,123,255);">Tablero de Pacientes</span></div>
             <div class="row">

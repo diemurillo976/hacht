@@ -1,27 +1,42 @@
 from __future__ import unicode_literals
 from django.db import models
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
-## User object definition
-class User(models.Model):
+## Profile object definition
+## Extends the "default" User model; using a one to one field and linking it with the User
+class Profile(models.Model):
+
+    # one to one relationship with the django auth default user
+    user = models.OneToOneField(User, 
+                                on_delete=models.CASCADE, 
+                                primary_key=True,
+                                default=1) # Default value should exit on "auth_user" table
+
     #auto update on new data
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    nombre = models.CharField(max_length=40, null=True)
-    correo = models.EmailField(max_length=40, null=True)
-    password = models.CharField(max_length=100, null=True)
-    salt = models.CharField(max_length=100, null=True)
+    # attributes that make our "user" different than the django's
     org = models.CharField(max_length=100, null=True)
     rol = models.CharField(max_length=1, null=True)
 
-    def __str__(self):
-        return self.nombre
-        
-        
+def create_user(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
 
+# Method that catches the "save User event" and automatically saves the changes made to a profile
+def save_profile(sender, instance, **kwargs):
+    instance.profile.save()  
 
+post_save.connect(create_user, sender=User)
+post_save.connect(save_profile, sender=User)
+#post_save.connect(save_profile, sender=User)
+        
 ## Paciente_N object definition
 class Paciente_N(models.Model):
     #auto update on new data
@@ -29,7 +44,7 @@ class Paciente_N(models.Model):
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    id_user = models.PositiveIntegerField(null=True)
+    id_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1) # Default value should exit on "auth_user" table)
     nombre = models.EmailField(max_length=40, null=True)
     ced = models.CharField(max_length=10, null=True)
     sexo = models.CharField(max_length=1, null=True)
@@ -48,7 +63,7 @@ class Paciente_A(models.Model):
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    id_user = models.PositiveIntegerField(null=True)
+    id_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1) # Default value should exit on "auth_user" table)
     identificador = models.EmailField(max_length=40, null=True)
     sexo = models.CharField(max_length=1, null=True)
     edad = models.PositiveSmallIntegerField(null=True)
@@ -64,6 +79,7 @@ class Sesion(models.Model):
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
+    # Ojo que para usar una sola llave foranea necesitamos generalizar Paciente!
     id_paciente = models.PositiveIntegerField(null=True)
     date = models.DateField()
     obs = models.CharField(max_length=500, null=True)
@@ -80,7 +96,7 @@ class Muestra(models.Model):
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    id_sesion = models.PositiveIntegerField(null=True)
+    #id_sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE)
     url_img = models.URLField(null=True)
     pred = models.CharField(max_length=8, null=True)
     accuracy = models.FloatField(null=True)

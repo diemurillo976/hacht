@@ -10,7 +10,6 @@ def index(request):
 def login(request):
     return render(request, 'index/login.html')
 
-
 def registration(request):
     if(request.method == 'POST'):
         form = RegistrationForm(request.POST)

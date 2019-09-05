@@ -123,3 +123,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/Martinvc96/hacht/hacht/main/static/'
+
+LOGIN_REDIRECT_URL = '/dashboard_pacientes/'
+LOGOUT_REDIRECT_URL = '/'

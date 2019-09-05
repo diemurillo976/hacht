@@ -19,10 +19,10 @@ def registration(request):
 
             # Creates the django's user
             new_user = User(username=request.POST['correo'],
-                            password=request.POST['password'],
                             email=request.POST['correo'],
                             first_name=request.POST['nombre'])
 
+            new_user.set_password(request.POST['password'])
             new_user.save()
 
             new_user.profile.rol = 1

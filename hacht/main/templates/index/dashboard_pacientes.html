@@ -57,14 +57,14 @@
                     
                 </div>
                 <!-- End: Lista-Pacientes -->
-                <!-- Start: Contenedor-Paciente -->
                 <div class="col-md-6 contenedor_paciente">
                     <!-- Start: Descriptivo-Paciente -->
+                    <form style="height: 803px;" method='POST' action="">
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 250px;max-height: 250px;">
                         <div class="row">
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Expediente</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text">Cédula</span></div>{{form.cedula}}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Nombre</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text">Nombre</span></div>{{form.nombre}}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
@@ -80,7 +80,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Lugar de Residencia</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text">Lugar de Residencia</span></div>{{form.res}}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
@@ -88,18 +88,19 @@
                         <div class="row">
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Edad</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text">Edad</span></div>{{form.edad}}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Sexo</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text">Sexo</span></div>{{form.sexo}}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    </form>
                     <!-- End: Descriptivo-Paciente -->
                     <!-- Start: Graficos-Paciente -->
                     <div class="shadow-lg comp-paciente bg-light" style="max-width: 100%;max-height: 100%;">

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import User
 from .models import Profile
 from .forms import RegistrationForm
+#hola
 
 
 def index(request):

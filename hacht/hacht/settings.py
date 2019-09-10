@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'hacht.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hacht_db',
-        'HOST': '127.0.0.1',
-        'USER': 'gmonge',
-        'PASSWORD': '*proyecto1234*',
+        'NAME': 'Martinvc96$hacht_db',
+        'HOST': 'Martinvc96.mysql.pythonanywhere-services.com',
+        'USER': 'Martinvc96',
+        'PASSWORD': '@pass1234@',
     }
 }
 

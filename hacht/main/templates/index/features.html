@@ -1,31 +1,32 @@
 <!DOCTYPE html>
+{% load static%}
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Features - Brand</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'index/assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
-    <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
-    <link rel="stylesheet" href="assets/css/Footer-Dark.css">
+    <link rel="stylesheet" href="{% static 'index/assets/fonts/simple-line-icons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'index/assets/css/Footer-Dark.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
-    <link rel="stylesheet" href="assets/css/smoothproducts.css">
-    <link rel="stylesheet" href="assets/css/untitled.css">
+    <link rel="stylesheet" href="{% static 'index/assets/css/smoothproducts.css' %}">
+    <link rel="stylesheet" href="{% static 'index/assets/css/untitled.css' %}">
 </head>
 
 <body>
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-        <div class="container"><a class="navbar-brand logo" href="#" style="color: rgb(59,153,224);font-size: 30px;">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(59,153,224);font-size: 30px;">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div
                 class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="index.html">INICIO</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="#">Demo</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="features.html" style="color: rgba(0,0,0,0.9);">características</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="contact-us.html" style="color: rgba(0,0,0,0.9);">Contacto</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="registration.html" style="color: rgba(0,0,0,0.9);">Registrarse</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="login.html" style="color: rgba(0,0,0,0.9);">Ingresar</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'index' %}">INICIO</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="#">Demo</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'features' %}" style="color: rgba(0,0,0,0.9);">características</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'contact_us' %}" style="color: rgba(0,0,0,0.9);">Contacto</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'registration' %}" style="color: rgba(0,0,0,0.9);">Registrarse</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'login' %}" style="color: rgba(0,0,0,0.9);">Ingresar</a></li>
                 </ul>
         </div>
         </div>
@@ -34,25 +35,25 @@
         <section class="clean-block features">
             <div class="container">
                 <div class="block-heading">
-                    <h2 class="text-info">Features</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+                    <h2 class="text-info">Características</h2>
+                    <p>Aprenda más sobre las cualidades de la herramienta y todo lo que puede realizar en ella para llevar un control del trabajo realizado en imágenes histopatológicas de tumores de mama.</p>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-md-5 feature-box"><i class="icon-star icon"></i>
-                        <h4>Bootstrap 4</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+                    <div class="col-md-5 feature-box"><i class="icon-people icon"></i>
+                        <h4>Tablero de pacientes</h4>
+                        <p>Esta es una caracteríastica única para los usuarios Médicos, les permite llevar un control personalizado por paciente de las sesiones que registran.</p>
                     </div>
-                    <div class="col-md-5 feature-box"><i class="icon-pencil icon"></i>
-                        <h4>Customizable</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+                    <div class="col-md-5 feature-box"><i class="icon-graph icon"></i>
+                        <h4>Predicciones por IA</h4>
+                        <p>Utilizamos tecnologías vanguardistas de aprendizaje autómatico para obtener estimaciones con altos índices de precisión.</p>
                     </div>
-                    <div class="col-md-5 feature-box"><i class="icon-screen-smartphone icon"></i>
-                        <h4>Responsive</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+                    <div class="col-md-5 feature-box"><i class="icon-layers icon"></i>
+                        <h4>Tablero de sesiones</h4>
+                        <p>Esta cualidad se encuentra disponible tanto para Médicos como para Investigadores. Permite subir imágenes histopatológicas de tumores de mama y recibir una estimación del tipo de tumor que se encuentra en la muestra.</p>
                     </div>
-                    <div class="col-md-5 feature-box"><i class="icon-refresh icon"></i>
-                        <h4>All Browser Compatibility</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+                    <div class="col-md-5 feature-box"><i class="icon-pie-chart icon"></i>
+                        <h4>Estadísticas personalizadas</h4>
+                        <p>Ofrecemos a los usuarios distintos gráficos que muestran datos de sus pacientes y sesiones de forma más ordenada y óptima.</p>
                     </div>
                 </div>
             </div>
@@ -64,15 +65,15 @@
                 <div class="col-sm-3">
                     <h5>Comenzar</h5>
                     <ul>
-                        <li><a href="#">Inicio</a></li>
-                        <li><a href="#">Ingresar</a></li>
+                        <li><a href="{% url 'index' %}">Inicio</a></li>
+                        <li><a href="{% url 'login' %}">Ingresar</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
                     <h5>Acerca de nosotros</h5>
                     <ul>
                         <li><a href="#">Information</a></li>
-                        <li><a href="contact-us.html">Contacto</a></li>
+                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
                         <li><a href="#">Reseñas</a></li>
                     </ul>
                 </div>
@@ -98,11 +99,11 @@
             <p></p>
         </div>
     </footer>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{% static 'index/assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'index/assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
-    <script src="assets/js/smoothproducts.min.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="{% static 'index/assets/js/smoothproducts.min.js' %}"></script>
+    <script src="{% static 'index/assets/js/theme.js' %}"></script>
 </body>
 
 </html>

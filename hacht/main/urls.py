@@ -10,6 +10,7 @@ urlpatterns = [
     path('registration_success/', views.registration_success, name='registration_success'),
     path('dashboard_pacientes/', views.dashboard_pacientes, name='dashboard_pacientes'),
     path('dashboard_sesiones/', views.dashboard_sesiones, name='dashboard_sesiones'),
-    path('contact_us/', views.contact_us, name='contact_us')
+    path('contact_us/', views.contact_us, name='contact_us'),
+    path('features/', vuews.features, name='features')
 ]
 

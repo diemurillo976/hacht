@@ -54,3 +54,6 @@ def dashboard_sesiones(request):
 
 def contact_us(request):
     return render(request, 'index/contact-us.html')
+
+def features(request):
+    return render(request, 'index/registration.html')

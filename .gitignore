@@ -1,0 +1,5 @@
+# Ignore settings file, we have multiple workspaces but master should only be changed in code not in settings
+/hacht/hacht/settings.py
+
+#Ignore multiple "pychache" folders
+**/__pycache__

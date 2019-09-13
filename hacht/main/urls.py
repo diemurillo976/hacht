@@ -11,6 +11,6 @@ urlpatterns = [
     path('dashboard_pacientes/', views.dashboard_pacientes, name='dashboard_pacientes'),
     path('dashboard_sesiones/', views.dashboard_sesiones, name='dashboard_sesiones'),
     path('contact_us/', views.contact_us, name='contact_us'),
-    path('features/', vuews.features, name='features')
+    path('features/', views.features, name='features')
 ]
 

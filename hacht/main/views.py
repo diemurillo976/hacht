@@ -56,4 +56,4 @@ def contact_us(request):
     return render(request, 'index/contact-us.html')
 
 def features(request):
-    return render(request, 'index/features.html')
+    return render(request, 'index/features.html' )

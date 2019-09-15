@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import User
 from .models import Profile
-from .forms import RegistrationForm
+from .forms import RegistrationForm, Data_PacienteN
+#hola
 
 
 def index(request):
@@ -44,10 +45,15 @@ def registration_success(request):
     return render(request, 'index/registration_success.html')
 
 def dashboard_pacientes(request):
-    return render(request, 'index/dashboard_pacientes.html')
+    form = Data_PacienteN()
+    context = {'form': form}
+    return render(request, 'index/dashboard_pacientes.html', context)
 
 def dashboard_sesiones(request):
     return render(request, 'index/dashboard_sesiones.html')
 
 def contact_us(request):
     return render(request, 'index/contact-us.html')
+
+def features(request):
+    return render(request, 'index/features.html' )

@@ -48,6 +48,9 @@
                         <div class="col" style="padding-left: 0%;padding-right: 0px;width: 50%;min-width: 50%;max-width: 50%;"><a href="#"><img src="{% static 'index/assets/img/icons8-plus-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Paciente</span></a></div>
                         <div class="col" style="padding-left: 5px;"><a href="#"><img src="{% static 'index/assets/img/icons8-trash-can-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Eliminar Pacientes</span></a></div>
                     </div>
+
+                    <!-- Start: Aca va la lista de componentes -->
+                    <div id='contenedor de componentes'>
                     <!-- Start: Descriptivo-Paciente-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" id="descriptivo_paciente_1" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
@@ -71,34 +74,20 @@
                         </div>
                     </div>
                     <!-- End: Descriptivo-Paciente-Compacto -->
-                    <!-- Start: Descriptivo-Paciente-Anonimo -->
-                    <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;max-width: 100%;min-width: 100%;">
-                        <div class="row">
-                            <div class="col" style="min-width: 50%;min-height: 40px;max-height: 40px;"><span style="padding-left: 0%;margin-left: 0%;max-width: 10px;min-width: 10px;"><img src="{% static 'index/assets/img/privacy_mask-512.png' %}" style="max-height: 44px;max-width: 44px;min-width: 32px;min-height: 32px;margin-bottom: 0px;padding-left: 5px;padding-right: 10px;"><span>Paciente Anónimo</span></span>
-                            </div>
-                            <div class="col text-center" style="max-width: 100px;min-width: 100px;width: 100px;"><a href="#" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Editar</span></a></div>
-                            <div class="col text-center" style="max-width: 122px;min-width: 122px;width: 122px;"><a href="#" style="margin-left: 5px;"><i class="fas fa-trash"></i><span style="margin-left: 5px;">Eliminar</span></a></div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Identificador</span></div><input class="form-control" type="text">
-                                    <div class="input-group-append"></div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
-                    <!-- End: Descriptivo-Paciente-Anonimo -->
+                    <!-- End: Aca va la lista de componentes -->
+                    
                 </div>
                 <!-- End: Lista-Pacientes -->
-                <!-- Start: Contenedor-Paciente -->
                 <div class="col-md-6 contenedor_paciente">
                     <!-- Start: Descriptivo-Paciente -->
+                    <form style="height: 803px;" method='POST' action="">
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 250px;max-height: 250px;">
                         <div class="row">
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Expediente</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text">Cédula</span></div>{{form.cedula}}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
@@ -106,7 +95,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Nombre</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text">Nombre</span></div>{{form.nombre}}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
@@ -114,7 +103,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Lugar de Residencia</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text">Lugar de Residencia</span></div>{{form.res}}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
@@ -122,18 +111,19 @@
                         <div class="row">
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Edad</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text">Edad</span></div>{{form.edad}}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Sexo</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text">Sexo</span></div>{{form.sexo}}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    </form>
                     <!-- End: Descriptivo-Paciente -->
                     <!-- Start: Graficos-Paciente -->
                     <div class="shadow-lg comp-paciente bg-light" style="max-width: 100%;max-height: 100%;">

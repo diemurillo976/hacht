@@ -45,7 +45,7 @@ class Paciente_N(models.Model):
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
     id_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1) # Default value should exit on "auth_user" table)
-    nombre = models.EmailField(max_length=40, null=True)
+    nombre = models.CharField(max_length=40, null=True)
     ced = models.CharField(max_length=10, null=True)
     sexo = models.CharField(max_length=1, null=True)
     edad = models.PositiveSmallIntegerField(null=True)
@@ -64,7 +64,7 @@ class Paciente_A(models.Model):
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
     id_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1) # Default value should exit on "auth_user" table)
-    identificador = models.EmailField(max_length=40, null=True)
+    identificador = models.CharField(max_length=40, null=True)
     sexo = models.CharField(max_length=1, null=True)
     edad = models.PositiveSmallIntegerField(null=True)
 

@@ -1,0 +1,65 @@
+<!-- Start: Descriptivo-Paciente -->
+<form method='POST'>
+                        
+    {% csrf_token %}
+        
+    <div class="form-paciente text-dark border-primary shadow-lg bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 350px;max-height: 350px;">
+        <div class="row">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Cédula</span>
+                    </div>
+                    {{form.ced}}
+                    <div class="input-group-append"></div>
+                </div>
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text">Nombre</span></div>{{form.nombre}}
+                    <div class="input-group-append"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text">Lugar de Residencia</span></div>{{form.res}}
+                    <div class="input-group-append"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text">Edad</span></div>{{form.edad}}
+                    <div class="input-group-append"></div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text">Sexo</span></div>{{form.sexo}}
+                    <div class="input-group-append"></div>
+                </div>
+            </div>
+        </div>
+
+        {% if form.initial.id %}
+
+            <input type="hidden" value="{{ form.initial.id }}" name="id">
+
+        {% endif %}
+        
+        <div class="row">
+            <button class="btn btn-primary btn-block" type="submit">Aceptar</button>
+        </div>
+
+    </div>
+        
+</form>
+<!-- End: Descriptivo-Paciente -->

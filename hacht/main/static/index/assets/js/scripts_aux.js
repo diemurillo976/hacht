@@ -7,8 +7,8 @@ function toggle_vis(element){
 }
 
 function highlight_titles(element){
-    
-    str = element + " .titulo-descriptivo";
+
+    str = element + " .titulo-descriptivo"
     
     if ($(str).css("color") == "rgb(255, 255, 255)"){
         
@@ -30,16 +30,50 @@ function highlight_titles(element){
     }
 }
 
+function agregar_paciente(){
+    toggle_vis($("#columna_paciente"));
+}
+
+function cargar_form_paciente(url, id_paciente){
+
+    apendice = "?id_paciente=" + id_paciente
+
+    if (id_paciente){ 
+
+        $("#columna_paciente").load(url+apendice, function(responseTxt, statusTxt, xhr){
+            if(statusTxt == "error")
+            alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+        });
+    }else{
+        $("#columna_paciente").load(url, function(responseTxt, statusTxt, xhr){
+            if(statusTxt == "error")
+            alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+        });
+    }
+
+}
+
+function descriptivo_paciente_onclick(id_paciente){
+    toggle_vis($("#columna_paciente"));
+    highlight_titles("descriptivo_paciente_" + id_paciente);
+
+    cargar_form_paciente("components/descriptivo_paciente/", id_paciente)
+}
+
 $(document).ready(function() { 
-    $(".sesion_compacto").on("click", function() { 
+
+    cargar_form_paciente("components/descriptivo_paciente/", "")
+
+    /*
+    $(".columna_paciente").on("load", function() { 
+        
+    }); */
+
+    /*
+    $(".sesion_compacto").on("dblclick", function() { 
         toggle_vis($(".contenedor_sesion_completo"));
         
         highlight_titles(".sesion_compacto");
-    }); 
-    
-    $(".comp-paciente").on("click", function() { 
-        toggle_vis($(".contenedor_paciente"));
-        
-        highlight_titles("#descriptivo_paciente_1");
-    }); 
+    }); */
+
 }); 

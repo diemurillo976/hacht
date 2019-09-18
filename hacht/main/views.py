@@ -47,44 +47,49 @@ def registration_success(request):
 
 def dashboard_pacientes(request):
 
-    if request.method == "GET":
+    if request.user.is_authenticated:
 
-        all_patients_n = Paciente_N.objects.all()
-        context = {'pacientes': all_patients_n}
-        return render(request, 'index/dashboard_pacientes.html', context)
-    
-    elif request.method == "POST":
+        if request.method == "GET":
 
-        if request.POST.get("id"):
-
-            id_p = request.POST["id"]
-            instancia_paciente = get_object_or_404(Paciente_N, pk=id_p)
-            form = Data_PacienteN(request.POST, instance=instancia_paciente)
+            all_patients_n = Paciente_N.objects.filter(id_user=request.user)
+            context = {'pacientes': all_patients_n}
+            return render(request, 'index/dashboard_pacientes.html', context)
         
-        else:
-            form = Data_PacienteN(request.POST)
+        elif request.method == "POST":
 
-        if(form.is_valid()):
+            if request.POST.get("id"):
+
+                id_p = request.POST["id"]
+                instancia_paciente = get_object_or_404(Paciente_N, pk=id_p)
+                form = Data_PacienteN(request.POST, instance=instancia_paciente)
             
-            """
-            new_patient = Paciente_N(id_user=request.user, 
-                                    nombre=request.POST["nombre"],
-                                    ced=request.POST["cedula"],
-                                    sexo=request.POST["sexo"],
-                                    edad=request.POST["edad"],
-                                    res=request.POST["res"],)
-            """
+            else:
+                form = Data_PacienteN(request.POST)
 
-            paciente = form.save()
+            if(form.is_valid()):
+                
+                """
+                new_patient = Paciente_N(id_user=request.user, 
+                                        nombre=request.POST["nombre"],
+                                        ced=request.POST["cedula"],
+                                        sexo=request.POST["sexo"],
+                                        edad=request.POST["edad"],
+                                        res=request.POST["res"],)
+                """
 
-            paciente.id_user = request.user
+                paciente = form.save()
 
-            paciente.save()
+                paciente.id_user = request.user
 
-            return redirect('/dashboard_pacientes/')
+                paciente.save()
 
-        else:
-            print(str(form._errors))
+                return redirect('/dashboard_pacientes/')
+
+            else:
+                print(str(form._errors))
+
+    else:
+        return HttpResponse(status=403)
 
 def dashboard_sesiones(request):
 

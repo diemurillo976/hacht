@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import User
 from .models import Profile
 from .models import Paciente_N
 from .forms import RegistrationForm, Data_PacienteN
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 #hola
 
 def index(request):
@@ -55,10 +55,9 @@ def dashboard_pacientes(request):
     
     elif request.method == "POST":
 
-        id_p = request.POST["id"]
+        if request.POST.get("id"):
 
-        if id_p != None:
-
+            id_p = request.POST["id"]
             instancia_paciente = get_object_or_404(Paciente_N, pk=id_p)
             form = Data_PacienteN(request.POST, instance=instancia_paciente)
         
@@ -117,3 +116,18 @@ def descriptivo_paciente(request):
 
     context = {'form': form}
     return render(request, 'index/components/descriptivo_paciente.html', context)
+
+def eliminar_paciente(request):
+
+    if request.POST.get("id_paciente"):
+
+        id_p = request.POST["id_paciente"]
+        paciente = Paciente_N.objects.get(pk=id_p)
+        paciente.delete()
+        return HttpResponse(status=204) # Se procesó correctamente pero no hay contenido
+
+    else:
+
+        # Maneja el error de que no llegue id_paciente
+        print("El request llegó vacio")
+        return HttpResponse(status=400) # Problema con el request

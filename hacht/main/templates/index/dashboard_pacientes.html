@@ -31,7 +31,7 @@
     </nav>
     <section style="margin-top: 12%;">
 
-        <div>
+        <div style="padding-left: 20px">
             {% if user.is_authenticated %}
                 <div>Hi {{ user.username }}!</div>
             {% else %}
@@ -50,6 +50,7 @@
 
         <div class="container">
             <div class="row">
+
                 <!-- Start: Lista-Pacientes -->
                 <div class="col-md-6 flex-grow-1" id="contenedor_lista" style="max-width: 100%; display: none;">
                     
@@ -68,7 +69,7 @@
                                         </div>
                                     </div>
                                     <div class="col text-center" style="max-width: 100px;min-width: 100px;width: 100px;"><a href="#" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Editar</span></a></div>
-                                    <div class="col text-center" style="max-width: 122px;min-width: 122px;width: 122px;"><a href="#" style="margin-left: 5px;"><i class="fas fa-trash"></i><span style="margin-left: 5px;">Eliminar</span></a></div>
+                                    <div class="col text-center" style="max-width: 122px;min-width: 122px;width: 122px;"><a href="#" onclick="eliminar_onclick(event, '{{ paciente.id }}')" style="margin-left: 5px;"><i class="fas fa-trash"></i><span style="margin-left: 5px;">Eliminar</span></a></div>
                                 </div>
                                 <div class="row">
                                     <div class="col">

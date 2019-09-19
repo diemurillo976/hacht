@@ -128,7 +128,7 @@ def demo(request):
     if(request.method == "POST"):
         upload = request.FILES['upload']
         storage.child("test.png").put(upload)
-        return None
+        return render(request, '/')
     elif(request.method == "GET"):
         return render(request, 'index/demo.html')
 

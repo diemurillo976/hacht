@@ -17,18 +17,18 @@
 
 <body style="background-color: rgb(246,246,246);">
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-        <div class="container"><a class="navbar-brand logo" href="#">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse"
-                id="navcol-1">
+        <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(59,153,224);font-size: 30px;">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div
+                class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'index' %}">INICIO</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'demo' %}">Demo</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'index' %}">INICIO</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'demo' %}">Demo</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'features' %}" style="color: rgba(0,0,0,0.9);">características</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'contact_us' %}" style="color: rgba(0,0,0,0.9);">Contacto</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'registration' %}" style="color: rgba(0,0,0,0.9);">Registrarse</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'registration' %}" style="color: rgba(0,0,0,0.9);">Registrarse</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'login' %}" style="color: rgba(0,0,0,0.9);">Ingresar</a></li>
                 </ul>
-            </div>
+        </div>
         </div>
     </nav><div style="margin-top: 10%; margin-left: 15%;">
 <form action="upload.php" method="post" enctype="multipart/form-data">

@@ -1,0 +1,44 @@
+ {% load static%}
+                        <!-- Start: Muestra-Agregada -->
+                        <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);max-height: 320px;min-height: 320px;max-width: 600 px;min-width: 600px;width: 600px;height: 320px;padding-bottom: 10px;">
+                            <div class="card" style="max-width: 600px;">
+                                <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
+                                    <div class="row no-gutter" style="max-width: 100%;">
+                                        <!-- Start: Imagen -->
+                                        <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="{% static 'index/assets/img/sample-tissue.png' %}" style="max-height: 128px;">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div>{{ form.prediccion }}
+                                                <div class="input-group-append"></div>
+                                            </div>
+                                        </div>
+                                        <!-- End: Imagen -->
+                                        <!-- Start: correcto -->
+                                        <div class="col-md-4" style="max-width: 250px;min-width: 350px;">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text" style="max-height: 80px;min-height: 80px;height: 80px;">Observación</span></div>{{ form.observacion }}
+                                                <div
+                                                    class="input-group-append"></div>
+                                        </div>
+                                        <div>
+                                            <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Predicción Correcta</span>
+                                                <div style="max-width: 95px;">
+                                                    <div class="form-check form-check-inline" style="padding-left: 10px;padding-top: 5px;"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="margin-left: 5px;">Si</label></div>
+                                                    <div class="form-check form-check-inline" style="margin-left: 10px;"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2" style="margin-left: 5px;">No</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Consentimiento de uso</span>
+                                                <div style="max-width: 95px;">
+                                                    <div class="form-check form-check-inline" style="padding-left: 10px;padding-top: 5px;"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="margin-left: 5px;">Si</label></div>
+                                                    <div class="form-check form-check-inline" style="margin-left: 10px;"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2" style="margin-left: 5px;">No</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End: correcto -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End: Muestra-Agregada -->

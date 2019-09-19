@@ -1,9 +1,10 @@
+{% load static%}                    
                     <!-- Start: Descriptivo-Sesion-Compacto -->
                     <div class="text-dark border-primary shadow-lg comp-paciente bg-light sesion_compacto" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
                         <div class="row">
                             <div class="col" style="min-width: auto;max-width: auto;width: auto;">
                                 <div class="input-group" style="max-width: 100%;">
-                                    <div class="input-group-prepend"><span class="input-group-text titulo-descriptivo">Fecha</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text titulo-descriptivo">Fecha</span></div>{{ form.fecha }}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>
@@ -13,7 +14,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text titulo-descriptivo">Estado</span></div><input class="form-control" type="text">
+                                    <div class="input-group-prepend"><span class="input-group-text titulo-descriptivo">Estado</span></div>{{ form.estado }}
                                     <div class="input-group-append"></div>
                                 </div>
                             </div>

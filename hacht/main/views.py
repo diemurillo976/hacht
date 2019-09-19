@@ -126,7 +126,7 @@ def features(request):
 
 def demo(request):
     if(request.method == "POST"):
-        upload = request.files['upload']
+        upload = request.FILES['upload']
         storage.child("test.png").put(upload)
         return None
     elif(request.method == "GET"):

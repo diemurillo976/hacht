@@ -101,6 +101,9 @@ def contact_us(request):
 def features(request):
     return render(request, 'index/features.html' )
 
+def demo(request):
+    return render(request, 'index/demo.html')
+
 def descriptivo_paciente(request):
     
     # Si no hay paciente seleccionado se envía el form vacio

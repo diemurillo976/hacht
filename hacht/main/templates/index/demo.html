@@ -5,45 +5,37 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Testimonials - Brand</title>
-    <link rel="stylesheet" href="{% static 'index/assets/bootstrap/css/bootstrap.min.css' %}">
+    <title>Prototipo Histopatologías</title>
+    <link rel="stylesheet" href="{% static 'index/assets/bootstrap/css/bootstrap.min.css?h=1190b5d9f5208f656072867f0a0c44db' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
-    <link rel="stylesheet" href="{% static 'index/assets/fonts/simple-line-icons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'index/assets/css/Footer-Dark.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
-    <link rel="stylesheet" href="{% static 'index/assets/css/smoothproducts.css' %}">
-    <link rel="stylesheet" href="{% static 'index/assets/css/untitled.css' %}">
+    <link rel="stylesheet" href="{% static 'index/assets/css/styles.min.css?h=b3862b56ca5388ed7e84521dd96401a1' %}">
 </head>
 
-<body>
+<body style="background-color: rgb(246,246,246);">
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-        <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(59,153,224);font-size: 30px;">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div
-                class="collapse navbar-collapse" id="navcol-1">
+        <div class="container"><a class="navbar-brand logo" href="#">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse"
+                id="navcol-1">
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'index' %}">INICIO</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'demo' %}">Demo</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'features' %}" style="color: rgba(0,0,0,0.9);">características</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'contact_us' %}" style="color: rgba(0,0,0,0.9);">Contacto</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'registration' %}" style="color: rgba(0,0,0,0.9);">Registrarse</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'registration' %}" style="color: rgba(0,0,0,0.9);">Registrarse</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'login' %}" style="color: rgba(0,0,0,0.9);">Ingresar</a></li>
                 </ul>
-        </div>
-        </div>
-    </nav>
-    <main class="page testimonials">
-        <section class="clean-block clean-testimonials dark">
-            <div class="container">
-                <div class="block-heading"><img src="{% static 'index/assets/img/icons8-tick-box-96.png' %}">
-                    <h2 class="text-info" style="color: rgb(38,153,35);">Éxito al registrarse</h2>
-                    <p style="color: rgb(33,41,37);">!Gracias por unirse a nuestra herramienta¡<br><br>Se ha enviado un correo a la dirección que ha ingresado con información que le puede ser útil.</p>
-                </div>
-                <div class="block-heading"><a href="{% url 'dashboard_pacientes' %}">
-<button class="btn btn-primary" type="button">Continuar a la herramienta</button>
-</a></div>
             </div>
-        </section>
-    </main>
+        </div>
+    </nav><div style="margin-top: 10%; margin-left: 15%;">
+<form action="upload.php" method="post" enctype="multipart/form-data">
+    Seleccione imagen a subir:
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input type="submit" value="Subir imagen" name="submit">
+</form>
+</div><label style="font-size: 20px;margin-top: 0px;margin-left: 15%;">Imagen seleccionada:</label><img style="margin-left: 0;margin-top: 10%;"><label style="margin-left: 5%;">Estimacion:</label>
     <footer class="page-footer dark">
         <div class="container">
             <div class="row">
@@ -84,11 +76,10 @@
             <p></p>
         </div>
     </footer>
-    <script src="{% static 'index/assets/js/jquery.min.js' %}"></script>
-    <script src="{% static 'index/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
-    <script src="{% static 'index/assets/js/smoothproducts.min.js' %}"></script>
-    <script src="{% static 'index/assets/js/theme.js' %}"></script>
+    <script src="{% static 'index/assets/js/script.min.js?h=c7e8704276d66dfa5ad391e5ef053a25' %}"></script>
 </body>
 
 </html>

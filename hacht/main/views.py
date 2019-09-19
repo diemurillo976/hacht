@@ -4,7 +4,30 @@ from .models import Profile
 from .models import Paciente_N
 from .forms import RegistrationForm, Data_PacienteN
 from django.http import HttpResponse
-#hola
+
+#Pyrebase import#################################################
+import pyrebase
+
+#Firebase auth#
+
+config = {
+    "apiKey": "AIzaSyArQxRet5XqKI6v8948A2ZnHZOZsu7vCNY",
+    "authDomain": "hacht-7d98d.firebaseapp.com",
+    "databaseURL": "https://hacht-7d98d.firebaseio.com",
+    "projectId": "hacht-7d98d",
+    "storageBucket": "hacht-7d98d.appspot.com",
+    "messagingSenderId": "225406534324",
+    "appId": "1:225406534324:web:f5317f74d07ced54"
+  }
+
+#Firebase Storage reference#
+
+firebase = pyrebase.initialize_app(config)
+
+storage = firebase.storage()
+
+##################################################################
+
 
 def index(request):
     return render(request, 'index/index.html')
@@ -102,7 +125,12 @@ def features(request):
     return render(request, 'index/features.html' )
 
 def demo(request):
-    return render(request, 'index/demo.html')
+    if(request.method == "POST"):
+        upload = request.files['upload']
+        storage.child("test.png").put(upload)
+        return None
+    elif(request.method == "GET"):
+        return render(request, 'index/demo.html')
 
 def descriptivo_paciente(request):
     

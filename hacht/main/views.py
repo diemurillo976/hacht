@@ -127,8 +127,9 @@ def features(request):
 def demo(request):
     if(request.method == "POST"):
         upload = request.FILES['upload']
-        storage.child("test.png").put(upload)
-        return render(request, '/')
+        storage.child("test1.png").put(upload)
+        storage.child("test.png").download("/","/test.png")
+        return render(request, 'index/demo.html')
     elif(request.method == "GET"):
         return render(request, 'index/demo.html')
 

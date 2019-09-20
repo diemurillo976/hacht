@@ -5,8 +5,13 @@ from .models import Paciente_N
 from .forms import RegistrationForm, Data_PacienteN
 from django.http import HttpResponse
 
-#Pyrebase import#################################################
+#Pyrebase and model imports#################################################
 import pyrebase
+import forward
+from forward import *
+from PIL import Image
+from io import BytesIO
+import requests
 
 #Firebase auth#
 
@@ -129,7 +134,10 @@ def demo(request):
         upload = request.FILES['upload']
         storage.child(str(upload)).put(upload)
         url = storage.child(str(upload)).get_url(None)
-        context = {"result": 1}
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+        result = forward_single_img(img)
+        context = {"result": result}
         return render(request, 'index/demo.html', context)
     elif(request.method == "GET"):
         return render(request, 'index/demo.html')

@@ -4,6 +4,8 @@ from .models import Profile
 from .models import Paciente_N
 from .forms import RegistrationForm, Data_PacienteN
 from django.http import HttpResponse
+import sys
+sys.path.append('../CNN_src')
 
 #Pyrebase and model imports#################################################
 import pyrebase

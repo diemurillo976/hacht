@@ -51,59 +51,76 @@ function highlight_titles(element){
     }
 }
 
-function agregar_paciente(){
+function agregar_sesion(id_paciente){
 
     // Carga el formulario
-    cargar_form_paciente("components/descriptivo_paciente/", "")
+    cargar_form_sesion("components/descriptivo_sesion/", id_paciente, "")
 
     // Hace que la columna sea visible
-    toggle_vis($("#columna_paciente"));
+    toggle_vis($("#contenedor_sesion_completo"));
 
 }
 
-function cargar_form_paciente(url, id_paciente){
+function cargar_form_sesion(url, id_paciente, id_sesion){
 
-    if (id_paciente){ 
+    apendice = "?id_paciente=" + id_paciente
+
+    if (id_sesion){ 
 
         // Alista el request GET mediante una url
-        apendice = "?id_paciente=" + id_paciente
+        apendice += "&id_sesion=" + id_sesion
 
         // Carga el formulario con los datos "prellenados"
-        $("#columna_paciente").load(url+apendice, function(responseTxt, statusTxt, xhr){
+        $("#cont_sesion").load(url+apendice, function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
-            alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+                alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
         });
 
     }else{
 
         // Carga el formulario sin datos
-        $("#columna_paciente").load(url, function(responseTxt, statusTxt, xhr){
+        $("#cont_sesion").load(url+apendice, function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
-            alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+                alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
         });
     }
 
 }
 
-function descriptivo_paciente_onclick(id_paciente){
+function cargar_muestras_sesion(url, id_sesion){
 
-    // Hace un load dinámico del form para cada paciente
-    cargar_form_paciente("components/descriptivo_paciente/", id_paciente)
+    apendice = "?id_sesion=" + id_sesion;
 
-    // Muestra la columna de pacientes
-    toggle_vis($("#columna_paciente"));
+    // Carga el formulario con los datos "prellenados"
+    $("#cont_muestras_sesion").load(url+apendice, function(responseTxt, statusTxt, xhr){
+        if(statusTxt == "error")
+            alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+    });
 
-    // Resalta algunas características para mostrar que ha sido seleccionado
-    highlight_titles("#descriptivo_paciente_" + id_paciente);
 }
 
-function eliminar_onclick(e, id_paciente){
+function sesion_onclick(id_paciente, id_sesion){
+
+    // Hace un load dinámico del form para cada paciente
+    cargar_form_sesion("components/descriptivo_sesion/", id_paciente, id_sesion);
+
+    // Carga el formulario
+    cargar_muestras_sesion("components/muestras_sesion/", id_sesion);
+
+    // Muestra la columna de pacientes
+    toggle_vis($("#contenedor_sesion_completo"));
+
+    // Resalta algunas características para mostrar que ha sido seleccionado
+    highlight_titles("#descriptivo_sesion_" + id_sesion);
+}
+
+function eliminar_onclick(e, id_paciente, id_sesion){
     
     // previene el href
     e.preventDefault();
     
     // Confirma que se quiera eliminar el paciente
-    var val = confirm("¿Está seguro que desea eliminar el paciente?");
+    var val = confirm("¿Está seguro que desea eliminar la sesión");
     
     if(val){
 
@@ -111,10 +128,10 @@ function eliminar_onclick(e, id_paciente){
         $.post(
             "eliminar/",
             {
-                "id_paciente" : id_paciente
+                "id_sesion" : id_sesion
             },
             function(result){
-                window.location.replace("/dashboard_pacientes/")
+                window.location.replace("/dashboard_sesiones/?id_paciente=" + id_paciente)
             }
         );
     }
@@ -129,6 +146,11 @@ $(document).ready(function() {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
         }
+    });
+
+    $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
     
 

@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User
-from .models import Profile
-from .models import Paciente_N
-from .forms import RegistrationForm, Data_PacienteN
+from .models import User, Profile, Paciente_N, Sesion
+from .forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.http import HttpResponse
 #hola
 
@@ -91,16 +89,6 @@ def dashboard_pacientes(request):
     else:
         return HttpResponse(status=403)
 
-def dashboard_sesiones(request):
-
-    return render(request, 'index/dashboard_sesiones.html')
-
-def contact_us(request):
-    return render(request, 'index/contact-us.html')
-
-def features(request):
-    return render(request, 'index/features.html' )
-
 def descriptivo_paciente(request):
     
     # Si no hay paciente seleccionado se envía el form vacio
@@ -136,3 +124,128 @@ def eliminar_paciente(request):
         # Maneja el error de que no llegue id_paciente
         print("El request llegó vacio")
         return HttpResponse(status=400) # Problema con el request
+
+def dashboard_sesiones(request):
+
+    if request.user.is_authenticated:
+
+        if request.method == "GET" and request.GET.get("id_paciente"):
+
+            paciente = Paciente_N.objects.get(pk=request.GET["id_paciente"])
+            sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
+            context = {"paciente" : paciente, "sesiones" : sesiones}
+
+            return render(request, 'index/dashboard_sesiones.html', context)
+
+        elif request.method == "POST":
+
+            if request.POST.get("id"):
+                
+                # Obtiene los datos ingresados contra los dato
+                id_s = request.POST["id"]
+                instancia_sesion = get_object_or_404(Paciente_N, pk=id_s)
+                form = Data_Comp_Sesion_Completo(request.POST, instance=instancia_sesion)
+            
+            else:
+                
+                # Popula el formulario solo con los datos obtenidos del post
+                form = Data_Comp_Sesion_Completo(request.POST)
+
+            if(form.is_valid()):
+                
+                """
+                new_patient = Paciente_N(id_user=request.user, 
+                                        nombre=request.POST["nombre"],
+                                        ced=request.POST["cedula"],
+                                        sexo=request.POST["sexo"],
+                                        edad=request.POST["edad"],
+                                        res=request.POST["res"],)
+                """
+
+                sesion = form.save()
+
+                id_paciente = request.POST["id_paciente"]
+                sesion.id_paciente = id_paciente
+
+                sesion = form.save()
+
+                return redirect('/dashboard_sesiones/?id_paciente=' + id_paciente)
+
+            else:
+                print(str(form._errors))
+    
+
+            return render(request, 'index/dashboard_sesiones.html')
+
+        else:
+            return HttpResponse(status=404)
+
+    else:
+        return HttpResponse(status=403)
+
+def descriptivo_sesion(request):
+
+    if request.GET.get("id_sesion"):
+
+        id_s = request.GET["id_sesion"]
+        sesion = Sesion.objects.get(pk=id_s)
+        form = Data_Comp_Sesion_Completo(instance=sesion)
+
+    else:
+
+        form = Data_Comp_Sesion_Completo()
+
+    id_paciente = request.GET["id_paciente"]
+    context = {'form': form, 'id_paciente': id_paciente}
+    return render(request, 'index/components/descriptivo_sesion.html', context)
+
+def eliminar_sesion(request):
+
+    if request.POST.get("id_sesion"):
+
+        id_s = request.POST["id_sesion"]
+        sesion = Sesion.objects.get(pk=id_s)
+        sesion.delete()
+        return HttpResponse(status=204) # Se procesó correctamente pero no hay contenido
+
+    else:
+
+        # Maneja el error de que no llegue id_paciente
+        print("El request llegó vacio")
+        return HttpResponse(status=400) # Problema con el request
+
+def muestras_sesion(request):
+
+    if request.GET.get("id_sesion"):
+
+        id_s = request.GET["id_sesion"]
+        sesion = Sesion.objects.get(pk=id_s)
+
+        muestras = []
+
+        for muestra in Muestra.objects.filter(id_sesion=id_s):
+            muestras.append(Data_Sesion_Muestra(instance=muestra))
+
+
+        context = {
+            'sesion' : sesion,
+            'forms' : muestras
+        }
+
+        return render(request, 'index/components/muestras_sesion.html', context)
+
+    else:
+
+        # Maneja el error de que no llegue id_paciente
+        print("El request llegó vacio")
+        return HttpResponse(status=400) # Problema con el request
+
+def agregar_muestra(request):
+
+    # Aquí se define el código para agregar la muestra
+
+def contact_us(request):
+    return render(request, 'index/contact-us.html')
+
+def features(request):
+    return render(request, 'index/features.html' )

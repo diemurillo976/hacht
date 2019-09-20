@@ -1,0 +1,86 @@
+
+{% if muestras %}
+
+    {% for muestra in muestras %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <!-- Start: Muestra-Agregada -->
+            <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);max-height: 320px;min-height: 320px;max-width: 600 px;min-width: 600px;width: 600px;height: 320px;padding-bottom: 10px;">
+                
+                <div class="card" style="max-width: 600px;">
+                    <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
+                        <div class="row no-gutter" style="max-width: 100%;">                          
+                            
+                            <!-- Start: Imagen -->                         
+                            <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img id="img_{{ form.id }}" class="card-img" style="max-height: 128px;">                      
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div>{{ form.prediccion }}
+                                    <div class="input-group-append"></div>                  
+                                </div>                      
+                            </div>
+                            <!-- End: Imagen -->
+                            
+                            <!-- Start: correcto -->
+                            <div class="col-md-4" style="max-width: 250px;min-width: 350px;">
+                                
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text" style="max-height: 80px;min-height: 80px;height: 80px;">Observación</span></div>{{ form.observacion }}
+                                    <div class="input-group-append"></div>
+                                </div>
+                                
+                                <div>
+                                    <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Predicción Correcta</span>
+                                        
+                                        {{ form.is_true }}
+                            
+                                    </div>
+                            
+                                </div>
+                            
+                                <div>
+                                    <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Consentimiento de uso</span>
+                                        
+                                        {{ form.consent }}
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End: correcto -->
+                            
+                        </div>
+
+                        <div class="row">
+                            <input type="submit" value="Guardar Cambios">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    {% endfor %}
+
+{% endif %}
+
+<div class="comp-paciente">
+
+    <form method="POST" action="">
+
+        {% csrf_token %}
+        
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="customFile">
+            <label class="custom-file-label" for="customFile">Escoja un archivo para subir</label>
+        </div>
+    
+        <input type="hidden" value="{{ sesion.id }}">
+    
+        <input type="submit" value="Subir Muestra">
+    
+    </form>
+</div>
+
+<!-- End: Muestra-Agregada -->

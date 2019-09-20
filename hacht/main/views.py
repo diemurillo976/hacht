@@ -7,12 +7,13 @@ from django.http import HttpResponse
 
 #Pyrebase and model imports#################################################
 import pyrebase
-import forward
-from CNN_src.forward import *
 from PIL import Image
 from io import BytesIO
 import requests
-
+import sys
+sys.path.insert(0,'CNN_src/')
+import forward
+from forward import *
 #Firebase auth#
 
 config = {

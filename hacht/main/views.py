@@ -10,11 +10,14 @@ import pyrebase
 from PIL import Image
 from io import BytesIO
 import requests
-import sys
-sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
-import forward
-from forward import *
-#Firebase auth#
+
+#Comentado por motivos de falta de espacio en el hosting
+#import sys
+#sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
+#import forward
+#from forward import *
+
+#Firebase auth##############################################################
 
 config = {
     "apiKey": "AIzaSyArQxRet5XqKI6v8948A2ZnHZOZsu7vCNY",
@@ -32,7 +35,7 @@ firebase = pyrebase.initialize_app(config)
 
 storage = firebase.storage()
 
-##################################################################
+############################################################################
 
 
 def index(request):
@@ -132,12 +135,15 @@ def features(request):
 
 def demo(request):
     if(request.method == "POST"):
+
         upload = request.FILES['upload']
         storage.child(str(upload)).put(upload)
         url = storage.child(str(upload)).get_url(None)
         response = requests.get(url)
         img = Image.open(BytesIO(response.content))
-        result = forward_single_img(img)
+
+        #result = forward_single_img(img)
+        result = 1 #dummy value
         context = {"result": result}
         return render(request, 'index/demo.html', context)
     elif(request.method == "GET"):

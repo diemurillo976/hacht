@@ -1,0 +1,50 @@
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <!-- Start: Descriptivo-Sesion-Completo -->
+    <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 250px;">
+        <div class="row">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text">Fecha</span></div>{{ form.date }}
+                    <div class="input-group-append"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text">Estado</span></div>{{ form.estado }}
+                    <div class="input-group-append"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text" style="max-height: 62px;min-height: 62px;height: 62px;">Observación</span></div>{{ form.obs }}
+                    <div class="input-group-append"></div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" value="{{ id_paciente }}" name="id_paciente">
+
+        {% if form.initial.id %}
+
+            <input type="hidden" value="{{ form.initial.id }}" name="id">
+
+        {% endif %}
+
+        <div class="row">
+            <button class="btn btn-primary btn-block" style="width: 25%" type="submit">Aceptar</button>
+        </div>
+
+    </div>
+    <!-- End: Descriptivo-Sesion-Completo -->
+
+</form>

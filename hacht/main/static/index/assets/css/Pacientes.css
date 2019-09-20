@@ -24,7 +24,7 @@
 }
 
 .contenedor_sesion_completo {
-  display: none;
+  display: inline;
 }
 
 .columna_paciente{

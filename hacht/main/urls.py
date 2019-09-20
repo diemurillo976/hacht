@@ -13,6 +13,10 @@ urlpatterns = [
     path('contact_us/', views.contact_us, name='contact_us'),
     path('features/', views.features, name='features'),
     path('dashboard_pacientes/components/descriptivo_paciente/', views.descriptivo_paciente, name="descriptivo_paciente"),
-    path('dashboard_pacientes/eliminar/', views.eliminar_paciente, name="eliminar_paciente")
+    path('dashboard_sesiones/components/descriptivo_sesion/', views.descriptivo_sesion, name="descriptivo_sesion"),
+    path('dashboard_pacientes/eliminar/', views.eliminar_paciente, name="eliminar_paciente"),
+    path('dashboard_sesiones/eliminar/', views.eliminar_sesion, name="eliminar_sesion"),
+    path('dashboard_sesiones/components/muestras_sesion/', views.muestras_sesion, name="muestras_sesion"),
+    path('dashboard_sesiones/agregar_muestra/', views.agregar_muestra, name="agregar_muestra")
 ]
 

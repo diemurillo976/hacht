@@ -129,7 +129,8 @@ def demo(request):
         upload = request.FILES['upload']
         storage.child(str(upload)).put(upload)
         url = storage.child(str(upload)).get_url(None)
-        return render(request, 'index/demo.html')
+        context = {"result": 1}
+        return render(request, 'index/demo.html', context)
     elif(request.method == "GET"):
         return render(request, 'index/demo.html')
 

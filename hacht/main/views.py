@@ -4,13 +4,11 @@ from .models import Profile
 from .models import Paciente_N
 from .forms import RegistrationForm, Data_PacienteN
 from django.http import HttpResponse
-import sys
-sys.path.append('/CNN_src')
 
 #Pyrebase and model imports#################################################
 import pyrebase
 import forward
-from forward import *
+from CNN_src.forward import *
 from PIL import Image
 from io import BytesIO
 import requests

@@ -294,3 +294,4 @@ def agregar_muestra(request):
     # Aquí se define el código para agregar la muestra
 
 def contact_us(request):
+    return 0

@@ -75,6 +75,23 @@ def registration(request):
 def registration_success(request):
     return render(request, 'index/registration_success.html')
 
+def demo(request):
+    if(request.method == "POST"):
+
+        upload = request.FILES['upload']
+        storage.child(str(upload)).put(upload)
+        url = storage.child(str(upload)).get_url(None)
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+
+        result = forward_single_img(img)
+        #result = 1 #dummy value
+        context = {"result": result}
+        return render(request, 'index/demo.html', context)
+    elif(request.method == "GET"):
+        return render(request, 'index/demo.html')
+        
+
 def dashboard_pacientes(request):
 
     if request.user.is_authenticated:

@@ -87,7 +87,9 @@ def demo(request):
 
         result = forward_single_img(img)
         estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
-        context = {"result": estimations[result]}
+        context = {"result": estimations[result],
+                   "irl": url
+                   }
         return render(request, 'index/demo.html', context)
 
     elif(request.method == "GET"):

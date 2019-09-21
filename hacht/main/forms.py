@@ -59,11 +59,7 @@ class Data_PacienteN(forms.ModelForm):
             "edad" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}), 
             "sexo" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=sexo)
         }
-<<<<<<< HEAD
         
-class Data_Comp_Sesion(forms.Form):
-=======
->>>>>>> f3ff5ef6f8efec4ca9506d6b8a126b8ef25e5c3c
 
 class Data_Comp_Sesion_Completo(forms.ModelForm):
 

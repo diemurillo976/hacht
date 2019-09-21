@@ -26,3 +26,8 @@
 #contenedor_descriptivos {
   overflow-y: scroll;
 }
+
+.radio-propio{
+  list-style:none;
+  margin-left: 15px;
+}

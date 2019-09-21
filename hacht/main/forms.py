@@ -68,7 +68,7 @@ class Data_Comp_Sesion_Completo(forms.ModelForm):
         model = Sesion
         fields = ["id", "date", "obs", "estado"]
         widgets = {
-            "date" : forms.DateInput(format='%m/%d/%Y', attrs={'class':'form-control', 'type':'date'}),
+            "date" : forms.DateInput(format='%Y-%m-%d', attrs={'class':'form-control', 'type':'date'}),
             "estado" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=estados),
             "obs" : forms.Textarea(attrs={'class':'form-control', 'type':'text', 'style':'max-height: 75px'})
         }
@@ -81,7 +81,7 @@ class Data_Sesion_Muestra(forms.ModelForm):
         fields = ["id", "url_img", "pred", "obs", "is_true", "consent"]
         widgets = {
             "pred" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}),
-            "obs" : forms.Textarea(attrs={'class':'form-control', 'type':'text', 'style':'max-height: 75px'}),
-            "is_true" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline', 'style': 'padding-left: 25px'}, choices=booleano),
-            "consent" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline', 'style': 'padding-left: 25px'}, choices=booleano)  
+            "obs" : forms.Textarea(attrs={'class':'form-control', 'type':'text', 'style':'height: 75px'}),
+            "is_true" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline radio-propio'}, choices=booleano),
+            "consent" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline radio-propio'}, choices=booleano)  
         }

@@ -10,7 +10,6 @@ from PIL import Image
 from io import BytesIO
 import requests
 
-#Comentado por motivos de falta de espacio en el hosting
 import sys
 sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
 from CNN_src.forward import *

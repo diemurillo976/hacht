@@ -68,7 +68,7 @@ class Data_Comp_Sesion_Completo(forms.ModelForm):
         model = Sesion
         fields = ["id", "date", "obs", "estado"]
         widgets = {
-            "date" : forms.DateInput(format='%m/%d/%Y', attrs={'class':'form-control', 'type':'date'}),
+            "date" : forms.DateInput(format='%Y-%m-%d', attrs={'class':'form-control', 'type':'date'}),
             "estado" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=estados),
             "obs" : forms.Textarea(attrs={'class':'form-control', 'type':'text', 'style':'max-height: 75px'})
         }

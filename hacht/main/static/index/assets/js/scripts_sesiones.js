@@ -147,23 +147,6 @@ $(document).ready(function() {
             }
         }
     });
-
-    $(".custom-file-input").on("change", function() {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-    });
     
-
-    /*
-    $(".columna_paciente").on("load", function() { 
-        
-    }); */
-
-    /*
-    $(".sesion_compacto").on("dblclick", function() { 
-        toggle_vis($(".contenedor_sesion_completo"));
-        
-        highlight_titles(".sesion_compacto");
-    }); */
 
 }); 

@@ -198,7 +198,7 @@ def dashboard_sesiones(request):
                 
                 # Obtiene los datos ingresados contra los dato
                 id_s = request.POST["id"]
-                instancia_sesion = get_object_or_404(Paciente_N, pk=id_s)
+                instancia_sesion = get_object_or_404(Sesion, pk=id_s)
                 form = Data_Comp_Sesion_Completo(request.POST, instance=instancia_sesion)
             
             else:

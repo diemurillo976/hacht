@@ -85,12 +85,12 @@ def demo(request):
         img = Image.open(BytesIO(response.content))
 
         result = forward_single_img(img)
-        #result = 1 #dummy value
-        context = {"result": result}
+        estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
+        context = {"result": estimations[result]}
         return render(request, 'index/demo.html', context)
     elif(request.method == "GET"):
         return render(request, 'index/demo.html')
-        
+
 
 def dashboard_pacientes(request):
 

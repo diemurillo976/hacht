@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Profile, Paciente_N, Sesion
 from .forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.http import HttpResponse
+#hola
 
 #Pyrebase and model imports#################################################
 import pyrebase
@@ -11,9 +12,8 @@ import requests
 
 #Comentado por motivos de falta de espacio en el hosting
 import sys
-sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
-import forward
-from forward import *
+#sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
+from CNN_src.forward import *
 
 #Firebase auth##############################################################
 
@@ -76,6 +76,7 @@ def registration_success(request):
     return render(request, 'index/registration_success.html')
 
 def demo(request):
+
     if(request.method == "POST"):
 
         upload = request.FILES['upload']
@@ -88,7 +89,9 @@ def demo(request):
         estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
         context = {"result": estimations[result]}
         return render(request, 'index/demo.html', context)
+
     elif(request.method == "GET"):
+        
         return render(request, 'index/demo.html')
 
 
@@ -291,6 +294,39 @@ def muestras_sesion(request):
 
 def agregar_muestra(request):
 
-    # Aquí se define el código para agregar la muestra
+    if request.POST.get("id_sesion"):
+
+        id_s = request.POST["id_sesion"]
+        sesion = Sesion.objects.get(pk=id_s)
+
+        upload = request.FILES['custom_file']
+        storage.child(str(upload)).put(upload)
+        url = storage.child(str(upload)).get_url(None)
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+
+        result = forward_single_img(img)
+        estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
+
+        muestra = Muestra(
+            id_sesion= id_s,
+            url_img= url,
+            pred=estimations[result],
+        )
+
+        muestra.save()
+
+        return redirect('/dashboard_sesiones/?id_paciente=' + sesion.id_paciente) # Se procesó correctamente pero no hay contenido
+
+    else:
+        # Maneja el error de que no llegue id_paciente
+        print("El request llegó vacio")
+        return HttpResponse(status=400) # Problema con el request
+    
 
 def contact_us(request):
+    return render(request, 'index/contact-us.html')
+
+def features(request):
+    return render(request, 'index/features.html' )
+

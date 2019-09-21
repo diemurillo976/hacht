@@ -20,6 +20,7 @@ class BreakHis(Dataset):
 		self.img_path = img_path
 
 		# Self channels
+		
 		self.channels = cv2.IMREAD_COLOR # if (preprocessing == "color") else cv2.IMREAD_GRAYSCALE
 		
 		# Read the csv file, ignores header

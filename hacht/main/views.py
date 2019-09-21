@@ -13,7 +13,7 @@ import requests
 #Comentado por motivos de falta de espacio en el hosting
 import sys
 sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
-from CNN_src.forward import *
+from .CNN_src.forward import *
 
 #Firebase auth##############################################################
 
@@ -300,7 +300,9 @@ def agregar_muestra(request):
         sesion = Sesion.objects.get(pk=id_s)
 
         upload = request.FILES['custom_file']
-        storage.child(str(upload)).put(upload)
+
+        storage.child(str(sesion.id_paciente)+"/"+str(id_s)+"/"+str(upload)).put(upload)
+
         url = storage.child(str(upload)).get_url(None)
         response = requests.get(url)
         img = Image.open(BytesIO(response.content))

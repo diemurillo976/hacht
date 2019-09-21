@@ -67,7 +67,7 @@
 
 <div class="comp-paciente">
 
-    <form method="POST" action="">
+    <form method="POST" action="agregar_muestra/">
 
         {% csrf_token %}
         
@@ -78,7 +78,7 @@
     
         <input type="hidden" value="{{ sesion.id }}">
     
-        <input type="submit" value="Subir Muestra">
+        <input type="submit" value="Subir Muestra" style="width: 25%; padding-left: 25%">
     
     </form>
 </div>

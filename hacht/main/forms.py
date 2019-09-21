@@ -59,6 +59,7 @@ class Data_PacienteN(forms.ModelForm):
             "edad" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}), 
             "sexo" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=sexo)
         }
+        
 
 class Data_Comp_Sesion_Completo(forms.ModelForm):
 

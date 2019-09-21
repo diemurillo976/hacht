@@ -33,7 +33,7 @@
     </nav><div style="margin-top: 10%; margin-left: 15%;">
 <form action="{% url 'demo' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
     Seleccione imagen a subir:
-    <input type="file" name="upload">
+    <button type="file" name="upload">Seleccionar imagen</button>
     <br>
     <br>
     <button type="submit" class="btn btn-primary btn-block">Subir</button>

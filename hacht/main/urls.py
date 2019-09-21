@@ -18,6 +18,7 @@ urlpatterns = [
     path('dashboard_pacientes/eliminar/', views.eliminar_paciente, name="eliminar_paciente"),
     path('dashboard_sesiones/eliminar/', views.eliminar_sesion, name="eliminar_sesion"),
     path('dashboard_sesiones/components/muestras_sesion/', views.muestras_sesion, name="muestras_sesion"),
-    path('dashboard_sesiones/agregar_muestra/', views.agregar_muestra, name="agregar_muestra")
+    path('dashboard_sesiones/agregar_muestra/', views.agregar_muestra, name="agregar_muestra"),
+    path('dashboard_sesiones/modificar_muestra/', views.modificar_muestra, name="modificar_muestra")
 ]
 

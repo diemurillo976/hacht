@@ -1,3 +1,5 @@
+import sys
+
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Profile, Paciente_N, Sesion
 from .forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
@@ -11,9 +13,10 @@ from io import BytesIO
 import requests
 
 #Comentado por motivos de falta de espacio en el hosting
-import sys
+
 #sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
-from CNN_src.forward import *
+sys.path.insert(0,'C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/')
+from .CNN_src.forward import *
 
 #Firebase auth##############################################################
 
@@ -276,7 +279,8 @@ def muestras_sesion(request):
         muestras = []
 
         for muestra in Muestra.objects.filter(id_sesion=id_s):
-            muestras.append(Data_Sesion_Muestra(instance=muestra))
+            form = Data_Sesion_Muestra(instance=muestra)
+            muestras.append(form)
 
 
         context = {
@@ -299,7 +303,7 @@ def agregar_muestra(request):
         id_s = request.POST["id_sesion"]
         sesion = Sesion.objects.get(pk=id_s)
 
-        upload = request.FILES['custom_file']
+        upload = request.FILES['img_file']
         storage.child(str(upload)).put(upload)
         url = storage.child(str(upload)).get_url(None)
         response = requests.get(url)
@@ -316,7 +320,43 @@ def agregar_muestra(request):
 
         muestra.save()
 
-        return redirect('/dashboard_sesiones/?id_paciente=' + sesion.id_paciente) # Se procesó correctamente pero no hay contenido
+        return redirect('/dashboard_sesiones/?id_paciente=' + str(sesion.id_paciente)) # Se procesó correctamente pero no hay contenido
+
+    else:
+        # Maneja el error de que no llegue id_paciente
+        print("El request llegó vacio")
+        return HttpResponse(status=400) # Problema con el request
+    
+
+def modificar_muestra(request):
+
+    if request.POST.get("id_muestra") and request.POST.get("update"):
+
+        id_s = request.POST["id_sesion"]
+        sesion = Sesion.objects.get(pk=id_s)
+
+        id_m = request.POST["id_muestra"]
+        muestra = Muestra.objects.get(pk=id_m)
+
+        muestra.consent = request.POST["consent"]
+        muestra.is_true = request.POST["is_true"]
+        muestra.obs = request.POST["obs"]
+
+        muestra.save()
+
+        return redirect('/dashboard_sesiones/?id_paciente=' + str(sesion.id_paciente)) # Se procesó correctamente pero no hay contenido
+
+    elif request.POST.get("id_muestra") and request.POST.get("delete"):
+
+        id_s = request.POST["id_sesion"]
+        sesion = Sesion.objects.get(pk=id_s)
+
+        id_m = request.POST["id_muestra"]
+        muestra = Muestra.objects.get(pk=id_m)
+
+        muestra.delete()
+
+        return redirect('/dashboard_sesiones/?id_paciente=' + str(sesion.id_paciente))
 
     else:
         # Maneja el error de que no llegue id_paciente

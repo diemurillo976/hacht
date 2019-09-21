@@ -19,8 +19,8 @@ estados=[
 ]
 
 booleano = [
-    (True, 'Si'),
-    (False, 'No')
+    (1, 'Si'),
+    (0, 'No')
 ]
 
 class RegistrationForm(forms.Form):
@@ -73,15 +73,15 @@ class Data_Comp_Sesion_Completo(forms.ModelForm):
             "obs" : forms.Textarea(attrs={'class':'form-control', 'type':'text', 'style':'max-height: 75px'})
         }
 
-class Data_Sesion_Muestra(forms.Form):
+class Data_Sesion_Muestra(forms.ModelForm):
 
     class Meta:
 
         model = Muestra
-        fields = ["id", "pred", "obs", "is_true", "consent"]
+        fields = ["id", "url_img", "pred", "obs", "is_true", "consent"]
         widgets = {
             "pred" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}),
             "obs" : forms.Textarea(attrs={'class':'form-control', 'type':'text', 'style':'max-height: 75px'}),
-            "is_true" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline', 'style' : 'max-width: 95px;'}, choices=booleano),
-            "consent" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline', 'style' : 'max-width: 95px;'}, choices=booleano)  
+            "is_true" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline', 'style': 'padding-left: 25px'}, choices=booleano),
+            "consent" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline', 'style': 'padding-left: 25px'}, choices=booleano)  
         }

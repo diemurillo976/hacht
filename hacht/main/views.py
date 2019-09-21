@@ -42,6 +42,11 @@ def index(request):
 def login(request):
     return render(request, 'index/login.html')
 
+def contact_us(request):
+    return render(request, 'index/contact-us.html')
+
+def features(request):
+    return render(request, 'index/features.html')
 def registration(request):
     if(request.method == 'POST'):
         form = RegistrationForm(request.POST)
@@ -292,5 +297,3 @@ def muestras_sesion(request):
 #def agregar_muestra(request):
 
     # Aquí se define el código para agregar la muestra
-
-#def contact_us(request):

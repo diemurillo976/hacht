@@ -1,11 +1,11 @@
-{% load static%}
 <!DOCTYPE html>
+{% load static%}
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Testimonials - Brand</title>
+    <title>Prototipo Histopatologías</title>
     <link rel="stylesheet" href="{% static 'index/assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
     <link rel="stylesheet" href="{% static 'index/assets/fonts/simple-line-icons.min.css' %}">
@@ -15,14 +15,14 @@
     <link rel="stylesheet" href="{% static 'index/assets/css/untitled.css' %}">
 </head>
 
-<body>
+<body style="background-color: rgb(246,246,246);">
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
         <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(59,153,224);font-size: 30px;">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div
                 class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'index' %}">INICIO</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'demo' %}">Demo</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'index' %}">INICIO</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'demo' %}">Demo</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'features' %}" style="color: rgba(0,0,0,0.9);">características</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'contact_us' %}" style="color: rgba(0,0,0,0.9);">Contacto</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'registration' %}" style="color: rgba(0,0,0,0.9);">Registrarse</a></li>
@@ -30,20 +30,15 @@
                 </ul>
         </div>
         </div>
-    </nav>
-    <main class="page testimonials">
-        <section class="clean-block clean-testimonials dark">
-            <div class="container">
-                <div class="block-heading"><img src="{% static 'index/assets/img/icons8-tick-box-96.png' %}">
-                    <h2 class="text-info" style="color: rgb(38,153,35);">Éxito al registrarse</h2>
-                    <p style="color: rgb(33,41,37);">!Gracias por unirse a nuestra herramienta¡<br><br>Se ha enviado un correo a la dirección que ha ingresado con información que le puede ser útil.</p>
-                </div>
-                <div class="block-heading"><a href="{% url 'dashboard_pacientes' %}">
-<button class="btn btn-primary" type="button">Continuar a la herramienta</button>
-</a></div>
-            </div>
-        </section>
-    </main>
+    </nav><div style="margin-top: 10%; margin-left: 15%;">
+<form action="{% url 'demo' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+    Seleccione imagen a subir:
+    <input type="file" name="upload">
+    <br>
+    <br>
+    <button type="submit">Subir</button>
+</form>
+</div><label style="font-size: 20px;margin-top: 0px;margin-left: 15%;">Imagen seleccionada:</label><img style="margin-left: 0;margin-top: 10%;"><label style="margin-left: 5%;">Estimacion:{{result}}</label>
     <footer class="page-footer dark">
         <div class="container">
             <div class="row">

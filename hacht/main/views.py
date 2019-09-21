@@ -2,7 +2,39 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Profile, Paciente_N, Sesion
 from .forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.http import HttpResponse
-#hola
+
+#Pyrebase and model imports#################################################
+import pyrebase
+from PIL import Image
+from io import BytesIO
+import requests
+
+#Comentado por motivos de falta de espacio en el hosting
+import sys
+sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
+import forward
+from forward import *
+
+#Firebase auth##############################################################
+
+config = {
+    "apiKey": "AIzaSyArQxRet5XqKI6v8948A2ZnHZOZsu7vCNY",
+    "authDomain": "hacht-7d98d.firebaseapp.com",
+    "databaseURL": "https://hacht-7d98d.firebaseio.com",
+    "projectId": "hacht-7d98d",
+    "storageBucket": "hacht-7d98d.appspot.com",
+    "messagingSenderId": "225406534324",
+    "appId": "1:225406534324:web:f5317f74d07ced54"
+  }
+
+#Firebase Storage reference#
+
+firebase = pyrebase.initialize_app(config)
+
+storage = firebase.storage()
+
+############################################################################
+
 
 def index(request):
     return render(request, 'index/index.html')
@@ -42,6 +74,23 @@ def registration(request):
 
 def registration_success(request):
     return render(request, 'index/registration_success.html')
+
+def demo(request):
+    if(request.method == "POST"):
+
+        upload = request.FILES['upload']
+        storage.child(str(upload)).put(upload)
+        url = storage.child(str(upload)).get_url(None)
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+
+        result = forward_single_img(img)
+        estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
+        context = {"result": estimations[result]}
+        return render(request, 'index/demo.html', context)
+    elif(request.method == "GET"):
+        return render(request, 'index/demo.html')
+
 
 def dashboard_pacientes(request):
 
@@ -245,7 +294,3 @@ def agregar_muestra(request):
     # Aquí se define el código para agregar la muestra
 
 def contact_us(request):
-    return render(request, 'index/contact-us.html')
-
-def features(request):
-    return render(request, 'index/features.html' )

@@ -10,6 +10,7 @@ from PIL import Image
 from io import BytesIO
 import requests
 
+#Comentado por motivos de falta de espacio en el hosting
 import sys
 sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
 from CNN_src.forward import *
@@ -292,7 +293,7 @@ def muestras_sesion(request):
         return HttpResponse(status=400) # Problema con el request
 
 def agregar_muestra(request):
-    
+
     if request.POST.get("id_sesion"):
 
         id_s = request.POST["id_sesion"]

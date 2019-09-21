@@ -32,12 +32,18 @@
         </div>
     </nav><div style="margin-top: 10%; margin-left: 15%;">
 <form action="{% url 'demo' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-    Seleccione imagen a subir:
-    <button type="file" name="upload">Seleccionar imagen</button>
-    <br>
-    <br>
-    <button type="submit" class="btn btn-primary btn-block">Subir</button>
-</form>
+  Subir imagen:<br>
+  <input type="file" name="upload">
+  <br>
+  <br>
+  <button type="submit" class="btn btn-primary btn-block">Analizar</button>
+  <p>Imagen seleccionada:</p>
+  <img onerror="this.style.display='none'" src= "{{url}}" style="margin-left: 0;margin-top: 0%; width:300px;height:200px;">
+  <br>
+  <br>
+  <p>Estimación:{{result}}</p>
+  <br>
+</form> 
 </div><label style="font-size: 20px;margin-top: 0px;margin-left: 15%;">Imagen seleccionada:</label><img onerror="this.style.display='none'" src= "{{url}}" style="margin-left: 0;margin-top: 10%; width:300px;height:200px;"><label style="margin-left: 5%;">Estimacion:{{result}}</label>
     <footer class="page-footer dark">
         <div class="container">

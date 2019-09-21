@@ -58,6 +58,7 @@ class Paciente_N(models.Model):
 
 ## Paciente_A object definition
 class Paciente_A(models.Model):
+    
     #auto update on new data
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     #auto update on data change
@@ -74,6 +75,7 @@ class Paciente_A(models.Model):
 
 ## Sesion object definition
 class Sesion(models.Model):
+
     #auto update on new data
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     #auto update on data change
@@ -91,18 +93,19 @@ class Sesion(models.Model):
 
 ## Muestra object definition
 class Muestra(models.Model):
+
     #auto update on new data
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    #id_sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE)
+    id_sesion = models.PositiveIntegerField(null=True)
     url_img = models.URLField(null=True)
     pred = models.CharField(max_length=8, null=True)
     accuracy = models.FloatField(null=True)
     obs = models.CharField(max_length=200, null=True)
-    is_true = models.CharField(max_length=1, null=True)
-    consent = models.CharField(max_length=1, null=True)
+    is_true = models.BooleanField(max_length=1, null=True)
+    consent = models.BooleanField(max_length=1, null=True)
 
     def __str__(self):
         return self.id_sesion

@@ -1,0 +1,28 @@
+#contenedor_sesion_completo {
+    display: none;
+  }
+
+.comp-paciente * {
+  margin: 0px 0px 5px 0px;
+}
+
+.comp-paciente {
+  padding-top: 10px;
+}
+
+.comp-paciente * {
+  margin: 0px 0px 5px 0px;
+}
+
+.comp-paciente {
+  padding-top: 15px;
+  margin-top: 10px;
+}
+
+#cont_muestras_sesion {
+  overflow-y: scroll;
+}
+
+#contenedor_descriptivos {
+  overflow-y: scroll;
+}

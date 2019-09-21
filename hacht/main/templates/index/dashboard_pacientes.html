@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
-    <link rel="stylesheet" href="{% static 'index/assets/css/styles.min.css' %}">
-    <link rel="stylesheet" href="{% static 'index/assets/css/Pacientes.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'index/assets/css/styles.min.css' %}"> !-->
+    <link rel="stylesheet" href="{% static 'index/assets/css/Sesiones.css' %}">
 </head>
 
 <body>
@@ -26,7 +26,7 @@
                     <li class="nav-item" role="presentation"><a class="nav-link" href=""><img src="{% static 'index/assets/img/icons8-help-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">AYUDA</span></a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'logout' %}" style="margin-left: 5px;color: rgba(0,0,0,0.5);"><img src="{% static 'index/assets/img/icons8-logout-rounded-left-50.png' %}"><span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span></a></li>
                 </ul>
-        </div>
+            </div>
         </div>
     </nav>
     <section style="margin-top: 12%;">
@@ -78,7 +78,7 @@
                                             <div class="input-group-append"></div>
                                         </div>
                                     </div>
-                                    <div class="col text-center" style="max-width: 200px;min-width: 200px;width: 100px;"><a href="{% url 'dashboard_sesiones' %}" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Ver Sesiones</span></a></div>
+                                    <div class="col text-center" style="max-width: 200px;min-width: 200px;width: 100px;"><a href="/dashboard_sesiones/?id_paciente={{ paciente.id }}" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Ver Sesiones</span></a></div>
                                 </div>
                                 <input name="id_paciente" type="hidden" value="{{ paciente.id }}"></input>
                             </div>

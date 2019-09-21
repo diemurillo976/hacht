@@ -18,6 +18,11 @@ estados=[
     ('2','Riesgoso')
 ]
 
+booleano = [
+    (True, 'Si'),
+    (False, 'No')
+]
+
 class RegistrationForm(forms.Form):
 
     """
@@ -54,19 +59,33 @@ class Data_PacienteN(forms.ModelForm):
             "edad" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}), 
             "sexo" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=sexo)
         }
+<<<<<<< HEAD
         
 class Data_Comp_Sesion(forms.Form):
+=======
+>>>>>>> f3ff5ef6f8efec4ca9506d6b8a126b8ef25e5c3c
 
-    fecha = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'class':'form-control', 'type':'text'}))
-    estado = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'class':'form-control', 'type':'text'}))
+class Data_Comp_Sesion_Completo(forms.ModelForm):
 
-class Data_Comp_Sesion_Completo(forms.Form):
+    class Meta:
 
-    fecha = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'class':'form-control', 'type':'text'}))
-    estado = forms.CharField(widget=forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=estados))
-    observacion = forms.CharField(max_length=400, widget=forms.Textarea(attrs={'class':'form-control', 'type':'text'}))
+        model = Sesion
+        fields = ["id", "date", "obs", "estado"]
+        widgets = {
+            "date" : forms.DateInput(format='%m/%d/%Y', attrs={'class':'form-control', 'type':'date'}),
+            "estado" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=estados),
+            "obs" : forms.Textarea(attrs={'class':'form-control', 'type':'text', 'style':'max-height: 75px'})
+        }
 
 class Data_Sesion_Muestra(forms.Form):
 
-    prediccion = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'class':'form-control', 'type':'text'}))
-    observacion = forms.CharField(max_length=400, widget=forms.Textarea(attrs={'class':'form-control', 'type':'text'}))
+    class Meta:
+
+        model = Muestra
+        fields = ["id", "pred", "obs", "is_true", "consent"]
+        widgets = {
+            "pred" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}),
+            "obs" : forms.Textarea(attrs={'class':'form-control', 'type':'text', 'style':'max-height: 75px'}),
+            "is_true" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline', 'style' : 'max-width: 95px;'}, choices=booleano),
+            "consent" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline', 'style' : 'max-width: 95px;'}, choices=booleano)  
+        }

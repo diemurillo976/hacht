@@ -28,229 +28,85 @@
         </div>
     </nav>
     <section style="margin-top: 12%;max-width: 100%;min-width: 100%;width: 100%;max-height: auto;min-height: 300px;height: auto;">
+        
         <div class="text-center" style="padding-bottom: 15px;"><span class="text-center" style="color: rgb(0,123,255);font-size: 28px;">Tablero de Sesiones</span></div>
+        
+        <div class="container">
+            <!-- Botones de agregar y borrar -->
+            <div class="row text-center" style="padding-bottom: 10px;">
+                <div class="col" style="padding-left: 0%;padding-right: 0px;width: 50%;min-width: 50%;max-width: 50%;"><a onclick="agregar_sesion('{{ paciente.id }}')" href="#"><img src="{% static 'index/assets/img/icons8-plus-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Sesión</span></a></div>
+                <div class="col" style="padding-left: 0px;"><a href="#"><img src="{% static 'index/assets/img/icons8-trash-can-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Eliminar Sesión</span></a></div>
+            </div>
+        </div>
+        
         <div class="container-fluid d-flex" style="max-width: 100%;min-width: 100%;width: 100%;max-height: auto;height: auto;min-height: 300px;">
+
             <div class="row d-flex" style="max-width: 100%;min-width: 100%;width: 100%;max-height: auto;min-height: 300px;height: 100%;">
-                <!-- Start: Contenedor-Listas -->
-                <div class="col-md-6 flex-grow-1 contenedor_descriptivos" style="max-width: 100%;min-width: 450px;max-height: 1000px;width: 100%;">
-                    <div class="row text-center" style="padding-bottom: 10px;">
-                        <div class="col" style="padding-left: 0%;padding-right: 0px;width: 50%;min-width: 50%;max-width: 50%;"><a href="#"><img src="{% static 'index/assets/img/icons8-plus-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Sesión</span></a></div>
-                        <div class="col" style="padding-left: 0px;"><a href="#"><img src="{% static 'index/assets/img/icons8-trash-can-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Eliminar Sesión</span></a></div>
-                    </div>
-                    <!-- Start: Descriptivo-Sesion-Compacto -->
-                    <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
-                        <div class="row">
-                            <div class="col" style="min-width: auto;max-width: auto;width: auto;">
-                                <div class="input-group" style="max-width: 100%;">
-                                    <div class="input-group-prepend"><span class="input-group-text">Fecha</span></div><input class="form-control" type="text">
-                                    <div class="input-group-append"></div>
-                                </div>
-                            </div>
-                            <div class="col text-center" style="max-width: 100px;min-width: 100px;width: 100px;"><a href="#" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Editar</span></a></div>
-                            <div class="col text-center" style="max-width: 122px;min-width: 122px;width: 122px;"><a href="#" style="margin-left: 5px;"><i class="fas fa-trash"></i><span style="margin-left: 5px;">Eliminar</span></a></div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Estado</span></div><input class="form-control" type="text">
-                                    <div class="input-group-append"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End: Descriptivo-Sesion-Compacto -->
-                </div>
-                <!-- End: Contenedor-Listas -->
-                <!-- Start: Contenedor-Sesion -->
-                <div class="col-md-6 contenedor_sesion_completo" style="max-width: 100%;min-width: 450px;max-height: none;min-height: auto;width: 450px;">
-                    <!-- Start: Descriptivo-Sesion-Completo -->
-                    <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);min-height: 225px;max-height: 225px;">
-                        <div class="row">
-                            <div class="col">
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Fecha</span></div><input class="form-control" type="text">
-                                    <div class="input-group-append"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Estado</span></div><input class="form-control" type="text">
-                                    <div class="input-group-append"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text" style="max-height: 62px;min-height: 62px;height: 62px;">Observación</span></div><textarea class="form-control" style="height: 62px;"></textarea>
-                                    <div class="input-group-append"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End: Descriptivo-Sesion-Completo -->
-                    <!-- Start: Contenedor Muestra -->
-                    <div class="text-center border-light shadow-lg contenedor_muestras" style="max-height: 325px;padding-top: 0px;padding-bottom: 0px;margin-top: 15px;min-height: 325px;">
-                        <!-- Start: Muestra-Agregada -->
-                        <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);max-height: 320px;min-height: 320px;max-width: 600 px;min-width: 600px;width: 600px;height: 320px;padding-bottom: 10px;">
-                            <div class="card" style="max-width: 600px;">
-                                <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
-                                    <div class="row no-gutter" style="max-width: 100%;">
-                                        <!-- Start: Imagen -->
-                                        <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="{% static 'index/assets/img/sample-tissue.png' %}" style="max-height: 128px;">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div><input class="form-control" type="text" style="min-width: 100px;">
-                                                <div class="input-group-append"></div>
-                                            </div>
-                                        </div>
-                                        <!-- End: Imagen -->
-                                        <!-- Start: correcto -->
-                                        <div class="col-md-4" style="max-width: 250px;min-width: 350px;">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text" style="max-height: 80px;min-height: 80px;height: 80px;">Observación</span></div><textarea class="form-control" style="height: 80px;min-width: 50px;max-height: 80px;min-height: 80px;"></textarea>
-                                                <div
-                                                    class="input-group-append"></div>
-                                        </div>
-                                        <div>
-                                            <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Predicción Correcta</span>
-                                                <div style="max-width: 95px;">
-                                                    <div class="form-check form-check-inline" style="padding-left: 10px;padding-top: 5px;"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="margin-left: 5px;">Si</label></div>
-                                                    <div class="form-check form-check-inline" style="margin-left: 10px;"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2" style="margin-left: 5px;">No</label></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Consentimiento de uso</span>
-                                                <div style="max-width: 95px;">
-                                                    <div class="form-check form-check-inline" style="padding-left: 10px;padding-top: 5px;"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="margin-left: 5px;">Si</label></div>
-                                                    <div class="form-check form-check-inline" style="margin-left: 10px;"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2" style="margin-left: 5px;">No</label></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End: correcto -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End: Muestra-Agregada -->
-                    <!-- Start: Muestra-Agregada -->
-                    <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);max-height: 320px;min-height: 320px;max-width: 600 px;min-width: 600px;width: 600px;height: 320px;padding-bottom: 10px;">
-                        <div class="card" style="max-width: 600px;">
-                            <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
-                                <div class="row no-gutter" style="max-width: 100%;">
-                                    <!-- Start: Imagen -->
-                                    <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="{% static 'index/assets/img/sample-tissue.png' %}" style="max-height: 128px;">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div><input class="form-control" type="text" style="min-width: 100px;">
+                
+                <div class="col-md-6 flex-grow-1" id="contenedor_descriptivos" style="max-width: 100%;min-width: 450px;max-height: 1000px;width: 100%;">
+                    
+                    <!-- Start: Contenedor-Listas -->
+                    <div id="contenedor_sesiones">
+
+                        {% for sesion in sesiones %}
+
+                            <!-- Start: Descriptivo-Sesion-Compacto -->
+                            <div id="descriptivo_sesion_{{ sesion.id }}" class="text-dark border-primary comp-paciente shadow-lg bg-light" ondblclick="sesion_onclick('{{ paciente.id }}', '{{ sesion.id }}')" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
+                                
+                                <div class="row">
+                                    <div class="col" style="min-width: auto;max-width: auto;width: auto;">
+                                        <div class="input-group" style="max-width: 100%;">
+                                            <div class="input-group-prepend"><span class="input-group-text titulo-descriptivo">Fecha</span></div><input class="form-control" type="text" value="{{ sesion.date }}">
                                             <div class="input-group-append"></div>
                                         </div>
                                     </div>
-                                    <!-- End: Imagen -->
-                                    <!-- Start: correcto -->
-                                    <div class="col-md-4" style="max-width: 250px;min-width: 350px;">
+                                    <div class="col text-center" style="max-width: 100px;min-width: 100px;width: 100px;"><a href="#" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Editar</span></a></div>
+                                    <div class="col text-center" style="max-width: 122px;min-width: 122px;width: 122px;"><a href="#" onclick="eliminar_onclick(event, '{{ paciente.id }}', '{{ sesion.id }}')" style="margin-left: 5px;"><i class="fas fa-trash"></i><span style="margin-left: 5px;">Eliminar</span></a></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
                                         <div class="input-group">
-                                            <div class="input-group-prepend"><span class="input-group-text" style="max-height: 80px;min-height: 80px;height: 80px;">Observación</span></div><textarea class="form-control" style="height: 80px;min-width: 50px;max-height: 80px;min-height: 80px;"></textarea>
-                                            <div
-                                                class="input-group-append"></div>
-                                    </div>
-                                    <div>
-                                        <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Predicción Correcta</span>
-                                            <div style="max-width: 95px;">
-                                                <div class="form-check form-check-inline" style="padding-left: 10px;padding-top: 5px;"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="margin-left: 5px;">Si</label></div>
-                                                <div class="form-check form-check-inline" style="margin-left: 10px;"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2" style="margin-left: 5px;">No</label></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Consentimiento de uso</span>
-                                            <div style="max-width: 95px;">
-                                                <div class="form-check form-check-inline" style="padding-left: 10px;padding-top: 5px;"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="margin-left: 5px;">Si</label></div>
-                                                <div class="form-check form-check-inline" style="margin-left: 10px;"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2" style="margin-left: 5px;">No</label></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End: correcto -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End: Muestra-Agregada -->
-                <!-- Start: Muestra-Agregada -->
-                <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09);max-height: 320px;min-height: 320px;max-width: 600 px;min-width: 600px;width: 600px;height: 320px;padding-bottom: 10px;">
-                    <div class="card" style="max-width: 600px;">
-                        <div class="card-body" style="max-width: 100%;max-height: 290px;min-height: 290px;">
-                            <div class="row no-gutter" style="max-width: 100%;">
-                                <!-- Start: Imagen -->
-                                <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img class="card-img" src="{% static 'index/assets/img/sample-tissue.png' %}" style="max-height: 128px;">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div><input class="form-control" type="text" style="min-width: 100px;">
-                                        <div class="input-group-append"></div>
-                                    </div>
-                                </div>
-                                <!-- End: Imagen -->
-                                <!-- Start: correcto -->
-                                <div class="col-md-4" style="max-width: 250px;min-width: 350px;">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend"><span class="input-group-text" style="max-height: 80px;min-height: 80px;height: 80px;">Observación</span></div><textarea class="form-control" style="height: 80px;min-width: 50px;max-height: 80px;min-height: 80px;"></textarea>
-                                        <div
-                                            class="input-group-append"></div>
-                                </div>
-                                <div>
-                                    <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Predicción Correcta</span>
-                                        <div style="max-width: 95px;">
-                                            <div class="form-check form-check-inline" style="padding-left: 10px;padding-top: 5px;"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="margin-left: 5px;">Si</label></div>
-                                            <div class="form-check form-check-inline" style="margin-left: 10px;"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2" style="margin-left: 5px;">No</label></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Consentimiento de uso</span>
-                                        <div style="max-width: 95px;">
-                                            <div class="form-check form-check-inline" style="padding-left: 10px;padding-top: 5px;"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="margin-left: 5px;">Si</label></div>
-                                            <div class="form-check form-check-inline" style="margin-left: 10px;"><input class="form-check-input" type="radio" id="formCheck-2"><label class="form-check-label" for="formCheck-2" style="margin-left: 5px;">No</label></div>
+                                            <div class="input-group-prepend"><span class="input-group-text titulo-descriptivo">Estado</span></div><input class="form-control" type="text" value="{{ sesion.estado }}">
+                                            <div class="input-group-append"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- End: correcto -->
-                        </div>
+
+                            <!-- End: Descriptivo-Sesion-Compacto -->
+
+                        {% endfor %}
                     </div>
+
                 </div>
-            </div>
-            <!-- End: Muestra-Agregada -->
-        </div>
-        <!-- End: Contenedor Muestra -->
-        <!-- Start: Graficos-Paciente -->
-        <div class="border-light shadow-lg comp-paciente bg-light" style="max-width: 100%;max-height: 100%;padding-top: 10px;margin-top: 20px;margin-bottom: 10px;">
-            <div class="row">
-                <div class="col" style="max-width: 50%;"><span class="text-left list-group-item">Clase de Tumor con más probabilidad.</span>
-                    <ol id="li" class="list-group list-group-tumores">
-                        <li class="list-group-item list-group-item-tumor">Tumor-Benigno 1</li>
-                        <li class="list-group-item list-group-item-tumor">Tumor-Benigno 2<br></li>
-                        <li class="list-group-item list-group-item-tumor">Tumor-Maligno 1<br></li>
-                        <li class="list-group-item list-group-item-tumor">Tumor-Benigno 3<br></li>
-                    </ol>
+                <!-- End: Contenedor-Listas -->
+                
+                <!-- Start: Contenedor-Sesion -->
+                <div class="col-md-6" id="contenedor_sesion_completo" style="max-width: 100%;min-width: 450px;max-height: none;min-height: auto;width: 450px;">
+                    
+                    <div id="cont_sesion">
+                        
+                    </div>
+
+                    <div id="cont_muestras_sesion">
+
+                    </div>
+
+                    <div id="cont_analytics_sesion">
+                    
+                    </div>
+
+                
                 </div>
-                <div class="col text-center" style="max-width: 50%;">
-                    <div class="text-center"><span class="text-center" style="min-width: 100%;">Visualización de Probabilidades</span></div><img src="{% static 'index/assets/img/Grafico-Dona.png' %}" style="min-width: 50%;max-width: 100%;"></div>
+                <!-- End: Contenedor-Sesion -->
+
             </div>
-            <div class="row">
-                <div class="col text-center" style="min-width: 100%;"><span style="min-width: 100%;width: 100%;">Línea del Tiempo</span></div>
-            </div>
-            <div class="row" style="max-width: 100%;">
-                <div class="col"><img src="{% static 'index/assets/img/Grafico-Timeline.png' %}" style="min-width: 75%;max-width: 100%;"></div>
-            </div>
-        </div>
-        <!-- End: Graficos-Paciente -->
-        </div>
-        <!-- End: Contenedor-Sesion -->
-        </div>
+           
         </div>
     </section>
+
+
     <footer class="page-footer dark">
         <div class="container">
             <div class="row">
@@ -295,6 +151,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="{% static 'index/assets/js/script.min.js' %}"></script>
+    <script src="{% static 'index/assets/js/scripts_sesiones.js' %}"></script>
+
 </body>
 
 </html>

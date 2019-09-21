@@ -289,9 +289,8 @@ def muestras_sesion(request):
         print("El request llegó vacio")
         return HttpResponse(status=400) # Problema con el request
 
-def agregar_muestra(request):
+#def agregar_muestra(request):
 
     # Aquí se define el código para agregar la muestra
 
-def contact_us(request):
-    return 0
+#def contact_us(request):

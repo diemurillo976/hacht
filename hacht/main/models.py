@@ -101,11 +101,12 @@ class Muestra(models.Model):
 
     id_sesion = models.PositiveIntegerField(null=True)
     url_img = models.URLField(null=True)
-    pred = models.CharField(max_length=8, null=True)
+    pred = models.CharField(max_length=20, null=True)
     accuracy = models.FloatField(null=True)
     obs = models.CharField(max_length=200, null=True)
     is_true = models.BooleanField(max_length=1, null=True)
     consent = models.BooleanField(max_length=1, null=True)
+
 
     def __str__(self):
         return self.id_sesion

@@ -1,19 +1,17 @@
 import sys
-
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Profile, Paciente_N, Sesion
 from .forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.http import HttpResponse
-#hola
-
+from django.db.models import Count, Sum
+import random
+import json
 #Pyrebase and model imports#################################################
 import pyrebase
 from PIL import Image
 from io import BytesIO
 import requests
-
 #Comentado por motivos de falta de espacio en el hosting
-
 #sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
 sys.path.insert(0,'C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/')
 from .CNN_src.forward import *
@@ -359,10 +357,56 @@ def modificar_muestra(request):
         return redirect('/dashboard_sesiones/?id_paciente=' + str(sesion.id_paciente))
 
     else:
+
         # Maneja el error de que no llegue id_paciente
         print("El request llegó vacio")
         return HttpResponse(status=400) # Problema con el request
-    
+
+def analytics_sesion(request):
+
+    def random_color():
+
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+
+        return 'rgba({}, {}, {}, 255)'.format(r,g,b)
+
+    if request.method == "GET" and request.GET.get("id_sesion"):
+
+        datos_muestras = Muestra.objects.values('pred').annotate(
+            cantidad=Count('pred'),
+            probabilidad=Count('pred') / Count('id')).order_by('-cantidad')
+
+        data = []
+        labels = []
+        colors = []
+
+        for dato in datos_muestras:
+            data.append(dato['cantidad'])
+            labels.append(dato['pred'])
+            colors.append(random_color())
+            
+        data_obj = {
+
+            'datasets' : [{
+                'data' : data,
+                'backgroundColor' : colors
+            }],
+
+            'labels' : labels,
+
+        }
+
+        data_obj = json.dumps(data_obj)
+
+        context = {
+            'datos_muestras' : datos_muestras,
+            'data' : data_obj
+        }
+
+        return render(request, 'index/components/sesion_graficos.html', context)
+
 
 def contact_us(request):
     return render(request, 'index/contact-us.html')

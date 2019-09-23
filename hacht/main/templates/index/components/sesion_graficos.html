@@ -1,0 +1,33 @@
+{% if datos_muestras %}
+
+    <!-- Start: Graficos-Paciente -->
+    <div class="shadow-lg comp-paciente bg-light" style="max-width: 100%;max-height: 100%;">
+        <div class="row">
+            <div class="col" style="max-width: 50%;"><span class="text-left list-group-item">Clase de Tumor con más probabilidad.</span>
+                <ol id="li" class="list-group list-group-tumores">
+                    {% for resumen_tumor in datos_muestras %}
+                        <li class="list-group-item list-group-item-tumor">{{ resumen_tumor.pred }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+            <div class="col text-center" style="max-width: 50%;">
+                <div class="text-center"><span class="text-center" style="min-width: 100%;">Visualización de Probabilidades</span></div>
+                <canvas id="canvas_dona" height="500" width="400"></canvas>
+        </div>
+        <div class="row">
+            <div class="col text-center" style="min-width: 100%;"><span style="min-width: 100%;width: 100%;">Línea del Tiempo</span></div>
+        </div>
+        <div class="row" style="max-width: 100%;">
+            <div class="col">
+                <canvas id="canvas_timeline" height="500" width="400"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- End: Graficos-Paciente -->
+
+    <script>
+        data = {{ data|safe }}
+        inicializar_graficos(data)
+    </script>
+
+{% endif %}

@@ -99,19 +99,42 @@ function cargar_muestras_sesion(url, id_sesion){
 
 }
 
+function cargar_analytics_sesion(url, id_sesion){
+
+    apendice = "?id_sesion=" + id_sesion;
+
+    // Carga el formulario con los datos "prellenados"
+    $("#cont_analytics_sesion").load(url+apendice, function(responseTxt, statusTxt, xhr){
+        if(statusTxt == "error")
+            alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+    });
+
+}
+
 function sesion_onclick(id_paciente, id_sesion){
 
     // Hace un load dinámico del form para cada paciente
     cargar_form_sesion("components/descriptivo_sesion/", id_paciente, id_sesion);
 
-    // Carga el formulario
+    // Carga las muestras
     cargar_muestras_sesion("components/muestras_sesion/", id_sesion);
+
+    // Carga los graficos y analytics
+    cargar_analytics_sesion("components/analytics_sesion/", id_sesion);
 
     // Muestra la columna de pacientes
     toggle_vis($("#contenedor_sesion_completo"));
 
     // Resalta algunas características para mostrar que ha sido seleccionado
     highlight_titles("#descriptivo_sesion_" + id_sesion);
+}
+
+function inicializar_graficos(data){
+    var ctx = $("#canvas_dona");
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: data
+    });
 }
 
 function eliminar_onclick(e, id_paciente, id_sesion){

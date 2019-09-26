@@ -4,33 +4,59 @@ import pyrebase
 import forward
 from forward import *
 from PIL import Image
-from io import BytesIO
-import requests
 
-config = {
-    "apiKey": "AIzaSyArQxRet5XqKI6v8948A2ZnHZOZsu7vCNY",
-    "authDomain": "hacht-7d98d.firebaseapp.com",
-    "databaseURL": "https://hacht-7d98d.firebaseio.com",
-    "projectId": "hacht-7d98d",
-    "storageBucket": "hacht-7d98d.appspot.com",
-    "messagingSenderId": "225406534324",
-    "appId": "1:225406534324:web:f5317f74d07ced54"
-  }
+path = "C:/Parma/HACHT/Red_CNN/breakhis/breakhis_subset/SOB_B_A-14-22549AB-100-002_0.png"
+img = Image.open(path)
+result = forward_single_img(img)
+result2 = forward_single_img2(path)
 
-firebase = pyrebase.initialize_app(config)
+print("Imagen 1, Resultado: {}, Resultado OpenCV: {} \n".format(result, result2))
 
-storage = firebase.storage()
+path = "C:/Parma/HACHT/Red_CNN/breakhis/breakhis_subset/SOB_B_A-14-22549G-100-009_0.png"
+img = Image.open(path)
+result = forward_single_img(img)
+result2 = forward_single_img2(path)
 
-#storage.child("Test_Samples/SOB_B_A-14-22549AB-100-022.png").put("C:/Users/Martin/Desktop/Red_CNN/breakhis_subset/SOB_B_A-14-22549AB-100-022.png")
+print("Imagen 2, Resultado: {}, Resultado OpenCV: {} \n".format(result, result2))
 
+path = "C:/Parma/HACHT/Red_CNN/breakhis/breakhis_subset/SOB_B_F-14-14134E-100-032_1.png"
+img = Image.open(path)
+result = forward_single_img(img)
+result2 = forward_single_img2(path)
 
-#storage.child("Test_Samples/SOB_B_A-14-22549AB-100-022.png").download("/","C:/Users/Martin/Desktop/Red_CNN/SOB_B_A-14-22549AB-100-022.png")
+print("Imagen 3, Resultado: {}, Resultado OpenCV: {} \n".format(result, result2))
 
-#url = storage.child("Test_Samples/SOB_B_A-14-22549AB-100-022.png").get_url(None)
-#print("Imagen descargada de:  ", url)
-for i in range(0,30):
-    response = requests.get("https://firebasestorage.googleapis.com/v0/b/hacht-7d98d.appspot.com/o/Test_Samples%2FSOB_B_A-14-22549AB-100-022.png?alt=media")
-    img = Image.open(BytesIO(response.content))
+path = "C:/Parma/HACHT/Red_CNN/breakhis/breakhis_subset/SOB_B_F-14-23060CD-100-010_1.png"
+img = Image.open(path)
+result = forward_single_img(img)
+result2 = forward_single_img2(path)
 
-    print(forward_single_img(img))
-    forward_single_img2("C:/Users/Martin/Desktop/Red_CNN/SOB_B_A-14-22549AB-100-022.png")
+print("Imagen 4, Resultado: {}, Resultado OpenCV: {} \n".format(result, result2))
+
+path = "C:/Parma/HACHT/Red_CNN/breakhis/breakhis_subset/SOB_B_PT-14-21998AB-100-015_2.png"
+img = Image.open(path)
+result = forward_single_img(img)
+result2 = forward_single_img2(path)
+
+print("Imagen 5, Resultado: {}, Resultado OpenCV: {} \n".format(result, result2))
+
+path = "C:/Parma/HACHT/Red_CNN/breakhis/breakhis_subset/SOB_B_PT-14-21998AB-100-066_2.png"
+img = Image.open(path)
+result = forward_single_img(img)
+result2 = forward_single_img2(path)
+
+print("Imagen 6, Resultado: {}, Resultado OpenCV: {} \n".format(result, result2))
+
+path = "C:/Parma/HACHT/Red_CNN/breakhis/breakhis_subset/SOB_B_TA-14-15275-100-013_3.png"
+img = Image.open(path)
+result = forward_single_img(img)
+result2 = forward_single_img2(path)
+
+print("Imagen 7, Resultado: {}, Resultado OpenCV: {} \n".format(result, result2))
+
+path = "C:/Parma/HACHT/Red_CNN/breakhis/breakhis_subset/SOB_B_TA-14-16184CD-100-018_3.png"
+img = Image.open(path)
+result = forward_single_img(img)
+result2 = forward_single_img2(path)
+
+print("Imagen 8, Resultado: {}, Resultado OpenCV: {} \n".format(result, result2))

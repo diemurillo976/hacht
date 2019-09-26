@@ -6,10 +6,13 @@ import re
 from PIL import Image
 from torchvision import transforms
 from torch.utils.data.dataset import Dataset
+from torch import zeros_like
 
 
 class BreakHis(Dataset):
+	
 	def __init__(self, img_path, csv_path, image_size, training=True, preprocessing="rgb"):
+		
 		"""
 		Args:
 			csv_path (string): path to csv file
@@ -18,7 +21,7 @@ class BreakHis(Dataset):
 		"""
 		# Folder where images are
 		self.img_path = img_path
-
+		
 		# Self channels
 		
 		self.channels = cv2.IMREAD_COLOR # if (preprocessing == "color") else cv2.IMREAD_GRAYSCALE
@@ -52,6 +55,7 @@ class BreakHis(Dataset):
 		return patient_id		
 
 	def __getitem__(self, index):
+
 		# Get image name from the pandas df
 		single_image_name = self.img_path + "/" + self.image_arr[index]
 		
@@ -114,7 +118,7 @@ class BreakHis(Dataset):
 
 
 class BreakHis2(Dataset):
-	def __init__(self, img_path, image_size, training=True, preprocessing="rgb"):
+	def __init__(self, img, image_size, training=True, preprocessing="rgb"):
 		"""
 		Args:
 			csv_path (string): path to csv file
@@ -122,7 +126,9 @@ class BreakHis2(Dataset):
 			preprocessing: can be 'clahe' , 'he', 'none' or 'color'
 		"""
 		# Folder where images are
-		self.img_path = img_path
+		#self.img_path = img_path
+
+		self.img = img
 
 		self.img_size = image_size
 
@@ -163,22 +169,27 @@ class BreakHis2(Dataset):
 		
 		# Open image in grayscale
 		#img_as_img = cv2.imread(self.img_path, self.channels)
-		print(type(self.img_path))
-                
-		img = np.asarray(self.img_path)
-		
-		print(type(img))
+		#print(type(self.img_path))
+
+		# Opens the file buffer and decode the image
+		#img = cv2.imdecode(self.img_buffer, self.channels)
+
 		# apply preprocessing
-		img_as_img = self.preprocessing(img)
+		img_as_img = self.preprocessing(self.img)   
 
 		# numpy 2 PIL
 		img_as_img = Image.fromarray(img_as_img)
 		
 		# Transforms the image to tensor
 		img_as_tensor = self.transform(img_as_img)
-
-		# Get label
-		#single_image_label = self.label_arr[index]
+                
+		"""
+		img_as_tensor = self.transform(img_as_img)
+		img_tensor_inverted = zeros_like(img_as_tensor)
+		img_tensor_inverted[:,:,0] = img_as_tensor[:,:,2]
+		img_tensor_inverted[:,:,1] = img_as_tensor[:,:,1]
+		img_tensor_inverted[:,:,2] = img_as_tensor[:,:,0]
+		"""
 		
 		# Result		
 		result = (img_as_tensor)

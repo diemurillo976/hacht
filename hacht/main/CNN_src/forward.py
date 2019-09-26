@@ -36,7 +36,7 @@ def forward_single_img(img_path):
 
 def forward_single_img2(img_path):
         num_classes = 8
-        dir_weights = "weights_50.pt"
+        dir_weights = "C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/weights_50.pt"
         architecture = "squeezenet"
         (model, img_size) = get_model(num_classes, dir_weights, architecture)
         model = model

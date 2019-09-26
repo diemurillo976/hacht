@@ -84,8 +84,8 @@ class Sesion(models.Model):
     # Ojo que para usar una sola llave foranea necesitamos generalizar Paciente!
     id_paciente = models.PositiveIntegerField(null=True)
     date = models.DateField()
-    obs = models.CharField(max_length=500, null=True)
-    estado = models.CharField(max_length = 1, null=True)
+    obs = models.CharField(max_length=500, null=True, blank=True)
+    estado = models.CharField(max_length=1, null=True)
 
     def __str__(self):
         return self.id_paciente
@@ -103,10 +103,9 @@ class Muestra(models.Model):
     url_img = models.URLField(null=True)
     pred = models.CharField(max_length=20, null=True)
     accuracy = models.FloatField(null=True)
-    obs = models.CharField(max_length=200, null=True)
+    obs = models.CharField(max_length=200, null=True, blank=True)
     is_true = models.BooleanField(max_length=1, null=True)
     consent = models.BooleanField(max_length=1, null=True)
-
 
     def __str__(self):
         return self.id_sesion

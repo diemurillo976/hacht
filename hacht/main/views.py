@@ -6,11 +6,14 @@ from django.http import HttpResponse
 from django.db.models import Count, Sum
 import random
 import json
+import numpy as np
+
 #Pyrebase and model imports#################################################
 import pyrebase
 from PIL import Image
 from io import BytesIO
 import requests
+
 #Comentado por motivos de falta de espacio en el hosting
 #sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
 sys.path.insert(0,'C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/')
@@ -84,9 +87,11 @@ def demo(request):
         storage.child(str(upload)).put(upload)
         url = storage.child(str(upload)).get_url(None)
         response = requests.get(url)
-        img = Image.open(BytesIO(response.content))
 
-        result = forward_single_img(img)
+        img = Image.open(BytesIO(response.content))
+        img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+        result = forward_single_img(img_cv)
+
         estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
         context = {"result": estimations[result]}
         return render(request, 'index/demo.html', context)
@@ -305,9 +310,10 @@ def agregar_muestra(request):
         storage.child(str(upload)).put(upload)
         url = storage.child(str(upload)).get_url(None)
         response = requests.get(url)
+        
         img = Image.open(BytesIO(response.content))
-
-        result = forward_single_img(img)
+        img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+        result = forward_single_img(img_cv)
         estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
 
         muestra = Muestra(
@@ -374,9 +380,11 @@ def analytics_sesion(request):
 
     if request.method == "GET" and request.GET.get("id_sesion"):
 
+        id_s = request.GET["id_sesion"]
+
         datos_muestras = Muestra.objects.values('pred').annotate(
             cantidad=Count('pred'),
-            probabilidad=Count('pred') / Count('id')).order_by('-cantidad')
+            probabilidad=Count('pred') / Count('id')).order_by('-cantidad').filter(id_sesion=id_s)
 
         data = []
         labels = []
@@ -406,6 +414,58 @@ def analytics_sesion(request):
         }
 
         return render(request, 'index/components/sesion_graficos.html', context)
+
+
+def analytics_paciente(request):
+
+    def random_color():
+
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+
+        return 'rgba({}, {}, {}, 255)'.format(r,g,b)
+
+    if request.method == "GET" and request.GET.get("id_paciente"):
+
+        id_p = request.GET["id_paciente"]
+
+        datasets = []
+        sesiones = Sesion.objects.filter(id_paciente=id_p)
+
+        datos_muestras = Muestra.objects.values('pred').annotate(
+            cantidad=Count('pred'),
+            probabilidad=Count('pred') / Count('id')).order_by('-cantidad').filter(id_sesion=id_s)
+
+        data = []
+        labels = []
+        colors = []
+
+        for dato in datos_muestras:
+            data.append(dato['cantidad'])
+            labels.append(dato['pred'])
+            colors.append(random_color())
+            
+        data_obj = {
+
+            'datasets' : [{
+                'data' : data,
+                'backgroundColor' : colors
+            }],
+
+            'labels' : labels,
+
+        }
+
+        data_obj = json.dumps(data_obj)
+
+        context = {
+            'datos_muestras' : datos_muestras,
+            'data' : data_obj
+        }
+
+        return render(request, 'index/components/sesion_graficos.html', context)
+
 
 
 def contact_us(request):

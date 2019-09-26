@@ -81,21 +81,24 @@ def registration_success(request):
 
 def demo(request):
 
-    if(request.method == "POST"):
+    if(request.method == "GET" and request.GET.get("url")):
 
-        upload = request.FILES['upload']
-        storage.child(str(upload)).put(upload)
-        url = storage.child(str(upload)).get_url(None)
-        response = requests.get(url)
+        #upload = request.FILES['upload']
+        #storage.child(str(upload)).put(upload)
+        #url = storage.child(str(upload)).get_url(None)
+        #response = requests.get(url)
 
-        img = Image.open(BytesIO(response.content))
-        img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        result = forward_single_img(img_cv)
+        #img = Image.open(BytesIO(response.content))
+        #img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+
+        url = request.GET["url"]
+        result = forward_single_img2(url)
 
         estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
         context = {"result": estimations[result],
                    "url": url}
-        return render(request, 'index/demo.html', context)
+
+        return render(request, 'index/components/comp_demo.html', context)
 
     elif(request.method == "GET"):
         

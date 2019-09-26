@@ -20,6 +20,7 @@ urlpatterns = [
     path('dashboard_sesiones/components/muestras_sesion/', views.muestras_sesion, name="muestras_sesion"),
     path('dashboard_sesiones/agregar_muestra/', views.agregar_muestra, name="agregar_muestra"),
     path('dashboard_sesiones/modificar_muestra/', views.modificar_muestra, name="modificar_muestra"),
-    path('dashboard_sesiones/components/analytics_sesion/', views.analytics_sesion, name="analytics_sesion")
+    path('dashboard_sesiones/components/analytics_sesion/', views.analytics_sesion, name="analytics_sesion"),
+    path('demo/components/comp_demo/', views.demo, name='comp_demo' )
 ]
 

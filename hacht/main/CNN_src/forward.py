@@ -47,8 +47,8 @@ def forward_single_img2(img_path):
                 data, patient_id = data, patient_id	
                 output = model(data)
                 _, predict = torch.max(output, dim=1)
-                print("Result: ", predict.cpu().tolist())
-                print(" --------------------------------- \n ")
+                result = predict.cpu().tolist()
+                return result[0]
 
 def forward_n_img(img_folder_path):
         return 1

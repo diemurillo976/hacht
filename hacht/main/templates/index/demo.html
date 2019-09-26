@@ -96,12 +96,7 @@ body {
                     <!-- Photo Grid -->
                     <div class="row"> 
                     <div class="column">
-                        <div class="card" style="width: 18rem;">
-                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549AB-100-002_0.png' %}" style="width:100%">
-                            <div class="card-body">
-                                <h5 class="card-title">Adenosis</h5>
-                            </div>
-                        </div>
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549AB-100-002_0.png' %}" style="width:100%">
                         <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549G-100-009_0.png' %}" style="width:100%">
                         <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_F-14-14134E-100-032_1.png' %}" style="width:100%">
                         <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_F-14-23060CD-100-010_1.png' %}" style="width:100%">
@@ -141,8 +136,9 @@ body {
                     <p>Imagen seleccionada:</p>
                     <img onerror="this.style.display='none'" src= "{{url}}" style="margin-left: 0;margin-top: 0%; width:300px;height:200px;">
                     <br>
+                    <p>Estimación Correcta:{{result}}</p>
                     <br>
-                    <p>Estimación:{{result}}</p>
+                    <p>Estimación del modelo:{{result}}</p>
                     <br>
                     </form> 
                 </div>

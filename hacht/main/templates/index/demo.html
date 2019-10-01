@@ -2,6 +2,62 @@
 {% load static%}
 <html>
 
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial;
+}
+
+.header {
+  text-align: center;
+  padding: 32px;
+}
+
+.row {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  -ms-flex-wrap: wrap; /* IE10 */
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+/* Create four equal columns that sits next to each other */
+.column {
+  -ms-flex: 25%; /* IE10 */
+  flex: 25%;
+  max-width: 25%;
+  padding: 0 4px;
+}
+
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
+  width: 100%;
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 800px) {
+  .column {
+    -ms-flex: 50%;
+    flex: 50%;
+    max-width: 50%;
+  }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    -ms-flex: 100%;
+    flex: 100%;
+    max-width: 100%;
+  }
+}
+</style>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -30,15 +86,50 @@
                 </ul>
         </div>
         </div>
-    </nav><div style="margin-top: 10%; margin-left: 15%;">
-<form action="{% url 'demo' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-    Seleccione imagen a subir:
-    <input type="file" name="upload">
-    <br>
-    <br>
-    <button type="submit">Subir</button>
-</form>
-</div><label style="font-size: 20px;margin-top: 0px;margin-left: 15%;">Imagen seleccionada:</label><img style="margin-left: 0;margin-top: 10%;"><label style="margin-left: 5%;">Estimacion:{{result}}</label>
+    </nav>
+
+<div class="container" style="height:600px; margin-top:12%; ">
+            <div class="text-center" style="padding-bottom: 20px;"><span style="font-size: 28px;color: rgb(0,123,255);">Demostracion del modelo de aprendizaje profundo</span></div>
+            <div class="row text-center" style="padding-bottom: 10px;">
+                <div class="col" style="padding-left: 0%;padding-right: 0px;width: 40%;">
+
+                    <!-- Photo Grid -->
+                    <div class="row"> 
+                    <div class="column">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549AB-100-002_0.png' %}" ondblclick="img_onClick('{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549AB-100-002_0.png' %}')"style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549G-100-009_0.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_F-14-14134E-100-032_1.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_F-14-23060CD-100-010_1.png' %}" style="width:100%">
+                    </div>
+                    <div class="column">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_PT-14-21998AB-100-015_2.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_PT-14-21998AB-100-066_2.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_TA-14-15275-100-013_3.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_TA-14-16184CD-100-018_3.png' %}" style="width:100%">
+                    </div>
+                    <div class="column">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_DC-14-5695-100-020_4.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_DC-14-16336-100-010_4.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_LC-14-12204-100-059_5.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_LC-14-13412-100-020_5.png' %}" style="width:100%">
+                    </div>
+                    <div class="column">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_MC-14-12773-100-020_6.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_MC-14-16456-100-078_6.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_PC-14-15704-100-015_7.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_PC-14-19440-100-033_7.png' %}" style="width:100%">
+                    </div>
+                    </div>
+                    <!-- <a onclick="agregar_paciente()" href="#">
+                        <img src="{% static 'index/assets/img/icons8-plus-50.png' %}">
+                        <span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Paciente</span>
+                    </a> -->
+                </div>
+            <div id="cont_demo" class="col" style="padding-left: 5px;">
+
+            </div>
+            </div>
+ </div>
     <footer class="page-footer dark">
         <div class="container">
             <div class="row">
@@ -84,6 +175,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="{% static 'index/assets/js/smoothproducts.min.js' %}"></script>
     <script src="{% static 'index/assets/js/theme.js' %}"></script>
+    <script src="{% static 'index/assets/js/demo.js' %}"></script>
 </body>
 
 </html>

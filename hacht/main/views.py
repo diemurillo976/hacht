@@ -16,8 +16,8 @@ from io import BytesIO
 import requests
 
 #Comentado por motivos de falta de espacio en el hosting
-#sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
-sys.path.insert(0,'C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/')
+sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
+#sys.path.insert(0,'C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/')
 from .CNN_src.forward import *
 
 #Firebase auth##############################################################
@@ -82,20 +82,24 @@ def registration_success(request):
 
 def demo(request):
 
-    if(request.method == "POST"):
+    if(request.method == "GET" and request.GET.get("url")):
 
-        upload = request.FILES['upload']
-        storage.child(str(upload)).put(upload)
-        url = storage.child(str(upload)).get_url(None)
-        response = requests.get(url)
+        #upload = request.FILES['upload']
+        #storage.child(str(upload)).put(upload)
+        #url = storage.child(str(upload)).get_url(None)
+        #response = requests.get(url)
 
-        img = Image.open(BytesIO(response.content))
-        img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        result = forward_single_img(img_cv)
+        #img = Image.open(BytesIO(response.content))
+        #img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+
+        url = request.GET["url"]
+        result = forward_single_img2(url)
 
         estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
-        context = {"result": estimations[result]}
-        return render(request, 'index/demo.html', context)
+        context = {"result": estimations[result],
+                   "url": url}
+
+        return render(request, 'index/components/comp_demo.html', context)
 
     elif(request.method == "GET"):
         
@@ -532,4 +536,3 @@ def contact_us(request):
 
 def features(request):
     return render(request, 'index/features.html' )
-

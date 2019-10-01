@@ -69,7 +69,7 @@ function cargar_form_paciente(url, id_paciente){
         apendice = "?id_paciente=" + id_paciente
 
         // Carga el formulario con los datos "prellenados"
-        $("#columna_paciente").load(url+apendice, function(responseTxt, statusTxt, xhr){
+        $("#form_paciente").load(url+apendice, function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
             alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
         });
@@ -77,7 +77,7 @@ function cargar_form_paciente(url, id_paciente){
     }else{
 
         // Carga el formulario sin datos
-        $("#columna_paciente").load(url, function(responseTxt, statusTxt, xhr){
+        $("#form_paciente").load(url, function(responseTxt, statusTxt, xhr){
             if(statusTxt == "error")
             alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
         });
@@ -90,11 +90,26 @@ function descriptivo_paciente_onclick(id_paciente){
     // Hace un load dinámico del form para cada paciente
     cargar_form_paciente("components/descriptivo_paciente/", id_paciente)
 
+    // Carga los analytics del paciente
+    cargar_analytics_paciente("components/analytics_paciente/", id_paciente)
+
     // Muestra la columna de pacientes
     toggle_vis($("#columna_paciente"));
 
     // Resalta algunas características para mostrar que ha sido seleccionado
     highlight_titles("#descriptivo_paciente_" + id_paciente);
+}
+
+function cargar_analytics_paciente(url, id_paciente){
+
+    apendice = "?id_paciente=" + id_paciente;
+
+    // Carga el formulario con los datos "prellenados"
+    $("#analytics_paciente").load(url+apendice, function(responseTxt, statusTxt, xhr){
+        if(statusTxt == "error")
+            alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+    });
+
 }
 
 function eliminar_onclick(e, id_paciente){
@@ -118,6 +133,24 @@ function eliminar_onclick(e, id_paciente){
             }
         );
     }
+}
+
+function inicializar_graficos(data_pie, data_line){
+
+    alert("Entro a la función correcta");
+
+    var ctx = $("#canvas_dona");
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: data_pie
+    });
+
+    var ctx2 = $("#canvas_timeline");
+    var myChart = new Chart(ctx2, {
+        type: 'line',
+        data: data_line
+    });
+
 }
 
 $(document).ready(function() { 

@@ -99,7 +99,8 @@ class Muestra(models.Model):
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    id_sesion = models.PositiveIntegerField(null=True)
+    #id_sesion = models.IntegerField(null=True)
+    sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE, default=-1)
     url_img = models.URLField(null=True)
     pred = models.CharField(max_length=20, null=True)
     accuracy = models.FloatField(null=True)

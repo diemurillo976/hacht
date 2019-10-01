@@ -90,8 +90,18 @@
                     
                 </div>
                 <!-- End: Lista-Pacientes -->
-                <div class="col-md-6 flex-grow-1" id="columna_paciente" style="max-width: 100%; display: none">
-                    <!-- Acá va el formulario de paciente, se modulariza para cargar dinámicamente -->
+
+                <div  class="col-md-6 flex-grow-1" id="columna_paciente" style="max-width: 100%; display: none">
+
+                    <div id="form_paciente">
+                        <!-- Acá va el formulario de paciente, se modulariza para cargar dinámicamente -->
+                    </div>
+
+                    <div id="analytics_paciente">
+
+                    </div>
+
+
                 </div>
                 <!-- End: Contenedor-Paciente -->
             </div>
@@ -140,6 +150,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
     <script src="{% static 'index/assets/js/script.min.js' %}"></script>
     <script src="{% static 'index/assets/js/scripts_aux.js' %}"></script>
 

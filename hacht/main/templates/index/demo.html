@@ -89,47 +89,46 @@ body {
     </nav>
 
 <div class="container" style="height:600px; margin-top:12%; ">
-            <div class="text-center" style="padding-bottom: 20px;"><span style="font-size: 28px;color: rgb(0,123,255);">Demostracion del modelo de aprendizaje profundo</span></div>
-            <div class="row text-center" style="padding-bottom: 10px;">
-                <div class="col" style="padding-left: 0%;padding-right: 0px;width: 40%;">
+    <div class="text-center" style="padding-bottom: 20px;"><span style="font-size: 28px;color: rgb(0,123,255);">Demostracion del modelo de aprendizaje profundo</span></div>
+    
+    <div class="row text-center" style="padding-bottom: 10px;">
+        <div class="col" style="padding-left: 0%;padding-right: 0px;width: 40%;">
 
                     <!-- Photo Grid -->
                     <div class="row"> 
                     <div class="column">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549AB-100-002_0.png' %}" ondblclick="img_onClick('{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549AB-100-002_0.png' %}')"style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549G-100-009_0.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_F-14-14134E-100-032_1.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_F-14-23060CD-100-010_1.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549AB-100-002_0.png' %}" ondblclick="img_onClick(0, null)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549G-100-009_0.png' %}" ondblclick="img_onClick(1)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_F-14-14134E-100-032_1.png' %}" ondblclick="img_onClick(2)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_F-14-23060CD-100-010_1.png' %}" ondblclick="img_onClick(3)" style="width:100%">
                     </div>
                     <div class="column">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_PT-14-21998AB-100-015_2.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_PT-14-21998AB-100-066_2.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_TA-14-15275-100-013_3.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_TA-14-16184CD-100-018_3.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_PT-14-21998AB-100-015_2.png' %}" ondblclick="img_onClick(4)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_PT-14-21998AB-100-066_2.png' %}" ondblclick="img_onClick(5)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_TA-14-15275-100-013_3.png' %}" ondblclick="img_onClick(6)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_TA-14-16184CD-100-018_3.png' %}" ondblclick="img_onClick(7)" style="width:100%">
                     </div>
                     <div class="column">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_DC-14-5695-100-020_4.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_DC-14-16336-100-010_4.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_LC-14-12204-100-059_5.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_LC-14-13412-100-020_5.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_DC-14-5695-100-020_4.png' %}" ondblclick="img_onClick(8)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_DC-14-16336-100-010_4.png' %}" ondblclick="img_onClick(9)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_LC-14-12204-100-059_5.png' %}" ondblclick="img_onClick(10)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_LC-14-13412-100-020_5.png' %}" ondblclick="img_onClick(11)" style="width:100%">
                     </div>
                     <div class="column">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_MC-14-12773-100-020_6.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_MC-14-16456-100-078_6.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_PC-14-15704-100-015_7.png' %}" style="width:100%">
-                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_PC-14-19440-100-033_7.png' %}" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_MC-14-12773-100-020_6.png' %}" ondblclick="img_onClick(12)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_MC-14-16456-100-078_6.png' %}" ondblclick="img_onClick(13)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_PC-14-15704-100-015_7.png' %}" ondblclick="img_onClick(14)" style="width:100%">
+                        <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_PC-14-19440-100-033_7.png' %}" ondblclick="img_onClick(15)" style="width:100%">
                     </div>
                     </div>
-                    <!-- <a onclick="agregar_paciente()" href="#">
-                        <img src="{% static 'index/assets/img/icons8-plus-50.png' %}">
-                        <span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Paciente</span>
-                    </a> -->
-                </div>
-            <div id="cont_demo" class="col" style="padding-left: 5px;">
-
-            </div>
-            </div>
+        </div>
+            
+        <div id="col_demo" class="col" style="display: none">
+        </div>
+            
+    </div>
  </div>
+
     <footer class="page-footer dark">
         <div class="container">
             <div class="row">
@@ -170,12 +169,22 @@ body {
             <p></p>
         </div>
     </footer>
+
     <script src="{% static 'index/assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'index/assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="{% static 'index/assets/js/smoothproducts.min.js' %}"></script>
     <script src="{% static 'index/assets/js/theme.js' %}"></script>
     <script src="{% static 'index/assets/js/demo.js' %}"></script>
+
+    {% if resultado is not None %}
+    <script>
+        index = {{ index|safe }};
+        var resultado = {{ resultado|safe }};
+        img_onClick(index, resultado);
+    </script>
+    {% endif %}
+
 </body>
 
 </html>

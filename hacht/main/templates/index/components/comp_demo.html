@@ -1,9 +1,30 @@
 <div style="margin-top: 10%; margin-left: 15%;">
+    
     <p>Imagen seleccionada:</p>
-    <img onerror="this.style.display='none'" src= "{{url}}" style="margin-left: 0;margin-top: 0%; width:300px;height:200px;">
+    <img onerror="this.style.display='none'" src= "{{ url }}" style="margin-left: 0;margin-top: 0%; width:300px;height:200px;">
     <br>
-    <p>Estimación Correcta:{{result}}</p>
+
+    <p>Estimación esperada (Groundtruth): {{ class }}</p>
     <br>
-    <p>Estimación del modelo:{{result}}</p>
-    <br>
+
+    <div id="cont_bolita" style="display: none">
+
+    </div>
+
+    {% if not resultado %}
+    <form method="POST" action="">
+
+        {% csrf_token %}
+        
+        <input type="hidden" value="{{ index }}" name="index">
+        <input type="hidden" value="{{ url }}" name="url">
+        <input type="submit" value="Analizar">
+
+    </form>
+
+    {% else %}
+        <p>Estimación del modelo: {{ resultado }}</p>
+    {% endif %}
+
+    
 </div>

@@ -7,6 +7,8 @@ from django.db.models import Count, Sum
 import random
 import json
 import numpy as np
+import os
+import csv
 from datetime import datetime
 
 #Pyrebase and model imports#################################################
@@ -16,8 +18,13 @@ from io import BytesIO
 import requests
 
 #Comentado por motivos de falta de espacio en el hosting
-sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
+#sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
 #sys.path.insert(0,'C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/')
+
+# Define el path a CNN_src y lo agrega al sys.path
+path = os.getcwd()
+path = os.path.join(path, "hacht", "main", "CNN_src")
+sys.path.insert(0, path)
 from .CNN_src.forward import *
 
 #Firebase auth##############################################################
@@ -39,6 +46,24 @@ firebase = pyrebase.initialize_app(config)
 storage = firebase.storage()
 
 ############################################################################
+
+def read_static_list():
+
+    # Obtiene el path del archivo csv con la lista
+    path = os.getcwd()
+    abs_path = os.path.join(path, "hacht", "main", "static", "index", "assets", "csv", "demo_src.csv")
+
+    with open(abs_path) as file:
+
+        reader = csv.reader(file, delimiter=',')
+        lista = []
+        
+        for row in reader:
+
+            y_true, url = row[0], row[1]
+            lista.append((y_true, url))
+
+    return lista
 
 
 def index(request):
@@ -82,28 +107,56 @@ def registration_success(request):
 
 def demo(request):
 
-    if(request.method == "GET" and request.GET.get("url")):
+    if request.method == "GET" and request.GET.get("resultado"):
 
-        #upload = request.FILES['upload']
-        #storage.child(str(upload)).put(upload)
-        #url = storage.child(str(upload)).get_url(None)
-        #response = requests.get(url)
+        lista = read_static_list()
 
-        #img = Image.open(BytesIO(response.content))
-        #img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-
-        url = request.GET["url"]
-        result = forward_single_img2(url)
-
+        index = int(request.GET["index"])
+        y_true, url = lista[index]
+        resultado = int(request.GET["resultado"])
         estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
-        context = {"result": estimations[result],
-                   "url": url}
+
+        context = {"class": y_true,
+                   "url": url,
+                   "resultado": estimations[resultado],
+                   "index": index}
 
         return render(request, 'index/components/comp_demo.html', context)
 
-    elif(request.method == "GET"):
+    elif request.method == "GET" and request.GET.get("index"):
+
+        lista = read_static_list()
+
+        index = int(request.GET["index"])
+        y_true, url = lista[index]
+        context = {"class": y_true,
+                   "url": url,
+                   "index": index}
+
+        return render(request, 'index/components/comp_demo.html', context)
+
+    elif request.method == "GET":
         
         return render(request, 'index/demo.html')
+
+    elif request.method == "POST":
+        
+        index = int(request.POST["index"])
+        url = request.POST["url"]
+
+        url_fire = storage.child(url)
+        response = requests.get(url)
+
+        img = Image.open(BytesIO(response.content))
+        img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+        result = forward_single_img(img_cv)
+        
+        context = {
+            "index" : index,
+            "resultado" : result
+        }
+
+        return render(request, "index/demo.html", context)
 
 
 def dashboard_pacientes(request):

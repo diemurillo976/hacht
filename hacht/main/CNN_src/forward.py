@@ -4,7 +4,6 @@ import cv2
 import torch
 import torch.nn as nn
 import torchvision
-import models
 import argparse
 
 from torch.autograd import Variable
@@ -18,8 +17,8 @@ PATH = "C:/Users/Martin/Desktop/Red_CNN/"
 
 def forward_single_img(img_path):
         num_classes = 8
-        #dir_weights = "/home/Martinvc96/hacht/hacht/main/CNN_src/weights_50.pt"
-        dir_weights = "C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/weights_50.pt"
+        path = os.getcwd()
+        dir_weights = os.path.join(path, "hacht", "main", "CNN_src", "weights_50.pt")
         architecture = "squeezenet"
         (model, img_size) = get_model(num_classes, dir_weights, architecture)
         model = model
@@ -47,8 +46,8 @@ def forward_single_img2(img_path):
                 data, patient_id = data, patient_id	
                 output = model(data)
                 _, predict = torch.max(output, dim=1)
-                print("Result: ", predict.cpu().tolist())
-                print(" --------------------------------- \n ")
+                result = predict.cpu().tolist()
+                return result[0]
 
 def forward_n_img(img_folder_path):
         return 1

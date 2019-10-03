@@ -1,0 +1,34 @@
+<div class="card text-center" style="margin-left: 15%;">
+    
+    <h5 class="card-header">Imagen seleccionada</h5>
+
+    <img class="card-img-top" onerror="this.style.display='none'" src= "{{ url }}">
+
+    <div class="card-body">
+
+        <h5 class="card-title">Estimación esperada:</h5>
+        <p class="card-text">{{ class }}</p>
+
+        {% if not resultado %}
+        <form method="POST" action="" onsubmit="analizar_click()">
+
+            {% csrf_token %}
+            
+            <input type="hidden" value="{{ index }}" name="index">
+            <input type="hidden" value="{{ url }}" name="url">
+            <input class="btn btn-primary" type="submit" value="Analizar">
+
+        </form>
+
+        <div id="cont_bolita" style="display: true; margin-left: 38.5%; margin-top: 20px">
+
+        </div>
+
+        {% else %}
+            <h5 class="card-title">Estimación del modelo:</h5>
+            <p class="card-text">{{ resultado }}</p>
+        {% endif %}
+
+    </div>
+    
+</div>

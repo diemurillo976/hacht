@@ -11,6 +11,7 @@ from django.dispatch import receiver
 class Profile(models.Model):
 
     # one to one relationship with the django auth default user
+    #user = models.IntegerField()
     user = models.OneToOneField(User, 
                                 on_delete=models.CASCADE, 
                                 primary_key=True,
@@ -44,7 +45,8 @@ class Paciente_N(models.Model):
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    id_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1) # Default value should exit on "auth_user" table)
+    #id_user = models.IntegerField(null=True)
+    id_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1) # Default value should exist on "auth_user" table)
     nombre = models.CharField(max_length=40, null=True)
     ced = models.CharField(max_length=10, null=True)
     sexo = models.CharField(max_length=1, null=True)
@@ -99,7 +101,8 @@ class Muestra(models.Model):
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    id_sesion = models.PositiveIntegerField(null=True)
+    #sesion = models.IntegerField(null=True)
+    sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE, default=-1)
     url_img = models.URLField(null=True)
     pred = models.CharField(max_length=20, null=True)
     accuracy = models.FloatField(null=True)

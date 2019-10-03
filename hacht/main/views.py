@@ -7,6 +7,10 @@ from django.db.models import Count, Sum
 import random
 import json
 import numpy as np
+import os
+import csv
+import time
+from datetime import datetime
 
 #Pyrebase and model imports#################################################
 import pyrebase
@@ -16,7 +20,12 @@ import requests
 
 #Comentado por motivos de falta de espacio en el hosting
 #sys.path.insert(0,'/home/Martinvc96/hacht/hacht/main/CNN_src/')
-sys.path.insert(0,'C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/')
+#sys.path.insert(0,'C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/')
+
+# Define el path a CNN_src y lo agrega al sys.path
+path = os.getcwd()
+path = os.path.join(path, "hacht", "main", "CNN_src")
+sys.path.insert(0, path)
 from .CNN_src.forward import *
 
 #Firebase auth##############################################################
@@ -38,6 +47,24 @@ firebase = pyrebase.initialize_app(config)
 storage = firebase.storage()
 
 ############################################################################
+
+def read_static_list():
+
+    # Obtiene el path del archivo csv con la lista
+    path = os.getcwd()
+    abs_path = os.path.join(path, "hacht", "main", "static", "index", "assets", "csv", "demo_src.csv")
+
+    with open(abs_path) as file:
+
+        reader = csv.reader(file, delimiter=',')
+        lista = []
+        
+        for row in reader:
+
+            y_true, url = row[0], row[1]
+            lista.append((y_true, url))
+
+    return lista
 
 
 def index(request):
@@ -81,24 +108,58 @@ def registration_success(request):
 
 def demo(request):
 
-    if(request.method == "POST"):
+    if request.method == "GET" and request.GET.get("resultado"):
 
-        upload = request.FILES['upload']
-        storage.child(str(upload)).put(upload)
-        url = storage.child(str(upload)).get_url(None)
+        lista = read_static_list()
+
+        index = int(request.GET["index"])
+        y_true, url = lista[index]
+        resultado = int(request.GET["resultado"])
+        estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
+
+        context = {"class": y_true,
+                   "url": url,
+                   "resultado": estimations[resultado],
+                   "index": index}
+
+        return render(request, 'index/components/comp_demo.html', context)
+
+    elif request.method == "GET" and request.GET.get("index"):
+
+        lista = read_static_list()
+
+        index = int(request.GET["index"])
+        y_true, url = lista[index]
+        context = {"class": y_true,
+                   "url": url,
+                   "index": index}
+
+        return render(request, 'index/components/comp_demo.html', context)
+
+    elif request.method == "GET":
+        
+        return render(request, 'index/demo.html')
+
+    elif request.method == "POST":
+
+        time.sleep(1)
+        
+        index = int(request.POST["index"])
+        url = request.POST["url"]
+
+        url_fire = storage.child(url)
         response = requests.get(url)
 
         img = Image.open(BytesIO(response.content))
         img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
         result = forward_single_img(img_cv)
-
-        estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
-        context = {"result": estimations[result]}
-        return render(request, 'index/demo.html', context)
-
-    elif(request.method == "GET"):
         
-        return render(request, 'index/demo.html')
+        context = {
+            "index" : index,
+            "resultado" : result
+        }
+
+        return render(request, "index/demo.html", context)
 
 
 def dashboard_pacientes(request):
@@ -281,7 +342,7 @@ def muestras_sesion(request):
 
         muestras = []
 
-        for muestra in Muestra.objects.filter(id_sesion=id_s):
+        for muestra in Muestra.objects.filter(sesion=id_s):
             form = Data_Sesion_Muestra(instance=muestra)
             muestras.append(form)
 
@@ -316,9 +377,11 @@ def agregar_muestra(request):
         result = forward_single_img(img_cv)
         estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
 
+        sesion = Sesion.objects.get(pk=id_s)
+
         muestra = Muestra(
-            id_sesion= id_s,
-            url_img= url,
+            sesion=sesion,
+            url_img=url,
             pred=estimations[result],
         )
 
@@ -384,7 +447,7 @@ def analytics_sesion(request):
 
         datos_muestras = Muestra.objects.values('pred').annotate(
             cantidad=Count('pred'),
-            probabilidad=Count('pred') / Count('id')).order_by('-cantidad').filter(id_sesion=id_s)
+            probabilidad=Count('pred') / Count('id')).order_by('-cantidad').filter(sesion=id_s)
 
         data = []
         labels = []
@@ -430,12 +493,67 @@ def analytics_paciente(request):
 
         id_p = request.GET["id_paciente"]
 
-        datasets = []
         sesiones = Sesion.objects.filter(id_paciente=id_p)
 
-        datos_muestras = Muestra.objects.values('pred').annotate(
-            cantidad=Count('pred'),
-            probabilidad=Count('pred') / Count('id')).order_by('-cantidad').filter(id_sesion=id_s)
+        datos_muestras = Muestra.objects.select_related('sesion').all()
+        datos_muestras = datos_muestras.values(
+            'sesion_id', 'sesion__date', 'pred', 'sesion__id_paciente').annotate(
+                cantidad=Count('pred'),
+                probabilidad=Count('pred') / Count('id'))
+        datos_muestras = datos_muestras.order_by('-cantidad')
+        datos_muestras = datos_muestras.filter(sesion__id_paciente=id_p)
+
+        datasets = []
+        labels_datasets = []
+
+        for dato in datos_muestras:
+            
+            pred_existente = False
+            data = []
+            labels = []
+
+            sesion_date_str = dato["sesion__date"].strftime("%d-%m-%Y")
+
+            if sesion_date_str in labels_datasets:
+                continue
+            else:
+
+                datos_muestras_fecha = datos_muestras.filter(sesion__date=dato["sesion__date"])
+                data = []
+                labels = []
+
+                for dato_n in datos_muestras_fecha:
+                    data.append(dato_n['cantidad'])
+                    labels.append(dato_n['pred'])
+
+                dataset = {
+                    'data' : data,
+                    'labels' : labels,
+                    'backgroundColor': random_color()
+                }
+
+                datasets.append(dataset)
+                labels_datasets.append(sesion_date_str)
+
+        data_obj = {
+            'datasets' : datasets,
+            'labels' : labels_datasets
+        }
+
+        data_obj = json.dumps(data_obj)
+
+        """
+        Obtiene un resumen de los datos para graficar en tipo pie
+        Esto significa que obtiene las muestras y lo único que importa es la cantidad de cada tipo
+        de tumor existente en la base para el paciente.
+        """
+
+        datos_muestras = Muestra.objects.select_related('sesion').all()
+        datos_muestras = datos_muestras.values('pred', 'sesion__id_paciente').annotate(
+                cantidad=Count('pred'),
+                probabilidad=Count('pred') / Count('id'))
+        datos_muestras = datos_muestras.order_by('-cantidad')
+        datos_muestras = datos_muestras.filter(sesion__id_paciente=id_p)
 
         data = []
         labels = []
@@ -445,8 +563,8 @@ def analytics_paciente(request):
             data.append(dato['cantidad'])
             labels.append(dato['pred'])
             colors.append(random_color())
-            
-        data_obj = {
+
+        data_pie_obj = {
 
             'datasets' : [{
                 'data' : data,
@@ -457,14 +575,15 @@ def analytics_paciente(request):
 
         }
 
-        data_obj = json.dumps(data_obj)
+        data_pie_obj = json.dumps(data_pie_obj)
 
         context = {
             'datos_muestras' : datos_muestras,
-            'data' : data_obj
+            'data_line' : data_obj,
+            'data_pie' : data_pie_obj
         }
 
-        return render(request, 'index/components/sesion_graficos.html', context)
+        return render(request, 'index/components/paciente_graficos.html', context)
 
 
 
@@ -473,4 +592,3 @@ def contact_us(request):
 
 def features(request):
     return render(request, 'index/features.html' )
-

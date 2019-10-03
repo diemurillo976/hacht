@@ -14,3 +14,15 @@ function img_onClick(img_index, resultado){
     $('#col_demo').css("display", "inline");
 
 }
+
+function analizar_click(){
+    
+    $("#cont_bolita").addClass("loader");
+    
+    //code before the pause
+    /*setTimeout(function(){
+        return true;
+    }, 1000);*/
+
+    return true;
+}

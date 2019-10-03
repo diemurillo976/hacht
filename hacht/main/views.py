@@ -9,6 +9,7 @@ import json
 import numpy as np
 import os
 import csv
+import time
 from datetime import datetime
 
 #Pyrebase and model imports#################################################
@@ -140,6 +141,8 @@ def demo(request):
         return render(request, 'index/demo.html')
 
     elif request.method == "POST":
+
+        time.sleep(1)
         
         index = int(request.POST["index"])
         url = request.POST["url"]

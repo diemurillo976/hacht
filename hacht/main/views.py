@@ -24,7 +24,7 @@ import requests
 
 # Define el path a CNN_src y lo agrega al sys.path
 path = os.getcwd()
-path = os.path.join(path, "hacht", "main", "CNN_src")
+path = os.path.join(path, "hacht", "hacht", "main", "CNN_src")
 sys.path.insert(0, path)
 from .CNN_src.forward import *
 

@@ -8,7 +8,7 @@ function img_onClick(img_index, resultado){
 
     $('#col_demo').load(str, function(responseTxt, statusTxt, xhr){
         if(statusTxt == "error")
-        alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+        alert(responseTxt + "\n" + xhr);
     });
 
     $('#col_demo').css("display", "inline");

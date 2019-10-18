@@ -2,8 +2,13 @@ import sys
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Profile, Paciente_N, Sesion
 from .forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.middleware.csrf import get_token
 from django.db.models import Count, Sum
+from django.contrib.auth.signals import user_login_failed, user_logged_in
+from django.contrib.auth import authenticate, login
+from django.dispatch import receiver
+from django.db.models.query import QuerySet;
 import random
 import json
 import numpy as np
@@ -24,7 +29,8 @@ import requests
 
 # Define el path a CNN_src y lo agrega al sys.path
 path = os.getcwd()
-path = os.path.join(path, "hacht", "main", "CNN_src")
+path = os.path.join(path,"hacht", "hacht", "main", "CNN_src")
+print(path)
 sys.path.insert(0, path)
 from .CNN_src.forward import *
 
@@ -52,13 +58,13 @@ def read_static_list():
 
     # Obtiene el path del archivo csv con la lista
     path = os.getcwd()
-    abs_path = os.path.join(path, "hacht", "main", "static", "index", "assets", "csv", "demo_src.csv")
+    abs_path = os.path.join(path, "hacht", "hacht", "main", "static", "index", "assets", "csv", "demo_src.csv")
 
     with open(abs_path) as file:
 
         reader = csv.reader(file, delimiter=',')
         lista = []
-        
+
         for row in reader:
 
             y_true, url = row[0], row[1]
@@ -66,12 +72,68 @@ def read_static_list():
 
     return lista
 
+# Función que agrega el token en cada request
+def get_for_android(request, context=None):
+
+    token = get_token(request)
+
+    if context is not None:
+
+        # Itera sobre todo el contexto, cuando hay querysets los convierta a listas para poder serializar
+        for key in context:
+            if isinstance(context[key], QuerySet):
+                context[key] = list(context[key].values())
+
+        context["token"] = token
+        print("Contexto en get_for_android: {}".format(context))
+        return JsonResponse(context, safe=False)
+
+    else:
+
+        return JsonResponse({'token' : token})
+
+@receiver(user_login_failed)
+def user_login_failed_callback(sender, credentials, **kwargs):
+    print(credentials)
+    print("Login fallado para las credenciales: {}".format(credentials))
+
+@receiver(user_logged_in)
+def user_logged_in_callback(sender, request, user, **kwargs):
+    print(user)
+    print("Se loggeó correctamente el usuario {}".format(user))
 
 def index(request):
-    return render(request, 'index/index.html')
 
-def login(request):
-    return render(request, 'index/login.html')
+    if request.GET.get("android"):
+        return get_for_android(request)
+    else:
+        return render(request, 'index/index.html')
+
+def login_app(request):
+
+    if(request.method == 'POST'):
+
+        if request.user.is_authenticated:
+            context = {
+                    'exito' : 'true'
+                }
+            return get_for_android(request, context)
+
+        else:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None and user.is_active:
+                login(request, user)
+                context = {
+                    'exito' : 'true'
+                }
+                return get_for_android(request, context)
+
+    else:
+
+        print("Por alguna razón esto es un get")
+        print(request.GET)
 
 def registration(request):
     if(request.method == 'POST'):
@@ -137,13 +199,13 @@ def demo(request):
         return render(request, 'index/components/comp_demo.html', context)
 
     elif request.method == "GET":
-        
+
         return render(request, 'index/demo.html')
 
     elif request.method == "POST":
 
         time.sleep(1)
-        
+
         index = int(request.POST["index"])
         url = request.POST["url"]
 
@@ -153,7 +215,7 @@ def demo(request):
         img = Image.open(BytesIO(response.content))
         img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
         result = forward_single_img(img_cv)
-        
+
         context = {
             "index" : index,
             "resultado" : result
@@ -170,8 +232,11 @@ def dashboard_pacientes(request):
 
             all_patients_n = Paciente_N.objects.filter(id_user=request.user)
             context = {'pacientes': all_patients_n}
-            return render(request, 'index/dashboard_pacientes.html', context)
-        
+            if request.GET.get("android"):
+                return get_for_android(request, context)
+            else:
+                return render(request, 'index/dashboard_pacientes.html', context)
+
         elif request.method == "POST":
 
             if request.POST.get("id"):
@@ -179,14 +244,14 @@ def dashboard_pacientes(request):
                 id_p = request.POST["id"]
                 instancia_paciente = get_object_or_404(Paciente_N, pk=id_p)
                 form = Data_PacienteN(request.POST, instance=instancia_paciente)
-            
+
             else:
                 form = Data_PacienteN(request.POST)
 
             if(form.is_valid()):
-                
+
                 """
-                new_patient = Paciente_N(id_user=request.user, 
+                new_patient = Paciente_N(id_user=request.user,
                                         nombre=request.POST["nombre"],
                                         ced=request.POST["cedula"],
                                         sexo=request.POST["sexo"],
@@ -206,13 +271,14 @@ def dashboard_pacientes(request):
                 print(str(form._errors))
 
     else:
+        print(request.user)
         return HttpResponse(status=403)
 
 def descriptivo_paciente(request):
-    
+
     # Si no hay paciente seleccionado se envía el form vacio
     if request.GET.get("id_paciente"):
-        
+
         id_p = int(request.GET["id_paciente"])
 
         # Obtiene el paciente
@@ -222,7 +288,7 @@ def descriptivo_paciente(request):
         form = Data_PacienteN(instance=paciente)
 
     else:
-            
+
         # Crea el formulario
         form = Data_PacienteN()
 
@@ -259,21 +325,21 @@ def dashboard_sesiones(request):
         elif request.method == "POST":
 
             if request.POST.get("id"):
-                
+
                 # Obtiene los datos ingresados contra los dato
                 id_s = request.POST["id"]
                 instancia_sesion = get_object_or_404(Sesion, pk=id_s)
                 form = Data_Comp_Sesion_Completo(request.POST, instance=instancia_sesion)
-            
+
             else:
-                
+
                 # Popula el formulario solo con los datos obtenidos del post
                 form = Data_Comp_Sesion_Completo(request.POST)
 
             if(form.is_valid()):
-                
+
                 """
-                new_patient = Paciente_N(id_user=request.user, 
+                new_patient = Paciente_N(id_user=request.user,
                                         nombre=request.POST["nombre"],
                                         ced=request.POST["cedula"],
                                         sexo=request.POST["sexo"],
@@ -292,7 +358,7 @@ def dashboard_sesiones(request):
 
             else:
                 print(str(form._errors))
-    
+
 
             return render(request, 'index/dashboard_sesiones.html')
 
@@ -371,7 +437,7 @@ def agregar_muestra(request):
         storage.child(str(upload)).put(upload)
         url = storage.child(str(upload)).get_url(None)
         response = requests.get(url)
-        
+
         img = Image.open(BytesIO(response.content))
         img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
         result = forward_single_img(img_cv)
@@ -393,7 +459,7 @@ def agregar_muestra(request):
         # Maneja el error de que no llegue id_paciente
         print("El request llegó vacio")
         return HttpResponse(status=400) # Problema con el request
-    
+
 
 def modificar_muestra(request):
 
@@ -457,7 +523,7 @@ def analytics_sesion(request):
             data.append(dato['cantidad'])
             labels.append(dato['pred'])
             colors.append(random_color())
-            
+
         data_obj = {
 
             'datasets' : [{
@@ -507,7 +573,7 @@ def analytics_paciente(request):
         labels_datasets = []
 
         for dato in datos_muestras:
-            
+
             pred_existente = False
             data = []
             labels = []

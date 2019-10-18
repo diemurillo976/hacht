@@ -1,6 +1,6 @@
 import sys
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User, Profile, Paciente_N, Sesion
+from .models import User, Profile, Paciente, Sesion
 from .forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.http import HttpResponse
 from django.db.models import Count, Sum
@@ -164,11 +164,12 @@ def demo(request):
 
 def dashboard_pacientes(request):
 
-    if request.user.is_authenticated:
+    # Only the medic user should be seeing "patients"
+    if request.user.is_authenticated and request.user.profile.rol == 0:
 
         if request.method == "GET":
 
-            all_patients_n = Paciente_N.objects.filter(id_user=request.user)
+            all_patients_n = Paciente.objects.filter(id_user=request.user)
             context = {'pacientes': all_patients_n}
             return render(request, 'index/dashboard_pacientes.html', context)
         
@@ -177,7 +178,7 @@ def dashboard_pacientes(request):
             if request.POST.get("id"):
 
                 id_p = request.POST["id"]
-                instancia_paciente = get_object_or_404(Paciente_N, pk=id_p)
+                instancia_paciente = get_object_or_404(Paciente, pk=id_p)
                 form = Data_PacienteN(request.POST, instance=instancia_paciente)
             
             else:
@@ -204,7 +205,11 @@ def dashboard_pacientes(request):
 
             else:
                 print(str(form._errors))
-
+    
+    # If the user is authenticated and is a medic, gets redirected to dashboard_sesiones
+    elif request.user.is_authenticated:
+        return redirect('dashboard_sesiones', permanent=True)
+    
     else:
         return HttpResponse(status=403)
 
@@ -216,7 +221,7 @@ def descriptivo_paciente(request):
         id_p = int(request.GET["id_paciente"])
 
         # Obtiene el paciente
-        paciente = Paciente_N.objects.get(pk=id_p)
+        paciente = Paciente.objects.get(pk=id_p)
 
         # Crea el formulario
         form = Data_PacienteN(instance=paciente)
@@ -234,7 +239,7 @@ def eliminar_paciente(request):
     if request.POST.get("id_paciente"):
 
         id_p = request.POST["id_paciente"]
-        paciente = Paciente_N.objects.get(pk=id_p)
+        paciente = Paciente.objects.get(pk=id_p)
         paciente.delete()
         return HttpResponse(status=204) # Se procesó correctamente pero no hay contenido
 
@@ -246,11 +251,11 @@ def eliminar_paciente(request):
 
 def dashboard_sesiones(request):
 
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.profile.rol == 0:
 
         if request.method == "GET" and request.GET.get("id_paciente"):
 
-            paciente = Paciente_N.objects.get(pk=request.GET["id_paciente"])
+            paciente = Paciente.objects.get(pk=request.GET["id_paciente"])
             sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
             context = {"paciente" : paciente, "sesiones" : sesiones}
 
@@ -298,6 +303,20 @@ def dashboard_sesiones(request):
 
         else:
             return HttpResponse(status=404)
+
+    # If the user is not a medic one, he should be seeing a similar interface 
+    # with different relationship
+    elif request.user.is_authenticated:
+
+        if request.method == "GET":
+
+            sesiones = Sesion.objects.filter(id_usuario=request.user.id)
+            context = {'sesiones' : sesiones}
+            
+            if request.GET.get("android"):
+
+                return get
+
 
     else:
         return HttpResponse(status=403)

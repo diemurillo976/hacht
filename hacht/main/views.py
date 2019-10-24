@@ -317,15 +317,41 @@ def eliminar_paciente(request):
 
 def dashboard_sesiones(request):
 
-    if request.user.is_authenticated and request.user.profile.rol == 0:
-
+    if request.user.is_authenticated:
+        
+        # Si hay un id_paciente en el get entonces el método debería haber sido llamado 
+        # por un usuario médico. Dentro se chequea que el paciente perteneza al usuario
         if request.method == "GET" and request.GET.get("id_paciente"):
 
             paciente = Paciente.objects.get(pk=request.GET["id_paciente"])
+
+            # Evita que con la dirección correcta se obtenga el valor
+            if paciente.id_user != request.user:
+                return HttpResponse(status=403)
+
             sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
             context = {"paciente" : paciente, "sesiones" : sesiones}
 
-            return render(request, 'index/dashboard_sesiones.html', context)
+            if request.GET.get("android"):
+
+                return get_for_android(request, context)
+
+            else:
+
+                return render(request, 'index/dashboard_sesiones.html', context)
+
+        elif request.method == "GET":
+
+            sesiones = Sesion.objects.filter(id_usuario=request.user.id)
+            context = {'sesiones' : sesiones}
+            
+            if request.GET.get("android"):
+
+                return get_for_android(request, context)
+
+            else:
+
+                return render(request, 'index/dashboard_sesiones.html', context)
 
         elif request.method == "POST":
 
@@ -354,8 +380,12 @@ def dashboard_sesiones(request):
 
                 sesion = form.save()
 
-                id_paciente = request.POST["id_paciente"]
-                sesion.id_paciente = id_paciente
+                if request.user.profile.rol == 0:
+                    id_paciente = request.POST["id_paciente"]
+                    sesion.id_paciente = id_paciente
+                else:
+                    id_usuario = request.user.id
+                    sesion.id_usuario = id_usuario
 
                 sesion = form.save()
 
@@ -369,20 +399,6 @@ def dashboard_sesiones(request):
 
         else:
             return HttpResponse(status=404)
-
-    # If the user is not a medic one, he should be seeing a similar interface 
-    # with different relationship
-    elif request.user.is_authenticated:
-
-        if request.method == "GET":
-
-            sesiones = Sesion.objects.filter(id_usuario=request.user.id)
-            context = {'sesiones' : sesiones}
-            
-            if request.GET.get("android"):
-
-                return get
-
 
     else:
         return HttpResponse(status=403)

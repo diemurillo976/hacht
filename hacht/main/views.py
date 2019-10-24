@@ -4,11 +4,12 @@ from .models import User, Profile, Paciente_N, Sesion
 from .forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.http import HttpResponse, JsonResponse
 from django.middleware.csrf import get_token
-from django.db.models import Count, Sum
+from django.db.models import Model, Count
 from django.contrib.auth.signals import user_login_failed, user_logged_in
 from django.contrib.auth import authenticate, login
 from django.dispatch import receiver
 from django.db.models.query import QuerySet;
+from django.forms.models import model_to_dict
 import random
 import json
 import numpy as np
@@ -75,18 +76,33 @@ def read_static_list():
 # Función que agrega el token en cada request
 def get_for_android(request, context=None):
 
+    print("Im getting to JSON serializer")
     token = get_token(request)
 
     if context is not None:
 
         # Itera sobre todo el contexto, cuando hay querysets los convierta a listas para poder serializar
-        for key in context:
-            if isinstance(context[key], QuerySet):
-                context[key] = list(context[key].values())
+        try:
 
-        context["token"] = token
-        print("Contexto en get_for_android: {}".format(context))
-        return JsonResponse(context, safe=False)
+            for key in context:
+                if isinstance(context[key], QuerySet):
+                    context[key] = list(context[key].values())
+                elif isinstance(context[key], Model):
+                    context[key] = model_to_dict(context[key])
+
+            context["token"] = token
+            print("Contexto en get_for_android: {}".format(context))
+
+            try:
+                return JsonResponse(context, safe=False)
+            except Exception as e:
+                print("Error respondiendo al request: {}".format(str(e)))
+                return HttpResponse(status=500)
+
+        except Exception as e:
+
+            print("Error casteando objetos del context: {}.".format(str(e)))
+            return HttpResponse(status=500)
 
     else:
 
@@ -232,6 +248,7 @@ def dashboard_pacientes(request):
 
             all_patients_n = Paciente_N.objects.filter(id_user=request.user)
             context = {'pacientes': all_patients_n}
+
             if request.GET.get("android"):
                 return get_for_android(request, context)
             else:
@@ -316,11 +333,16 @@ def dashboard_sesiones(request):
 
         if request.method == "GET" and request.GET.get("id_paciente"):
 
-            paciente = Paciente_N.objects.get(pk=request.GET["id_paciente"])
+            id_p = request.GET["id_paciente"]
+            print("ID del paciente: {}".format(id_p))
+            paciente = get_object_or_404(Paciente_N, pk=id_p)
             sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
             context = {"paciente" : paciente, "sesiones" : sesiones}
 
-            return render(request, 'index/dashboard_sesiones.html', context)
+            if request.GET.get("android"):
+                return get_for_android(request, context)
+            else:
+                return render(request, 'index/dashboard_sesiones.html', context)
 
         elif request.method == "POST":
 
@@ -406,19 +428,31 @@ def muestras_sesion(request):
         id_s = request.GET["id_sesion"]
         sesion = Sesion.objects.get(pk=id_s)
 
-        muestras = []
+        if request.GET.get("android"):
 
-        for muestra in Muestra.objects.filter(sesion=id_s):
-            form = Data_Sesion_Muestra(instance=muestra)
-            muestras.append(form)
+            muestras = Muestra.objects.filter(sesion=id_s)
+            context = {
+                'sesion' : sesion,
+                'muestras' : muestras
+            }
+
+            return get_for_android(request, context)
+
+        else:
+
+            muestras = []
+
+            for muestra in Muestra.objects.filter(sesion=id_s):
+                form = Data_Sesion_Muestra(instance=muestra)
+                muestras.append(form)
 
 
-        context = {
-            'sesion' : sesion,
-            'forms' : muestras
-        }
+            context = {
+                'sesion' : sesion,
+                'forms' : muestras
+            }
 
-        return render(request, 'index/components/muestras_sesion.html', context)
+            return render(request, 'index/components/muestras_sesion.html', context)
 
     else:
 
@@ -459,6 +493,27 @@ def agregar_muestra(request):
         # Maneja el error de que no llegue id_paciente
         print("El request llegó vacio")
         return HttpResponse(status=400) # Problema con el request
+
+def demo_app_muestra(request):
+
+    if request.GET.get("android") and request.GET.get("url"):
+
+        url = request.GET["url"]
+        response = requests.get(url)
+
+        img = Image.open(BytesIO(response.content))
+        img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+        result = forward_single_img(img_cv)
+        estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
+
+        context = {
+                'estimacion' : estimations[result]
+            }
+
+        return get_for_android(request, context)
+
+    else
+        return HttpResponse(status=403)
 
 
 def modificar_muestra(request):

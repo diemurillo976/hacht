@@ -12,7 +12,6 @@ from models import get_model
 from BreakHisDataset import *
 from Performance import Performance
 
-
 PATH = "C:/Users/Martin/Desktop/Red_CNN/"
 
 def forward_single_img(img_path):

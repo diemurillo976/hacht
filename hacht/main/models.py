@@ -2,9 +2,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-
 
 ## Profile object definition
 ## Extends the "default" User model; using a one to one field and linking it with the User
@@ -25,21 +24,10 @@ class Profile(models.Model):
     # attributes that make our "user" different than the django's
     org = models.CharField(max_length=100, null=True)
     rol = models.CharField(max_length=1, null=True)
-
-def create_user(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-# Method that catches the "save User event" and automatically saves the changes made to a profile
-def save_profile(sender, instance, **kwargs):
-    instance.profile.save()  
-
-post_save.connect(create_user, sender=User)
-post_save.connect(save_profile, sender=User)
-#post_save.connect(save_profile, sender=User)
         
 ## Paciente_N object definition
-class Paciente_N(models.Model):
+class Paciente(models.Model):
+
     #auto update on new data
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     #auto update on data change
@@ -53,26 +41,22 @@ class Paciente_N(models.Model):
     edad = models.PositiveSmallIntegerField(null=True)
     res = models.CharField(max_length=50, null=True)
 
+    ## As the model for Sesion doesnt have explicit FKs to Paciente
+    ## We need to force the On Delete - Cascade behaviour
+    def delete(self, **kwargs):
+
+        # Gets the pacient id
+        paciente_id = self.id
+
+        # For each sesion associated with the pacient id; we delete each sesion instance
+        for sesion in Sesion.objects.filter(id_paciente=paciente_id):
+            sesion.delete()
+
+        # Now the object can be deleted safely
+        super(Paciente, self).delete()
+
     def __str__(self):
         return self.nombre
-
-
-
-## Paciente_A object definition
-class Paciente_A(models.Model):
-    
-    #auto update on new data
-    created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
-    #auto update on data change
-    updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
-
-    id_user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1) # Default value should exit on "auth_user" table)
-    identificador = models.CharField(max_length=40, null=True)
-    sexo = models.CharField(max_length=1, null=True)
-    edad = models.PositiveSmallIntegerField(null=True)
-
-    def __str__(self):
-        return self.identificador
 
 
 ## Sesion object definition
@@ -83,8 +67,8 @@ class Sesion(models.Model):
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    # Ojo que para usar una sola llave foranea necesitamos generalizar Paciente!
     id_paciente = models.PositiveIntegerField(null=True)
+    id_usuario = models.PositiveIntegerField(null=True) # para UI de investigador
     date = models.DateField()
     obs = models.CharField(max_length=500, null=True, blank=True)
     estado = models.CharField(max_length=1, null=True)
@@ -105,10 +89,37 @@ class Muestra(models.Model):
     sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE, default=-1)
     url_img = models.URLField(null=True)
     pred = models.CharField(max_length=20, null=True)
-    accuracy = models.FloatField(null=True)
     obs = models.CharField(max_length=200, null=True, blank=True)
-    is_true = models.BooleanField(max_length=1, null=True)
-    consent = models.BooleanField(max_length=1, null=True)
+    pred_true = models.CharField(max_length=20, null=True, blank=True)
+    consent = models.BooleanField(max_length=1, null=True, blank=True)
 
     def __str__(self):
         return self.id_sesion
+
+# Creates callbacks to add and update the profile of a user when the user has been created or updated
+def create_user(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+# Method that catches the "save User event" and automatically saves the changes made to a profile
+def save_profile(sender, instance, **kwargs):
+    instance.profile.save()  
+
+# Creates the callback so that whenever a muestra is deleted; then the image associated is too
+def delete_muestra_callback(sender, instance, **kwargs):
+
+    url = instance.url_img
+    ## does something with url to delete from firebase
+
+def delete_user_callback(sender, instance, **kwargs):
+
+    # We emulate the cascade effect
+    for sesion in Sesion.objects.filter(id_usuario=instance.id):
+        sesion.delete()
+
+# Connect the callbacks to the signal they should be listening to
+post_save.connect(create_user, sender=User)
+post_save.connect(save_profile, sender=User)
+
+post_delete.connect(delete_muestra_callback, sender=Muestra)
+post_delete.connect(delete_user_callback, sender=User)

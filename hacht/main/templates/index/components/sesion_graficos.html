@@ -2,8 +2,10 @@
 
     <!-- Start: Graficos-Paciente -->
     <div class="shadow-lg comp-paciente bg-light" style="max-width: 100%;max-height: 100%;">
+
         <div class="row">
-            <div class="col" style="max-width: 50%;"><span class="text-left list-group-item">Clase de Tumor con más probabilidad.</span>
+            <div class="col" style="max-width: 50%;">
+                <span class="text-left list-group-item">Clase de Tumor con más probabilidad.</span>
                 <ol id="li" class="list-group list-group-tumores">
                     {% for resumen_tumor in datos_muestras %}
                         <li class="list-group-item list-group-item-tumor">{{ resumen_tumor.pred }}</li>
@@ -11,17 +13,101 @@
                 </ol>
             </div>
             <div class="col text-center" style="max-width: 50%;">
-                <div class="text-center"><span class="text-center" style="min-width: 100%;">Visualización de Probabilidades</span></div>
+                <div class="text-center">
+                    <san class="text-center" style="min-width: 100%;">Visualización de Probabilidades</span>
+                </div>
                 <canvas id="canvas_dona" height="500" width="400"></canvas>
-        </div>
-        <div class="row">
-            <div class="col text-center" style="min-width: 100%;"><span style="min-width: 100%;width: 100%;">Línea del Tiempo</span></div>
-        </div>
-        <div class="row" style="max-width: 100%;">
-            <div class="col">
-                <canvas id="canvas_timeline" height="500" width="400"></canvas>
             </div>
         </div>
+
+        {% if classes %}
+
+        <div class="row text-center" style="width: 100%; margin-top: 5px;">
+            <div class="col text-center">
+                <h2 style="min-width: 100%;width: 100%;">Métricas</h2>
+            </div>
+        </div>
+
+        <div class="row text-center" style="width: 100%; margin-top: 5px;">
+            <div class="col">
+                <span>Para esta sesión existen {{ cantidad_no_val }} muestras que no han sido validadas.</span>
+            </div>
+        </div>
+
+        <div class="row text-center" style="width: 100%; margin-top: 5px;">
+            <div class="col text-center">
+                <h3 style="min-width: 100%;width: 100%;">Resultados por clases</h3>
+            </div>
+        </div>
+
+        <nav id="navbar-classes" class="nav nav-tabs" style="width: 90%; margin-left: 5%">
+            <ul class="nav nav-pills">
+                {% for class in classes %}
+                {% with class_text=class|nbsp %}
+                    <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#pane_{{ class_text }}">{{ class_text }}</a>
+                    </li>
+                {% endwith %}
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <div class="tab-content" id="tab-tabla" style="width: 90%; margin-left: 5%">
+            {% for class in classes %}
+            {% with class_text=class|nbsp %}
+            {% with dict=val_dict|get_item:class %}
+                <div class="container tab-pane fade" id="pane_{{ class_text }}" role="tabpanel">
+                    
+                    <div class="row">
+                        <div class="col">
+                            <p>TP</p>
+                                <p id="TP">{{ dict|get_item:'TP' }}</p>
+                        </div>
+                        <div class="col">
+                            <p>FP</p>
+                            <p id="FP">{{ dict|get_item:'FP' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <p>FN</p>
+                            <p id="FN">{{ dict|get_item:'FN' }}</p>
+                        </div>
+                        <div class="col">
+                            <p>TN</p>
+                            <p id="TN">{{ dict|get_item:'TN' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <span>Precission: {{ dict|get_item:'precission' }}.</span>
+                        </div>
+                        <div class="col">
+                            <span>Recall: {{ dict|get_item:'recall' }}.</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <span>Specificity: {{ dict|get_item:'specificity' }}.</span>
+                        </div>
+                        <div class="col">
+                            <span>F1 Score: {{ dict|get_item:'f1_score' }}.</span>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            {% endwith %}      
+            {% endwith %}    
+            {% endfor %}
+        </div>
+
+        {% endif %}
+
+
     </div>
     <!-- End: Graficos-Paciente -->
 

@@ -22,33 +22,27 @@ function getCookie(name) {
 function toggle_vis(element){
     if (element.css("display") == 'none'){
         element.css("display", 'inline');
-    }else{
-        element.css("display", 'none');
     }
 }
 
 function highlight_titles(element){
 
+    // strings to query each "comp_paciente" that is each container of "Sesion" objects
+    all_element = "#contenedor_sesiones .comp-paciente"
+    str = all_element + " .titulo-descriptivo"
+
+    // first all selected values get de-selected
+    $(all_element).css("border", "0px");
+    $(str).css("background-color", "rgb(233,236,239)");
+    $(str).css("color", "rgb(73,80,87)");
+
     str = element + " .titulo-descriptivo"
     
-    if ($(str).css("color") == "rgb(255, 255, 255)"){
-        
-        $(element).css("border","0px");
-        
-        $(str).css("background-color", "rgb(233,236,239)");
-        
-        $(str).css("color", "rgb(73,80,87)");
-    
-    }else{
-        
-        $(element).css("border","solid 1px");
-        
-        $(element).css("border-color", "rgb(0,123,255)");
-        
-        $(str).css("background-color", "rgb(0,123,255)");
-        
-        $(str).css("color", "white");
-    }
+    // Then the selected value will show a "selected state"
+    $(element).css("border","solid 1px");
+    $(element).css("border-color", "rgb(0,123,255)");
+    $(str).css("background-color", "rgb(0,123,255)");
+    $(str).css("color", "white");
 }
 
 function agregar_sesion(id_paciente){
@@ -63,26 +57,49 @@ function agregar_sesion(id_paciente){
 
 function cargar_form_sesion(url, id_paciente, id_sesion){
 
-    apendice = "?id_paciente=" + id_paciente
+    if (id_paciente) {
+        apendice = "?id_paciente=" + id_paciente
 
-    if (id_sesion){ 
+        if (id_sesion){ 
 
-        // Alista el request GET mediante una url
-        apendice += "&id_sesion=" + id_sesion
+            // Alista el request GET mediante una url
+            apendice += "&id_sesion=" + id_sesion
 
-        // Carga el formulario con los datos "prellenados"
-        $("#cont_sesion").load(url+apendice, function(responseTxt, statusTxt, xhr){
-            if(statusTxt == "error")
-                alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
-        });
+            // Carga el formulario con los datos "prellenados"
+            $("#cont_sesion").load(url+apendice, function(responseTxt, statusTxt, xhr){
+                if(statusTxt == "error")
+                    alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+            });
 
-    }else{
+        }else{
 
-        // Carga el formulario sin datos
-        $("#cont_sesion").load(url+apendice, function(responseTxt, statusTxt, xhr){
-            if(statusTxt == "error")
-                alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
-        });
+            // Carga el formulario sin datos
+            $("#cont_sesion").load(url+apendice, function(responseTxt, statusTxt, xhr){
+                if(statusTxt == "error")
+                    alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+            });
+        }
+    } else {
+
+        if (id_sesion){ 
+
+            // Alista el request GET mediante una url
+            apendice = "?id_sesion=" + id_sesion
+
+            // Carga el formulario con los datos "prellenados"
+            $("#cont_sesion").load(url+apendice, function(responseTxt, statusTxt, xhr){
+                if(statusTxt == "error")
+                    alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+            });
+        }else{
+
+            // Carga el formulario sin datos
+            $("#cont_sesion").load(url, function(responseTxt, statusTxt, xhr){
+                if(statusTxt == "error")
+                    alert("Error: " + xhr.status + ": " + xhr.statusText + "\nCon url: " + str);
+            });
+        }
+
     }
 
 }
@@ -158,6 +175,29 @@ function eliminar_onclick(e, id_paciente, id_sesion){
             }
         );
     }
+}
+
+function image_on_click(id_img){
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    var img = document.getElementById(id_img);
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+
+    modal.style.display = "block";
+    modalImg.src = img.src;
+    captionText.innerHTML = img.alt;
+
+}
+
+function span_on_click(){
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    modal.style.display = "none";
 }
 
 $(document).ready(function() { 

@@ -31,8 +31,12 @@
                 </div>
             </div>
         </div>
+        
+        {% if id_paciente %}
 
         <input type="hidden" value="{{ id_paciente }}" name="id_paciente">
+
+        {% endif %}
 
         {% if form.initial.id %}
 

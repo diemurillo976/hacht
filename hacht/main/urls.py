@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('', include('django.contrib.auth.urls')),
     #path('login/', views.login, name='login'),
+    path('login_app/', views.login_app, name="login_app"),
     path('registration/', views.registration, name='registration'),
     path('registration_success/', views.registration_success, name='registration_success'),
     path('dashboard_pacientes/', views.dashboard_pacientes, name='dashboard_pacientes'),
@@ -24,4 +25,7 @@ urlpatterns = [
     path('demo/components/comp_demo/', views.demo, name='comp_demo'),
     path('dashboard_pacientes/components/analytics_paciente/', views.analytics_paciente, name="analytics_paciente")
 ]
+
+# Gets new handler for the specific 500 error
+handler500 = views.handle_500_error
 

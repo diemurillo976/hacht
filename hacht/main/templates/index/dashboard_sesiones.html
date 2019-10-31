@@ -35,7 +35,11 @@
         <div class="container">
             <!-- Botones de agregar y borrar -->
             <div class="row text-center" style="padding-bottom: 10px;">
+                {% if paciente %}
                 <div class="col" style="padding-left: 0%;padding-right: 0px;width: 50%;min-width: 50%;max-width: 50%;"><a onclick="agregar_sesion('{{ paciente.id }}')" href="#"><img src="{% static 'index/assets/img/icons8-plus-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Sesión</span></a></div>
+                {% else %}
+                <div class="col" style="padding-left: 0%;padding-right: 0px;width: 50%;min-width: 50%;max-width: 50%;"><a onclick="agregar_sesion('')" href="#"><img src="{% static 'index/assets/img/icons8-plus-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Sesión</span></a></div>
+                {% endif %}
                 <div class="col" style="padding-left: 0px;"><a href="#"><img src="{% static 'index/assets/img/icons8-trash-can-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Eliminar Sesión</span></a></div>
             </div>
         </div>
@@ -52,8 +56,12 @@
                         {% for sesion in sesiones %}
 
                             <!-- Start: Descriptivo-Sesion-Compacto -->
+                            {% if paciente %}
                             <div id="descriptivo_sesion_{{ sesion.id }}" class="text-dark border-primary comp-paciente shadow-lg bg-light" ondblclick="sesion_onclick('{{ paciente.id }}', '{{ sesion.id }}')" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
-                                
+                            {% else %}
+                            <div id="descriptivo_sesion_{{ sesion.id }}" class="text-dark border-primary comp-paciente shadow-lg bg-light" ondblclick="sesion_onclick('', '{{ sesion.id }}')" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
+                            {% endif %}
+
                                 <div class="row">
                                     <div class="col" style="min-width: auto;max-width: auto;width: auto;">
                                         <div class="input-group" style="max-width: 100%;">
@@ -62,7 +70,12 @@
                                         </div>
                                     </div>
                                     <div class="col text-center" style="max-width: 100px;min-width: 100px;width: 100px;"><a href="#" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Editar</span></a></div>
+                                    
+                                    {% if paciente %}
                                     <div class="col text-center" style="max-width: 122px;min-width: 122px;width: 122px;"><a href="#" onclick="eliminar_onclick(event, '{{ paciente.id }}', '{{ sesion.id }}')" style="margin-left: 5px;"><i class="fas fa-trash"></i><span style="margin-left: 5px;">Eliminar</span></a></div>
+                                    {% else %}
+                                    <div class="col text-center" style="max-width: 122px;min-width: 122px;width: 122px;"><a href="#" onclick="eliminar_onclick(event, '', '{{ sesion.id }}')" style="margin-left: 5px;"><i class="fas fa-trash"></i><span style="margin-left: 5px;">Eliminar</span></a></div>
+                                    {% endif %}
                                 </div>
 
                                 <div class="row">
@@ -147,6 +160,23 @@
         <div class="footer-copyright">
             <p></p>
         </div>
+
+
+        <!-- Modal Container for images -->
+        <div id="myModal" class="modal" style="margin-top: 7.5%">
+
+            <!-- The Close Button -->
+            <span class="close" onclick="span_on_click()">&times;</span>
+
+            <!-- Modal Content (The Image) -->
+            <img class="modal-content" id="img01">
+
+            <!-- Modal Caption (Image Text) -->
+            <div id="caption"></div>
+
+        </div>
+
+
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>

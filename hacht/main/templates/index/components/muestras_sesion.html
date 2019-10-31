@@ -8,17 +8,16 @@
             {% csrf_token %}
 
             <!-- Start: Muestra-Agregada -->
-            <div class="text-dark border-primary shadow-lg comp-paciente bg-light" style="max-width: 600 px; min-width: 600px; width: 600px; padding-bottom: 10px;">
+            <div class="text-dark border-primary comp-paciente bg-light" style="max-width: 600 px; min-width: 600px; width: 600px; padding-bottom: 10px;">
                 
-                <div class="card" style="background-color: rgba(255,255,255,0.09); max-width: 600px;">
-                    <div class="card-body" style="max-width: 100%; min-height: 330px;">
+                <div class="card" style="background-color: rgba(197, 197, 197, 0.09); max-width: 100%;">
+                    <div class="card-body" style="max-width: 100%; min-height: 300px;">
                         
                         <div class="row no-gutter" style="max-width: 100%;">                          
                             
                             <!-- Start: Imagen -->                         
-                            <div class="col-md-3" style="max-width: 35%;min-width: 35%;"><img id="img_{{ form.initial.id }}" src="{{ form.initial.url_img }}" class="card-img" style="max-height: 128px;">                      
-                                <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div>{{ form.pred }}
-                                <div class="input-group-append"></div>                      
+                            <div class="col" style="width: 45%">
+                                <img id="img_{{ form.initial.id }}" src="{{ form.initial.url_img }}" onclick="image_on_click('img_{{ form.initial.id }}')" alt="Muestra Subida" class="card-img" style="width: 100%;">
                             </div>
                             <!-- End: Imagen -->
                             
@@ -26,25 +25,34 @@
                             <div class="col-md-4" style="max-width: 250px;min-width: 350px;">
                                 
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text" style="height: 75px">Observación</span></div>{{ form.obs }}
-                                    <div class="input-group-append"></div>
+                                    <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div>{{ form.pred }}
+                                    <div class="input-group-append"></div>  
                                 </div>
                                 
-                                <div>
-                                    <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Predicción Correcta</span>
-                                        {{ form.is_true }}                  
-                                    </div>
-                                </div>
-                            
-                                <div>
-                                    <div class="input-group-prepend" style="max-width: 200px;"><span class="input-group-text">Consentimiento de uso</span>                                    
-                                        {{ form.consent }}
-                                    </div>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text" style="height: 75px">Observación</span></div>{{ form.obs }}
+                                    <div class="input-group-append"></div>
                                 </div>
                                 
                             </div>
                             <!-- End: correcto -->
                             
+                        </div>
+
+                        <div class="row" style="margin-left: 15%">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="max-width: 100%;"><span class="input-group-text">Predicción Correcta</span>
+                                    {{ form.pred_true }}                  
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row" style="margin-left: 15%">
+                            <div class="input-group">
+                                <div class="input-group-prepend" style="max-width: 100%;"><span class="input-group-text">Consentimiento de uso</span>                                    
+                                    {{ form.consent }}
+                                </div>
+                            </div>
                         </div>
 
                         <input type="hidden" value="{{ form.initial.id }}" name="id_muestra">
@@ -72,21 +80,21 @@
 
 {% endif %}
 
-<div class="card" style="background-color: rgba(255,255,255,0.09); max-width: 600px;">
-    <div class="card-body text-dark border-primary shadow-lg comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09); height: 80%; width: 95%; margin-left: 2.5%; margin-bottom: 10px">
+<div class="card" style="background-color: rgba(255,255,255,0.09); max-width: 100%;">
+    <div class="card-body text-dark border-primary comp-paciente bg-light" style="background-color: rgba(255,255,255,0.09); height: 80%; width: 95%; margin-left: 2.5%; margin-bottom: 10px">
         
         <form method="POST" action="agregar_muestra/" enctype="multipart/form-data">
                 
             {% csrf_token %}
                 
-            <div class="input-group" style="width: 85%; margin-left: 7.5%">
+            <div class="input-group" style="width: 100%">
 
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroupFileAddon01">Subir Archivo</span>
+                  <span class="input-group-text" id="inputGroupFileAddon01">Subir Archivo(s)</span>
                 </div>
 
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" name="img_file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" name="img_file" multiple>
                     <label class="custom-file-label" for="inputGroupFile01">Escoja un archivo</label>
                 </div>
 
@@ -94,7 +102,7 @@
             
             <input type="hidden" value="{{ sesion.id }}" name="id_sesion">
             
-            <input class="btn btn-primary btn-block" type="submit" value="Subir Muestra" style="width: 25%; margin-left: 37.5%;">
+            <input class="btn btn-primary btn-block" type="submit" value="Subir Muestra(s)" style="width: 35%; margin-left: 32.5%;">
             
         </form>
         

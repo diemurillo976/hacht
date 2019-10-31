@@ -13,15 +13,28 @@ sexo=[
 ]
 
 estados=[
-    ('0','Seguro'),
-    ('1','Moderado'),
-    ('2','Riesgoso')
+    ('0', 'Seguro'),
+    ('1', 'Moderado'),
+    ('2', 'Riesgoso')
 ]
 
 booleano = [
     (1, 'Si'),
     (0, 'No')
 ]
+
+estimations = [
+    (None, "No seleccionado"),
+    ("Adenosis", "Adenosis"),
+    ("Fibroadenoma", "Fibroadenoma"),
+    ("Phyllodes Tumour", "Phyllodes Tumour"),
+    ("Tubular Adenon", "Tubular Adenon"),
+    ("Carcinoma", "Carcinoma"),
+    ("Lobular Carcinoma", "Lobular Carcinoma"),
+    ("Mucinous Carcinoma", "Mucinous Carcinoma"),
+    ("Papillary Carcinoma", "Papillary Carcinoma")
+    ]
+
 
 class RegistrationForm(forms.Form):
 
@@ -49,7 +62,7 @@ class Data_PacienteN(forms.ModelForm):
 
     class Meta:
 
-        model= Paciente_N
+        model= Paciente
         fields = ["id", "ced", "nombre", "res", "edad", "sexo"]
         widgets = {
             "id" : forms.HiddenInput(),
@@ -59,7 +72,7 @@ class Data_PacienteN(forms.ModelForm):
             "edad" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}), 
             "sexo" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=sexo)
         }
-        
+
 
 class Data_Comp_Sesion_Completo(forms.ModelForm):
 
@@ -78,10 +91,11 @@ class Data_Sesion_Muestra(forms.ModelForm):
     class Meta:
 
         model = Muestra
-        fields = ["id", "url_img", "pred", "obs", "is_true", "consent"]
+        fields = ["id", "url_img", "pred", "obs", "pred_true", "consent"]
         widgets = {
             "pred" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}),
             "obs" : forms.Textarea(attrs={'class':'form-control', 'type':'text', 'style':'height: 75px'}),
-            "is_true" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline radio-propio'}, choices=booleano),
+            "pred_true" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=estimations),
             "consent" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline radio-propio'}, choices=booleano)  
         }
+        

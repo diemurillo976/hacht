@@ -22,33 +22,27 @@ function getCookie(name) {
 function toggle_vis(element){
     if (element.css("display") == 'none'){
         element.css("display", 'inline');
-    }else{
-        element.css("display", 'none');
     }
 }
 
 function highlight_titles(element){
 
+    // strings to query each "comp_paciente" that is each container of "Sesion" objects
+    all_element = "#cont_componentes .comp-paciente"
+    str = all_element + " .titulo-descriptivo"
+
+    // first all selected values get de-selected
+    $(all_element).css("border", "0px");
+    $(str).css("background-color", "rgb(233,236,239)");
+    $(str).css("color", "rgb(73,80,87)");
+
     str = element + " .titulo-descriptivo"
     
-    if ($(str).css("color") == "rgb(255, 255, 255)"){
-        
-        $(element).css("border","0px");
-        
-        $(str).css("background-color", "rgb(233,236,239)");
-        
-        $(str).css("color", "rgb(73,80,87)");
-    
-    }else{
-        
-        $(element).css("border","solid 1px");
-        
-        $(element).css("border-color", "rgb(0,123,255)");
-        
-        $(str).css("background-color", "rgb(0,123,255)");
-        
-        $(str).css("color", "white");
-    }
+    // Then the selected value will show a "selected state"
+    $(element).css("border","solid 1px");
+    $(element).css("border-color", "rgb(0,123,255)");
+    $(str).css("background-color", "rgb(0,123,255)");
+    $(str).css("color", "white");
 }
 
 function agregar_paciente(){
@@ -136,8 +130,6 @@ function eliminar_onclick(e, id_paciente){
 }
 
 function inicializar_graficos(data_pie, data_line){
-
-    alert("Entro a la función correcta");
 
     var ctx = $("#canvas_dona");
     var myChart = new Chart(ctx, {

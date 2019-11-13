@@ -21,6 +21,7 @@ import time
 from datetime import datetime
 
 #Pyrebase and model imports#################################################
+#Hola :)
 import pyrebase
 from PIL import Image
 from io import BytesIO

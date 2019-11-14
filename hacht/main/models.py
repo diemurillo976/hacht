@@ -8,6 +8,9 @@ from django.dispatch import receiver
 ## Profile object definition
 ## Extends the "default" User model; using a one to one field and linking it with the User
 class Profile(models.Model):
+    """
+    Entidad 'Perfil' creada con la intención de unificar las entidades 'Médico' e 'Investigador' y manejar los atributos 'organización' y 'rol' de las entidades.
+    """
 
     # one to one relationship with the django auth default user
     #user = models.IntegerField()
@@ -27,6 +30,9 @@ class Profile(models.Model):
         
 ## Paciente_N object definition
 class Paciente(models.Model):
+    """
+    Entidad que modela al 'Paciente'. Atributos: Id, nombre, cédula, sexo, edad, residencia.
+    """
 
     #auto update on new data
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -44,6 +50,11 @@ class Paciente(models.Model):
     ## As the model for Sesion doesnt have explicit FKs to Paciente
     ## We need to force the On Delete - Cascade behaviour
     def delete(self, **kwargs):
+        """ 
+        Entrada: id del objeto paciente a eliminar
+        Salida: Ninguna
+        Descripción: Elimina al paciente dado su id del modelo en la base de datos.
+        """
 
         # Gets the pacient id
         paciente_id = self.id
@@ -56,11 +67,19 @@ class Paciente(models.Model):
         super(Paciente, self).delete()
 
     def __str__(self):
+        """ 
+        Entrada: Objeto de tipo 'Paciente' 
+        Salida: String 'nombre'
+        Descripción: Función que retorna el nombre del paciente
+        """
         return self.nombre
 
 
 ## Sesion object definition
 class Sesion(models.Model):
+    """
+    Entidad que modela la 'Sesión'. Atributos: Id de paciente, Id de usuario,  fecha, observación, estado.
+    """
 
     #auto update on new data
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -74,11 +93,19 @@ class Sesion(models.Model):
     estado = models.CharField(max_length=1, null=True)
 
     def __str__(self):
+        """ 
+        Entrada: Objeto de tipo 'Sesión' 
+        Salida: String 'Id del paciente'
+        Descripción: Función que retorna el id de paciente de una sesión dada.
+        """
         return self.id_paciente
 
 
 ## Muestra object definition
 class Muestra(models.Model):
+    """
+    Entidad que modela la 'Muestra'. Atributos: Id de sesión, url de la imagen,  predicción, observación, Validación de la predicción, consentimiento de uso.
+    """
 
     #auto update on new data
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)

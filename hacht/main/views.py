@@ -21,7 +21,6 @@ import time
 from datetime import datetime
 
 #Pyrebase and model imports#################################################
-#Hola :)
 import pyrebase
 from PIL import Image
 from io import BytesIO
@@ -71,6 +70,12 @@ def user_logged_in_callback(sender, request, user, **kwargs):
 
 # Auxiliar function to return a list of static images and their corresponding class
 def read_static_list():
+    """ 
+    Entrada: Ninguna
+    Salida: Ruta del archivo 'demo_src.csv'
+    Descripción: Función que forma la ruta al archivo 'demo_src.csv'. Esto debido a que la ruta varía en ambientes de prueba y deployment.
+    """
+
 
     # Obtiene el path del archivo csv con la lista
     path = os.getcwd()
@@ -90,6 +95,14 @@ def read_static_list():
 
 # Funcion to handle error responses
 def handle_error(request, status, message):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+             status -- código de status de la petición 
+             message -- mensaje de error contenido
+
+    Salida: Mensaje de error
+    Descripción: Función que maneja los mensajes de error, de acuerdo al tipo y si proviene del usuario web o móvil
+    """
 
     # send error to android client
     if request.GET.get("android") or request.POST.get("android"):
@@ -106,12 +119,23 @@ def handle_error(request, status, message):
 
 # Function to catch the 500 internal error 
 def handle_500_error(request):
+    """ 
+    Entrada:  request -- petición Http proveniente del usuario
+    Salida: Mensaje de error del servidor
+    Descripción: Función que maneja el error del servidor ocasionado por la inhabilidad de resolver la petición
+    """
 
     return handle_error(request, status=500, message="El servidor ha tenido un problema resolviendo la petición")    
 
 # Function to handle each response to the android client
 # It serializes the data on the context variable
 def get_for_android(request, context=None):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+             context -- json que posee el contexto desde el cual se realiza la petición
+    Salida: Respuesta Http
+    Descripción: Función que valida si la petición del usuario proviene del cliente móvil. Regresa un token cuando tiene éxito y error en caso contrario
+    """
 
     token = get_token(request)
 
@@ -145,6 +169,11 @@ def get_for_android(request, context=None):
         return JsonResponse({'token' : token})
 
 def index(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: página HTML
+    Descripción: Función que retorna la página de bienvenida del programa. Debe validar primero que se trata del cliete web
+    """
 
     if request.GET.get("android"):
         return get_for_android(request)
@@ -152,6 +181,11 @@ def index(request):
         return render(request, 'index/index.html')
 
 def login_app(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: Token de sesión
+    Descripción: Función que realiza el inicio de sesión del cliente móvil. Valida que las credenciales suministradas por el usuario en la petición sean correctas
+    """
 
     if(request.method == 'POST'):
 
@@ -182,6 +216,11 @@ def login_app(request):
             )
 
 def registration(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: Respuesta HTML
+    Descripción: Función que valida el proceso de registro en la aplicación. Si los datos provenientes de la petición son satisfactorios, se crea un nuevo usuario y se redirige a la página de 'éxito de registro' en caso contrario retorna un error
+    """
 
     if(request.method == 'POST'):
         
@@ -222,9 +261,19 @@ def registration(request):
 
 
 def registration_success(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: Respuesta HTML
+    Descripción: Función que retorna la página de 'éxito al regitrarse' cuando esta es solicitada por la petición
+    """
     return render(request, 'index/registration_success.html')
 
 def demo(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: Respuesta HTML
+    Descripción: Función que retorna la sección de 'Demostración' de la herramienta. La petición del usuario posee el índice de muestra a cargar al modelo de aprendizaje automatizado para así retornar al usuario su estimación
+    """
 
     if request.method == "GET" and request.GET.get("resultado"):
 
@@ -281,6 +330,11 @@ def demo(request):
 
 
 def dashboard_pacientes(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta Http
+    Descripción: Función que retorna la lista de pacientes dado un id de usuario contenido en el request. Se valida si proviene de el cliente web o móvil puesto que esto afecta la forma en la que se da formato a la respuesta. Http para web o SJON para móvil.
+    """
 
     # Only the medic user should be seeing "patients"
     if request.user.is_authenticated and request.user.profile.rol == '0':
@@ -340,6 +394,11 @@ def dashboard_pacientes(request):
         )
 
 def descriptivo_paciente(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta Http
+    Descripción: Función que retorna el componente abreviado de muestra de pacientes. Utiliza el id de paciente contenido en el request
+    """
 
     # Si no hay paciente seleccionado se envía el form vacio
     if request.GET.get("id_paciente"):
@@ -361,6 +420,11 @@ def descriptivo_paciente(request):
     return render(request, 'index/components/descriptivo_paciente.html', context)
 
 def eliminar_paciente(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta Http
+    Descripción: Función que maneja el borrado de pacientes, mediante el id de paciente proveniente de request. Retorna una respuesta Http de éxito o error según corresponda
+    """
 
     if request.POST.get("id_paciente"):
 
@@ -376,6 +440,11 @@ def eliminar_paciente(request):
         return HttpResponse(status=400) # Problema con el request
 
 def dashboard_sesiones(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta Http
+    Descripción: Función que retorna la lista de sesiones dado un id de usuario contenido en el request. Se valida si proviene de el cliente web o móvil puesto que esto afecta la forma en la que se da formato a la respuesta. Http para web o SJON para móvil.
+    """
 
     if request.user.is_authenticated:
         
@@ -457,6 +526,11 @@ def dashboard_sesiones(request):
 
 
 def descriptivo_sesion(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta Http
+    Descripción: Función que retorna el componente abreviado de muestra de sesiones. Utiliza el id de sesion contenido en el request
+    """
 
     if request.GET.get("id_sesion"):
 
@@ -479,6 +553,11 @@ def descriptivo_sesion(request):
     return render(request, 'index/components/descriptivo_sesion.html', context)
 
 def eliminar_sesion(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta Http
+    Descripción: Función que maneja el borrado de sesiones, mediante el id de sesión proveniente de request. Retorna una respuesta Http de éxito o error según corresponda
+    """
 
     if request.POST.get("id_sesion"):
 
@@ -494,6 +573,11 @@ def eliminar_sesion(request):
         return HttpResponse(status=400) # Problema con el request
 
 def muestras_sesion(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta Http
+    Descripción: Función que retorna la página de muestras de una sesión dado el id de sesión contenido en el request. Valida si la petición proviene del cliente web o móvil, de esto depende el tipo de respuesta, HTML para web y JSON para móvil
+    """
 
     if request.GET.get("id_sesion"):
 
@@ -533,6 +617,11 @@ def muestras_sesion(request):
         return HttpResponse(status=400) # Problema con el request
 
 def agregar_muestra(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta Http
+    Descripción: Función que agrega muestras a una sesión, dado un id de sesión contenido en el request. La muestra es evaluada por el modelo de aprendizaje autimatizado al momento de subirse. La muestra pasa a estar asociada a la sesión y podrá ser cargada con las demás muestras
+    """
 
     if request.POST.get("id_sesion"):
 
@@ -573,6 +662,11 @@ def agregar_muestra(request):
         return HttpResponse(status=400) # Problema con el request
 
 def demo_app_muestra(request):
+    """ 
+    Entrada: request -- petición Http del usuario
+    Salida: respuesta Http
+    Descripción: Función que recibe la dirección url de una imagen, contenida en el request. Se descarga la imagen y se pasa por el modelo de aprendizaje automtizado para retornar al usuario la estimación adquirida
+    """
 
     if request.GET.get("android") and request.GET.get("url"):
 
@@ -595,6 +689,11 @@ def demo_app_muestra(request):
 
 
 def modificar_muestra(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta HTML
+    Descripción: Función que actualiza la información de una muestra dado su id contenido en el request. Se valida que la información proveniente en correcta y se actualiza la entidad muestra. Se retorna la nueva muestra como HTML al cliente web
+    """
 
     if request.POST.get("id_muestra") and request.POST.get("update"):
 
@@ -642,6 +741,11 @@ def modificar_muestra(request):
 # Auxiliar function to assist the analytics for Sesion
 # It gets metrics associated with each class present
 def get_metrics(muestras_general):
+    """ 
+    Entrada: muestras_general -- Objeto de tipo 'Muestra' que posee la información básica de una muestra
+    Salida: Diccionario
+    Descripción: Función que asiste la función de 'analytics_sesion'. Calcula los indices de error tipo I y tipo II y las métricas 'precission','recall','specificity','f1_score'
+    """
 
     # Obtains the "Muestra" objects grouping by "pred" and counting it
     muestras_pred = muestras_general.values('pred').annotate(
@@ -710,6 +814,11 @@ def get_metrics(muestras_general):
     return metrics_dict, possible_values
 
 def analytics_sesion(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta HTML
+    Descripción: Función que genera un resumen estadístico mediante múltiples graficos. Toma el id de la sesión contenido en el request. Solicita información de sesiones para completar los gráficos. Retorna una respuesta HTML con las visualizaciones de los gráficos.
+    """
 
     def random_color():
 
@@ -773,8 +882,18 @@ def analytics_sesion(request):
         return render(request, 'index/components/sesion_graficos.html', context)
 
 def analytics_paciente(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta HTML
+    Descripción: Función que genera un resumen estadístico mediante múltiples graficos. Toma el id del paciente contenido en el request. Solicita información de sesiones para completar los gráficos. Retorna una respuesta HTML con las visualizaciones de los gráficos.
+    """
 
     def random_color():
+        """ 
+        Entrada: Ninguna
+        Salida: Tupla
+        Descripción: Función que genera una tupla con valores RGB aleatorios
+        """
 
         r = random.randint(0, 255)
         g = random.randint(0, 255)
@@ -907,9 +1026,19 @@ def analytics_paciente(request):
         return render(request, 'index/components/paciente_graficos.html', context)
 
 def contact_us(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta HTML
+    Descripción: Función que retorna la página de 'contáctenos' cuando esta es solicitada por el usuario web
+    """
     return render(request, 'index/contact-us.html')
 
 def features(request):
+    """ 
+    Entrada: request -- petición Http proveniente del usuario
+    Salida: respuesta HTML
+    Descripción: Función que retorna la página de 'características' cuando esta es solicitada por el usuario web
+    """
     return render(request, 'index/features.html' )
 
 @register.filter

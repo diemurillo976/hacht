@@ -1,0 +1,37 @@
+    <footer class="page-footer dark" style="margin-top: 25px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h5>Comenzar</h5>
+                    <ul>
+                        <li><a href="{% url 'index' %}">Inicio</a></li>
+                        <li><a href="{% url 'registration' %}">Registrarse</a></li>
+                        <li><a href="{% url 'login' %}">Ingresar</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>Acerca de nosotros</h5>
+                    <ul>
+                        <li><a href="#">Información</a></li>
+                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>Soporte</h5>
+                    <ul>
+                        <li><a href="{% url 'help' %}">Ayuda</a></li>
+                        <li><a href="{% url 'features' %}">Características</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>Otros</h5>
+                    <ul>
+                        <li><a href="{% url 'demo' %}">Demo</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p></p>
+        </div>
+    </footer>

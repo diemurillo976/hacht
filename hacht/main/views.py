@@ -79,7 +79,7 @@ def read_static_list():
 
     # Obtiene el path del archivo csv con la lista
     path = os.getcwd()
-    abs_path = os.path.join(path, "hacht", "hacht", "main", "static", "index", "assets", "csv", "demo_src.csv")
+    abs_path = os.path.join(path, "hacht", "main", "static", "index", "assets", "csv", "demo_src.csv")
 
     with open(abs_path) as file:
 
@@ -92,6 +92,15 @@ def read_static_list():
             lista.append((y_true, url))
 
     return lista
+
+def ayuda(request):
+
+    if request.user.is_authenticated:
+
+        context = {"logged_in" : True}
+        return render(request, 'index/help.html', context)
+
+    return render(request, 'index/help.html')
 
 # Funcion to handle error responses
 def handle_error(request, status, message):
@@ -633,23 +642,42 @@ def agregar_muestra(request):
 
         # Por cada archivo lo sube a Firebase, hace la predicción y lo agrega a la BD local
         for file in files:
+            
+            steps = 0
+            exito = False
+            guardada = False
 
-            storage.child(str(file)).put(file)
-            url = storage.child(str(file)).get_url(None)
-            response = requests.get(url)
+            while steps < 5 and not exito:
 
-            img = Image.open(BytesIO(response.content))
-            img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-            result = forward_single_img(img_cv)
-            estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
+                try:
+                    
+                    if guardada == False:
+                        storage.child(str(file)).put(file)
+                        guardada = True
 
-            muestra = Muestra(
-                sesion=sesion,
-                url_img=url,
-                pred=estimations[result],
-            )
+                    url = storage.child(str(file)).get_url(None)
+                    response = requests.get(url)
 
-            muestra.save()
+                    img = Image.open(BytesIO(response.content))
+                    img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+                    result = forward_single_img(img_cv)
+                    estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
+
+                    muestra = Muestra(
+                        sesion=sesion,
+                        url_img=url,
+                        pred=estimations[result],
+                    )
+
+                    muestra.save()
+
+                    exito = True
+
+                except:
+                    steps += 1
+
+            if not exito:
+                return handle_error(request, status=500, message="Lo sentimos, no se ha podido establecer la conexión con la base de datos para imágenes. Al menos en alguna muestra se han realizado más de 5 intentos para establecer la conexión.")
 
         if request.user.profile.rol == '0':
             return redirect('/dashboard_sesiones/?id_paciente=' + str(sesion.id_paciente)) # Se procesó correctamente pero no hay contenido
@@ -879,7 +907,10 @@ def analytics_sesion(request):
             'cantidad_no_val' : cantidad_no_val
         }
 
-        return render(request, 'index/components/sesion_graficos.html', context)
+        if request.GET.get("android"):
+            return render(request, 'index/components/sesion_graficos_app.html', context)
+        else:
+            return render(request, 'index/components/sesion_graficos.html', context)
 
 def analytics_paciente(request):
     """ 
@@ -1023,7 +1054,10 @@ def analytics_paciente(request):
             'data_pie' : data_pie_obj
         }
 
-        return render(request, 'index/components/paciente_graficos.html', context)
+        if request.GET.get("android"):
+            return render(request, 'index/components/paciente_graficos_app.html', context)
+        else:
+            return render(request, 'index/components/paciente_graficos.html', context)
 
 def contact_us(request):
     """ 

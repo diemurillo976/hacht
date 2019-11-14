@@ -52,7 +52,7 @@ class RegistrationForm(forms.Form):
         }
     """
 
-    nombre = forms.CharField(max_length=40, widget=forms.TextInput(attrs={'class' : 'form-control item' }))
+    nombre = forms.CharField(max_length=40, widget=forms.TextInput(attrs={'class' : 'form-control item', 'pattern' : '[A-Za-z ]+', 'title' : 'Ingrese caracteres solamente' }))
     correo = forms.EmailField(max_length=40, widget=forms.TextInput(attrs={'class' : 'form-control item', 'type' : 'email', 'id' : 'email'}))
     password = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control item',  'type' : 'password' }))
     org = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control item' }))
@@ -67,7 +67,7 @@ class Data_PacienteN(forms.ModelForm):
         widgets = {
             "id" : forms.HiddenInput(),
             "ced" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}), 
-            "nombre" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}), 
+            "nombre" : forms.TextInput(attrs={'class':'form-control', 'type':'text', 'pattern' : '[A-Za-z ]*'}), 
             "res" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}), 
             "edad" : forms.TextInput(attrs={'class':'form-control', 'type':'text'}), 
             "sexo" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=sexo)

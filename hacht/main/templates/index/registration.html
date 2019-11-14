@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
         <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(59,153,224);font-size: 30px;">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div
@@ -51,46 +52,9 @@
             </div>
         </section>
     </main>
-    <footer class="page-footer dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
-                    <h5>Comenzar</h5>
-                    <ul>
-                        <li><a href="{% url 'index' %}">Inicio</a></li>
-                        <li><a href="{% url 'login' %}">Ingresar</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Acerca de nosotros</h5>
-                    <ul>
-                        <li><a href="#">Information</a></li>
-                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
-                        <li><a href="#">Reseñas</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Soporte</h5>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Ayuda</a></li>
-                        <li><a href="#">Foros</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Legal</h5>
-                    <ul>
-                        <li><a href="#">Términos de servicio</a></li>
-                        <li><a href="#">Términos de uso</a></li>
-                        <li><a href="#">Política de privacidad</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="footer-copyright">
-            <p></p>
-        </div>
-    </footer>
+
+    {% include "index/footer.html" %}  
+
     <script src="{% static 'index/assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'index/assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>

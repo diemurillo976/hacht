@@ -1,18 +1,10 @@
-.comp-paciente * {
-  margin: 0px 0px 5px 0px;
-}
-
-.comp-paciente {
-  padding-top: 10px;
-}
-
-.comp-paciente * {
-  margin: 0px 0px 5px 0px;
-}
-
 .comp-paciente {
   padding-top: 15px;
   margin-top: 10px;
+}
+
+.comp-paciente * {
+  margin: 0px 0px 5px 0px;
 }
 
 .contenedor_muestras {
@@ -54,4 +46,28 @@
 
 .list-group-item-tumor {
   display: list-item;
+}
+
+@media screen and (max-width: 600px) {
+
+  #contenedor_lista{
+    order: 2;
+  }
+}
+
+@media screen and (max-width: 450px) {
+
+  .group-icons{
+    order:1;
+  }
+
+  .group-icons .col{
+    -ms-flex: 100%;
+    flex: 100%;
+    max-width: 100%;
+  }
+
+  #contenedor_lista{
+    order: 2;
+  }
 }

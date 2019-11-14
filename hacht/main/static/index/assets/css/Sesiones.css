@@ -127,4 +127,30 @@ hr {
   .modal-content {
     width: 100%;
   }
+
+  @media screen and (max-width: 600px) {
+
+    #contenedor_descriptivos{
+      order: 2;
+    }
+  }
+  
+  @media screen and (max-width: 450px) {
+  
+    .group-icons{
+      order:1;
+      margin-left: 0px;
+    }
+  
+    .group-icons .col{
+      -ms-flex: 100%;
+      flex: 100%;
+      max-width: 100%;
+    }
+  
+    #contenedor_descriptivos{
+      order: 2;
+    }
+  }
+
 } 

@@ -8,66 +8,71 @@
             {% csrf_token %}
 
             <!-- Start: Muestra-Agregada -->
-            <div class="text-dark border-primary comp-paciente bg-light" style="max-width: 600 px; min-width: 600px; width: 600px; padding-bottom: 10px;">
+            <div class="text-dark border-primary comp-paciente bg-light" style="max-width: 600 px; padding-bottom: 10px;">
                 
                 <div class="card" style="background-color: rgba(197, 197, 197, 0.09); max-width: 100%;">
                     <div class="card-body" style="max-width: 100%; min-height: 300px;">
                         
-                        <div class="row no-gutter" style="max-width: 100%;">                          
+                        <div class="container-fluid">
                             
-                            <!-- Start: Imagen -->                         
-                            <div class="col" style="width: 45%">
-                                <img id="img_{{ form.initial.id }}" src="{{ form.initial.url_img }}" onclick="image_on_click('img_{{ form.initial.id }}')" alt="Muestra Subida" class="card-img" style="width: 100%;">
-                            </div>
-                            <!-- End: Imagen -->
-                            
-                            <!-- Start: correcto -->
-                            <div class="col-md-4" style="max-width: 250px;min-width: 350px;">
+                            <div class="row" style="max-width: 100%;">                          
                                 
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div>{{ form.pred }}
-                                    <div class="input-group-append"></div>  
+                                <!-- Start: Imagen -->                         
+                                <div class="col" style="min-width: 200px;">
+                                    <img id="img_{{ form.initial.id }}" src="{{ form.initial.url_img }}" onclick="image_on_click('img_{{ form.initial.id }}')" alt="Muestra Subida" class="card-img">
+                                </div>
+                                <!-- End: Imagen -->
+                                
+                                <!-- Start: correcto -->
+                                <div class="col flex-grow-1 group-icons">
+                                    
+                                    <div class="input-group group-icons">
+                                        <div class="input-group-prepend"><span class="input-group-text">Predicción</span></div>{{ form.pred }}
+                                        <div class="input-group-append"></div>  
+                                    </div>
+                                    
+                                    <div class="input-group group-icons">
+                                        <div class="input-group-prepend"><span class="input-group-text">Observación</span></div>{{ form.obs }}
+                                        <div class="input-group-append"></div>
+                                    </div>
+                                    
+                                </div>
+                                <!-- End: correcto -->
+                                
+                            </div>
+
+                            <div class="row d-flex" style="margin-left: 15%">
+                                <div class="input-group group-icons">
+                                    <div class="input-group-prepend"><span class="input-group-text">Predicción Correcta</span>
+                                        {{ form.pred_true }}                  
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row flex-grow-1" style="margin-left: 15%;">
+                                <div class="group-icons">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text">Consentimiento de uso</span>                                    
+                                            {{ form.consent }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" value="{{ form.initial.id }}" name="id_muestra">
+                            <input type="hidden" value="{{ sesion.id }}" name="id_sesion">
+
+                            <div class="row " >
+                                
+                                <div class="col" style="width: 45%;">
+                                    <input class="btn btn-primary btn-block" type="submit" value="Guardar Cambios" name="update" style="height: 50px">
                                 </div>
                                 
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text" style="height: 75px">Observación</span></div>{{ form.obs }}
-                                    <div class="input-group-append"></div>
+                                <div class="col" style="width: 45%; margin-left: 10px">
+                                    <input class="btn btn-primary btn-block" type="submit" value="Borrar Muestra" name="delete" style="height: 50px; ">
                                 </div>
-                                
-                            </div>
-                            <!-- End: correcto -->
                             
-                        </div>
-
-                        <div class="row" style="margin-left: 15%">
-                            <div class="input-group">
-                                <div class="input-group-prepend" style="max-width: 100%;"><span class="input-group-text">Predicción Correcta</span>
-                                    {{ form.pred_true }}                  
-                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="row" style="margin-left: 15%">
-                            <div class="input-group">
-                                <div class="input-group-prepend" style="max-width: 100%;"><span class="input-group-text">Consentimiento de uso</span>                                    
-                                    {{ form.consent }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <input type="hidden" value="{{ form.initial.id }}" name="id_muestra">
-                        <input type="hidden" value="{{ sesion.id }}" name="id_sesion">
-
-                        <div class="row" >
-                            
-                            <div class="col" style="width: 45%;">
-                                <input class="btn btn-primary btn-block" type="submit" value="Guardar Cambios" name="update" style="height: 50px">
-                            </div>
-                            
-                            <div class="col" style="width: 45%; margin-left: 10px">
-                                <input class="btn btn-primary btn-block" type="submit" value="Borrar Muestra" name="delete" style="height: 50px; ">
-                            </div>
-                        
                         </div>
 
                     </div>

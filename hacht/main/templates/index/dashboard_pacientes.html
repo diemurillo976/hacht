@@ -11,157 +11,112 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
-    <!-- <link rel="stylesheet" href="{% static 'index/assets/css/styles.min.css' %}"> !-->
-    <link rel="stylesheet" href="{% static 'index/assets/css/Sesiones.css' %}">
+    <link rel="stylesheet" href="{% static 'index/assets/css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'index/assets/css/Pacientes.css' %}">
 </head>
 
 <body>
     
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-        <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(0,123,255);">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container">
+            <a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(0,123,255);">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <span style="font-size: 12px; padding-top: 5px">{{ user.username }}</span>
             <div
                 class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" href="{% url 'dashboard_pacientes' %}">
-                            <!-- <img src="{% static 'index/assets/img/icons8-home-50.png' %}"> -->
-                            <span style="margin-left: 5px;color: rgba(0,0,0,0.5);">INICIO</span>
+                            <span style="margin-left: 5px">INICIO</span>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" href="">
-                            <!-- <img src="{% static 'index/assets/img/icons8-help-50.png' %}"> -->
-                            <span style="margin-left: 5px;color: rgba(0,0,0,0.5);">AYUDA</span>
+                        <a class="nav-link" href="{% url 'help' %}">
+                            <span style="margin-left: 5px">AYUDA</span>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" href="{% url 'logout' %}" style="margin-left: 5px;color: rgba(0,0,0,0.5);">
-                            <!-- <img src="{% static 'index/assets/img/icons8-logout-rounded-left-50.png' %}"> -->
-                            <span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span>
+                        <a class="nav-link" href="{% url 'logout' %}" style="margin-left: 5px">
+                            <span style="margin-left: 5px">SALIR</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <section style="margin-top: 12%;">
+    
+    <main class="page">
+        <section style="margin-top: 2%;">
 
-        <div style="padding-left: 20px">
-            {% if user.is_authenticated %}
-                <div>Hi {{ user.username }}!</div>
-            {% else %}
-                <p>You are not logged in</p>
-                <a href="{% url 'login' %}">login</a>
-            {% endif %}
-        </div>
-
-        <div class="container">
-            <div class="text-center" style="padding-bottom: 20px;"><span style="font-size: 28px;color: rgb(0,123,255);">Tablero de Pacientes</span></div>
-            <div class="row text-center" style="padding-bottom: 10px;">
-                <div class="col" style="padding-left: 0%;padding-right: 0px;width: 50%;min-width: 50%;max-width: 50%;"><a onclick="agregar_paciente()" href="#"><img src="{% static 'index/assets/img/icons8-plus-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Paciente</span></a></div>
-                <div class="col" style="padding-left: 5px;"><a href="#"><img src="{% static 'index/assets/img/icons8-trash-can-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Eliminar Pacientes</span></a></div>
+            <div class="container">
+                <div class="text-center" style="padding-bottom: 20px;"><span style="font-size: 28px;color: rgb(0,123,255);">Tablero de Pacientes</span></div>
+                <div class="text-center" style="padding-bottom: 10px;">
+                    <a onclick="agregar_paciente()" href="#"><img src="{% static 'index/assets/img/icons8-plus-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Paciente</span></a>
+                </div>
             </div>
-        </div>
 
-        <div class="container">
-            <div class="row">
+            <div class="container-fluid">
+                <div class="row">
 
-                <!-- Start: Lista-Pacientes -->
-                <div class="col-md-6 flex-grow-1" id="contenedor_lista" style="max-width: 100%; display: none;">
-                    
-                    <!-- Start: Aca va la lista de componentes -->
-                    <div id='cont_componentes'>
+                    <!-- Start: Lista-Pacientes -->
+                    <div class="col-md-6 flex-grow-1" id="contenedor_lista" style="max-width: 100%; display: none;">
+                        
+                        <!-- Start: Aca va la lista de componentes -->
+                        <div id='cont_componentes'>
 
-                        {% for paciente in pacientes %}
+                            {% for paciente in pacientes %}
 
-                            <!-- Start: Descriptivo-Paciente-Compacto -->
-                            <div class="text-dark border-primary shadow-lg comp-paciente bg-light" id="descriptivo_paciente_{{ paciente.id }}" ondblclick="descriptivo_paciente_onclick('{{ paciente.id }}')" style="background-color: rgba(255,255,255,0.09);min-height: 130px;max-height: 130px;">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend"><span class="input-group-text titulo-descriptivo">Cédula</span></div><input class="form-control" type="text" value="{{ paciente.ced }}">
-                                            <div class="input-group-append"></div>
+                                <!-- Start: Descriptivo-Paciente-Compacto -->
+                                <div class="text-dark border-primary shadow-lg comp-paciente bg-light" id="descriptivo_paciente_{{ paciente.id }}" ondblclick="descriptivo_paciente_onclick('{{ paciente.id }}')" style="background-color: rgba(255,255,255,0.09);min-height: 130px;">
+                                    <div class="row">
+                                        <div class="col group-icons">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text titulo-descriptivo">Cédula</span></div><input class="form-control" type="text" value="{{ paciente.ced }}">
+                                                <div class="input-group-append"></div>
+                                            </div>
                                         </div>
+                                        <div class="col text-center editar_pac" style="max-width: 100px;min-width: 100px;width: 100px;"><a href="#" onclick="descriptivo_paciente_onclick('{{ paciente.id }}')" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Editar</span></a></div>
+                                        <div class="col text-center eliminar_pac" style="max-width: 122px;min-width: 122px;width: 122px;"><a href="#" onclick="eliminar_onclick(event, '{{ paciente.id }}')" style="margin-left: 5px;"><i class="fas fa-trash"></i><span style="margin-left: 5px;">Eliminar</span></a></div>
                                     </div>
-                                    <div class="col text-center" style="max-width: 100px;min-width: 100px;width: 100px;"><a href="#" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Editar</span></a></div>
-                                    <div class="col text-center" style="max-width: 122px;min-width: 122px;width: 122px;"><a href="#" onclick="eliminar_onclick(event, '{{ paciente.id }}')" style="margin-left: 5px;"><i class="fas fa-trash"></i><span style="margin-left: 5px;">Eliminar</span></a></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend"><span class="input-group-text titulo-descriptivo">Nombre</span></div><input class="form-control" type="text" value="{{ paciente.nombre }}">
-                                            <div class="input-group-append"></div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span class="input-group-text titulo-descriptivo">Nombre</span></div><input class="form-control" type="text" value="{{ paciente.nombre }}">
+                                                <div class="input-group-append"></div>
+                                            </div>
                                         </div>
+                                        <div class="col text-center" style="max-width: 200px;min-width: 200px;width: 100px;"><a href="/dashboard_sesiones/?id_paciente={{ paciente.id }}" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Ver Sesiones</span></a></div>
                                     </div>
-                                    <div class="col text-center" style="max-width: 200px;min-width: 200px;width: 100px;"><a href="/dashboard_sesiones/?id_paciente={{ paciente.id }}" style="margin-top: 0px;padding-top: 0px;"><i class="fas fa-pen"></i><span style="margin-left: 5px;">Ver Sesiones</span></a></div>
+                                    <input name="id_paciente" type="hidden" value="{{ paciente.id }}"></input>
                                 </div>
-                                <input name="id_paciente" type="hidden" value="{{ paciente.id }}"></input>
-                            </div>
-                            <!-- End: Descriptivo-Paciente-Compacto -->
+                                <!-- End: Descriptivo-Paciente-Compacto -->
 
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
+                        <!-- End: Aca va la lista de componentes -->
+                        
                     </div>
-                    <!-- End: Aca va la lista de componentes -->
-                    
-                </div>
-                <!-- End: Lista-Pacientes -->
+                    <!-- End: Lista-Pacientes -->
 
-                <div  class="col-md-6 flex-grow-1" id="columna_paciente" style="max-width: 100%; display: none">
+                    <div class="col-md-6" id="columna_paciente" style="display: none">
 
-                    <div id="form_paciente">
-                        <!-- Acá va el formulario de paciente, se modulariza para cargar dinámicamente -->
+                        <div id="form_paciente">
+                            <!-- Acá va el formulario de paciente, se modulariza para cargar dinámicamente -->
+                        </div>
+
+                        <div id="analytics_paciente">
+
+                        </div>
+
+
                     </div>
-
-                    <div id="analytics_paciente">
-
-                    </div>
-
-
-                </div>
-                <!-- End: Contenedor-Paciente -->
-            </div>
-        </div>
-    </section>
-    <footer class="page-footer dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
-                    <h5>Comenzar</h5>
-                    <ul>
-                        <li><a href="{% url 'index' %}">Inicio</a></li>
-                        <li><a href="{% url 'login' %}">Ingresar</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Acerca de nosotros</h5>
-                    <ul>
-                        <li><a href="#">Information</a></li>
-                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
-                        <li><a href="#">Reseñas</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Soporte</h5>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Ayuda</a></li>
-                        <li><a href="#">Foros</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Legal</h5>
-                    <ul>
-                        <li><a href="#">Términos de servicio</a></li>
-                        <li><a href="#">Términos de uso</a></li>
-                        <li><a href="#">Política de privacidad</a></li>
-                    </ul>
+                    <!-- End: Contenedor-Paciente -->
                 </div>
             </div>
-        </div>
-        <div class="footer-copyright">
-            <p></p>
-        </div>
-    </footer>
+        </section>
+    </main>
+    
+    {% include "index/footer.html" %}  
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>

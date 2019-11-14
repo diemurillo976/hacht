@@ -1,0 +1,291 @@
+{% load static%}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Prototipo Histopatologías</title>
+    <link rel="stylesheet" href="{% static 'index/assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <!-- <link rel="stylesheet" href="{% static 'index/assets/css/styles.min.css' %}"> !-->
+</head>
+
+<body>
+
+    {% if logged_in %}
+        <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+            <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(0,123,255);">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div
+                    class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" href="{% url 'dashboard_pacientes' %}">
+                                <!-- <img src="{% static 'index/assets/img/icons8-home-50.png' %}"> -->
+                                <span style="margin-left: 5px;color: rgba(0,0,0,0.5);">INICIO</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" href="">
+                                <!-- <img src="{% static 'index/assets/img/icons8-help-50.png' %}"> -->
+                                <span style="margin-left: 5px;color: rgba(0,0,0,0.5);">AYUDA</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" href="{% url 'logout' %}" style="margin-left: 5px;color: rgba(0,0,0,0.5);">
+                                <!-- <img src="{% static 'index/assets/img/icons8-logout-rounded-left-50.png' %}"> -->
+                                <span style="margin-left: 5px;color: rgba(0,0,0,0.5);">SALIR</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+    {% else %}
+        <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+            <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(59,153,224);font-size: 30px;">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="nav navbar-nav ml-auto" id="header-nav">
+                        <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'index' %}">INICIO</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'demo' %}">Demo</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'features' %}">características</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'contact_us' %}">Contacto</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'registration' %}">Registrarse</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'login' %}">Ingresar</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    {% endif %}
+
+    <main class="page" style="margin-top: 25px;">
+        <div class="container">
+        <div class="media-container-row">
+            <div>
+                <div class="section-head text-center space30">
+                    <h2 style="font-size: 28px;color: rgb(0,123,255);">
+                        Ayuda
+                    </h2>
+                    <p>
+                        En esta sección encontrará algunas preguntas frecuentes y sus respuestas para que tenga una mejor idea sobre qué es HACHT y cómo se utiliza.
+                    </p>
+                </div>
+                <div class="clearfix"></div>
+                <div id="bootstrap-accordion_475" class="panel-group accordionStyles accordion" role="tablist" aria-multiselectable="true">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingOne">
+                            <a role="button" class="panel-title collapsed text-black" data-toggle="collapse" data-parent="#bootstrap-accordion_475" data-core="" href="#collapse1_475" aria-expanded="false" aria-controls="collapse1">
+                                <h4 class="mbr-fonts-style display-5">
+                                    <span class="sign mbr-iconfont mbri-arrow-down inactive"></span>
+                                    ¿Qué es HACHT?
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapse1_475" class="panel-collapse noScroll collapse " role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body p-4">
+                                <p class="mbr-fonts-style panel-text display-7">
+                                   HACHT es una aplicación web con un "companion" para Android que ayuda a los usuarios médicos e investigadores a generar predicciones sobre el tipo de tumor presente en una muestra de tejido o histología.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingTwo">
+                            <a role="button" class="collapsed panel-title text-black" data-toggle="collapse" data-parent="#bootstrap-accordion_475" data-core="" href="#collapse2_475" aria-expanded="false" aria-controls="collapse2">
+                                <h4 class="mbr-fonts-style display-5">
+                                    <span class="sign mbr-iconfont mbri-arrow-down inactive"></span> ¿Cuál es el objetivo de HACHT?
+                               </h4>
+                            </a>
+                            
+                        </div>
+                        <div id="collapse2_475" class="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body p-4">
+                                <p class="mbr-fonts-style panel-text display-7">
+                                   Diseñamos esta aplicación con el objetivo de tener una prueba de concepto de una posible aplicación bio-médica de la Inteligencia Artificial; mostrando que podría ser una herramienta de utilidad para darle una ayuda diferente al profesional médico en el proceso de diagnóstico.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingThree">
+                            <a role="button" class="collapsed text-black panel-title" data-toggle="collapse" data-parent="#bootstrap-accordion_475" data-core="" href="#collapse3_475" aria-expanded="false" aria-controls="collapse3">
+                                <h4 class="mbr-fonts-style display-5">
+                                    <span class="sign mbr-iconfont mbri-arrow-down inactive"></span> Quiero probar la aplicación, pero no quiero registrarme ¿Puedo hacerlo?
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapse3_475" class="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body p-4">
+                                <p class="mbr-fonts-style panel-text display-7">
+                                    Por razones de control de uso, en específico para prohibir el uso en ambientes no controlados y donde pueda haber algún tipo de lucro; prohíbimos el uso de la aplicación sin registro previo. Para mostrar las posibilidades de la aplicación, ofrecemos una sección de "Demo" donde le permitimos libremente probar la utilidad de la aplicación con 2 imágenes por clase de tumor, estas imágenes han sido seleccionadas aleatoriamente del conjunto de validación; es decir, el modelo no se entrenó con estas imágenes.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingThree">
+                            <a role="button" class="collapsed text-black panel-title" data-toggle="collapse" data-parent="#bootstrap-accordion_475" data-core="" href="#collapse4_475" aria-expanded="false" aria-controls="collapse4">
+                                <h4 class="mbr-fonts-style display-5">
+                                    <span class="sign mbr-iconfont mbri-arrow-down inactive">¿Hay un trabajo previo en el que se basa HACHT?</span> 
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapse4_475" class="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body p-4">
+                                <p class="mbr-fonts-style panel-text display-7">
+                                    Si, nos basamos en la investigación realizada por el ingeniero en computación Iván Calvo, egresado del Tecnológico de Costa Rica; en el contexto de su trabajo de graduación. Esta investigación se realizó en conjunto con los investigadores Saul Calderón también del Tecnológico, así como Jordina Torrents-Barrena y Dominic Puig de la Universidad Rovira i Virgili de España.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingThree">
+                            <a role="button" class="collapsed text-black panel-title" data-toggle="collapse" data-parent="#bootstrap-accordion_475" data-core="" href="#collapse5_475" aria-expanded="false" aria-controls="collapse5">
+                                <h4 class="mbr-fonts-style display-5">
+                                    <span class="sign mbr-iconfont mbri-arrow-down inactive">¿Cómo puedo empezar a usar la herramienta?</span> 
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapse5_475" class="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body p-4">
+                                <p class="mbr-fonts-style panel-text display-7">
+                                    En la pantalla principal encontrará una barra de navegación, en ésta misma puede encontrar la opción de registrarse. Después de realizar el registro, solo deberá iniciar sesión y ya estará listo para utilizar la página.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingThree">
+                            <a role="button" class="collapsed text-black panel-title" data-toggle="collapse" data-parent="#bootstrap-accordion_475" data-core="" href="#collapse6_475" aria-expanded="false" aria-controls="collapse6">
+                                <h4 class="mbr-fonts-style display-5">
+                                    <span class="sign mbr-iconfont mbri-arrow-down inactive">Soy un usuario médico, ya inicié sesión. ¿Qué es el tablero de pacientes?</span> 
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapse6_475" class="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body p-4">
+                                <p class="mbr-fonts-style panel-text display-7">
+                                    En esta página usted tendrá la opción de agregar todos los pacientes que así deseé, con la idea de que pueda luego ver resúmenes en el tiempo de las muestras pertenecientes a un paciente.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingThree">
+                            <a role="button" class="collapsed text-black panel-title" data-toggle="collapse" data-parent="#bootstrap-accordion_475" data-core="" href="#collapse7_475" aria-expanded="false" aria-controls="collapse7">
+                                <h4 class="mbr-fonts-style display-5">
+                                    <span class="sign mbr-iconfont mbri-arrow-down inactive">¿Qué es el tablero de sesiones? ¿Qué es una sesión?</span> 
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapse7_475" class="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body p-4">
+                                <p class="mbr-fonts-style panel-text display-7">
+                                    Una sesión es un punto del tiempo donde se podrían subir una o más muestras de tejidos tumorosos; asociados a un paciente para el usuario médico o solo asociados a su cuenta en el caso del investigador. Puede entenderse también como un contenedor de muestras. 
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingThree">
+                            <a role="button" class="collapsed text-black panel-title" data-toggle="collapse" data-parent="#bootstrap-accordion_475" data-core="" href="#collapse8_475" aria-expanded="false" aria-controls="collapse8">
+                                <h4 class="mbr-fonts-style display-5">
+                                    <span class="sign mbr-iconfont mbri-arrow-down inactive">He agregado una sesión ¿Cómo obtengo métricas relevantes sobre la precisión del modelo de aprendizaje profundo?</span> 
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapse8_475" class="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body p-4">
+                                <p class="mbr-fonts-style panel-text display-7">
+                                    Como el modelo ya ha sido entrenado, asumimos que las muestras que nos están llegando pertenecen a un conjunto de validación externo al utilizado anteriormente, lo que esto implica que es necesario que el usuario agregue manualmente la clase correcta para cada muestra, de otro modo el modelo no puede extraer esta información.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingThree">
+                            <a role="button" class="collapsed text-black panel-title" data-toggle="collapse" data-parent="#bootstrap-accordion_475" data-core="" href="#collapse9_475" aria-expanded="false" aria-controls="collapse9">
+                                <h4 class="mbr-fonts-style display-5">
+                                    <span class="sign mbr-iconfont mbri-arrow-down inactive">¿A qué se refieren con consentimiento de uso?</span> 
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapse9_475" class="panel-collapse noScroll collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body p-4">
+                                <p class="mbr-fonts-style panel-text display-7">
+                                    Como los modelos de aprendizaje profundo están seriamente limitados por la cantidad de datos disponibles, agregamos esta opción para determinar si el usuario permitiría extraer los datos subidos de la muestra con fines de re-entrenamiento del modelo si en algún futuro se decidiera hacer así.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                     
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer dark" style="margin-top: 25px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h5>Comenzar</h5>
+                    <ul>
+                        <li><a href="{% url 'index' %}">Inicio</a></li>
+                        <li><a href="{% url 'login' %}">Ingresar</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>Acerca de nosotros</h5>
+                    <ul>
+                        <li><a href="#">Information</a></li>
+                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
+                        <li><a href="#">Reseñas</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>Soporte</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Ayuda</a></li>
+                        <li><a href="#">Foros</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Términos de servicio</a></li>
+                        <li><a href="#">Términos de uso</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p></p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="{% static 'index/assets/js/script.min.js' %}"></script>
+
+</body>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

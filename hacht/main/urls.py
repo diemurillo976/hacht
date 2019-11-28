@@ -24,7 +24,8 @@ urlpatterns = [
     path('dashboard_sesiones/components/analytics_sesion/', views.analytics_sesion, name="analytics_sesion"),
     path('demo/components/comp_demo/', views.demo, name='comp_demo'),
     path('dashboard_pacientes/components/analytics_paciente/', views.analytics_paciente, name="analytics_paciente"),
-    path('help/', views.ayuda, name="help")
+    path('help/', views.ayuda, name="help"),
+    path('about_us', views.about_us, name="about_us")
 ]
 
 # Gets new handler for the specific 500 error

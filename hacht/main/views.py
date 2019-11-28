@@ -189,6 +189,10 @@ def index(request):
     else:
         return render(request, 'index/index.html')
 
+def about_us(request):
+
+    return render(request, 'index/about_us.html')
+
 def login_app(request):
     """ 
     Entrada: request -- petición Http proveniente del usuario

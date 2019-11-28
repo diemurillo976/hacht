@@ -159,6 +159,10 @@ def index(request):
     else:
         return render(request, 'index/index.html')
 
+def about_us(request):
+
+    return render(request, 'index/about_us.html')
+
 def login_app(request):
 
     if(request.method == 'POST'):

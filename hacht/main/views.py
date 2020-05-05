@@ -73,7 +73,7 @@ def read_static_list():
 
     # Obtiene el path del archivo csv con la lista
     path = os.getcwd()
-    abs_path = os.path.join(path, "hacht", "main", "static", "index", "assets", "csv", "demo_src.csv")
+    abs_path = os.path.join(path, "hacht","hacht", "main", "static", "index", "assets", "csv", "demo_src.csv")
 
     with open(abs_path) as file:
 

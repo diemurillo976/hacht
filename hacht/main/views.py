@@ -31,11 +31,13 @@ import requests
 #sys.path.insert(0,'C:/Users/gmc_2/source/repos/HACHT/hacht/hacht/main/CNN_src/')
 
 # Define el path a CNN_src y lo agrega al sys.path
+"""
 path = os.getcwd()
 path = os.path.join(path, "hacht", "main", "CNN_src")
 #path = os.path.join(path, "main", "CNN_src")
 print(path)
 sys.path.insert(0, path)
+"""
 from .CNN_src.forward import *
 
 #Firebase auth##############################################################

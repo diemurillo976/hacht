@@ -8,9 +8,9 @@ import argparse
 
 from torch.autograd import Variable
 from torch.optim import Adam
-from models import get_model
-from BreakHisDataset import *
-from Performance import Performance
+from .models import get_model
+from .BreakHisDataset import *
+from .Performance import Performance
 
 PATH = "C:/Users/Martin/Desktop/Red_CNN/"
 

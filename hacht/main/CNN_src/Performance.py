@@ -7,7 +7,7 @@ import scikitplot as skplt
 import warnings
 
 from sklearn.metrics import accuracy_score, roc_curve, auc, confusion_matrix
-from ConfusionMatrix import plot_confusion_matrix
+from .ConfusionMatrix import plot_confusion_matrix
 
 
 np.seterr(divide='ignore', invalid='ignore')

@@ -1,8 +1,8 @@
-import InceptionV3
-import DenseNet161
-import TraditionalCNN
-import SqueezeNet
-import FractalNet
+from . import InceptionV3
+from . import DenseNet161
+from . import TraditionalCNN
+from . import SqueezeNet
+from . import FractalNet
 
 def get_model(num_classes, weights=None, m=1):
 	model = None

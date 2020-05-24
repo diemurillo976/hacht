@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .Analytics import Paciente, Sesion
 from django.urls import path, include # new
 
 urlpatterns = [
@@ -21,12 +22,11 @@ urlpatterns = [
     path('dashboard_sesiones/components/muestras_sesion/', views.muestras_sesion, name="muestras_sesion"),
     path('dashboard_sesiones/agregar_muestra/', views.agregar_muestra, name="agregar_muestra"),
     path('dashboard_sesiones/modificar_muestra/', views.modificar_muestra, name="modificar_muestra"),
-    path('dashboard_sesiones/components/analytics_sesion/', views.analytics_sesion, name="analytics_sesion"),
+    path('dashboard_sesiones/components/analytics_sesion/', Sesion.analytics_sesion, name="analytics_sesion"),
     path('demo/components/comp_demo/', views.demo, name='comp_demo'),
-    path('dashboard_pacientes/components/analytics_paciente/', views.analytics_paciente, name="analytics_paciente"),
+    path('dashboard_pacientes/components/analytics_paciente/', Paciente.analytics_paciente, name="analytics_paciente"),
     path('help/', views.ayuda, name="help")
 ]
 
 # Gets new handler for the specific 500 error
 handler500 = views.handle_500_error
-

@@ -25,12 +25,12 @@ def forward_single_img(img_path):
         test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=1, shuffle=False)
 
         for batch_id, (data) in enumerate(test_loader):
-                data = data	
+                data = data
                 output = model(data)
                 _, predict = torch.max(output, dim=1)
                 result = predict.cpu().tolist()
                 return result[0]
-                	
+
 
 def forward_single_img2(img_path):
         num_classes = 8
@@ -42,7 +42,7 @@ def forward_single_img2(img_path):
         test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=1, shuffle=False)
 
         for batch_id, (data, patient_id) in enumerate(test_loader):
-                data, patient_id = data, patient_id	
+                data, patient_id = data, patient_id
                 output = model(data)
                 _, predict = torch.max(output, dim=1)
                 result = predict.cpu().tolist()
@@ -58,7 +58,7 @@ def forward_n_img_with_labels(img_folder_path, csv_file_path):
 
         #"C:/Users/Martin/Desktop/Red_CNN/breakhis_subset"
         #"C:/Users/Martin/Desktop/Red_CNN/test_100_multi_kfold_0.csv"
-        
+
         (model, img_size) = get_model(num_classes, dir_weights, architecture)
         model = model
         test_dataset = BreakHis(img_folder_path, csv_file_path, img_size, training=False, preprocessing="RGB")
@@ -72,4 +72,3 @@ def forward_n_img_with_labels(img_folder_path, csv_file_path):
                 print("Target: ",target.cpu().tolist())
                 print("Result: ", predict.cpu().tolist())
                 print("\n --------------------------------- \n ")
-

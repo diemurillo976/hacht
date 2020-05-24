@@ -2,8 +2,7 @@ import sys
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Profile, Paciente, Sesion
 from .forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
-from django.http import HttpResponse, JsonResponse
-from django.middleware.csrf import get_token
+from django.http import HttpResponse
 from django.db.models import Model, Count
 from django.contrib.auth.signals import user_login_failed, user_logged_in
 from django.contrib.auth import authenticate, login
@@ -12,7 +11,6 @@ from django.db.models.query import QuerySet
 from django.template.defaulttags import register
 from django.forms.models import model_to_dict
 from django.utils.safestring import mark_safe
-import json
 import numpy as np
 import os
 import csv
@@ -92,95 +90,28 @@ def ayuda(request):
 # Funcion to handle error responses
 def handle_error(request, status, message):
 
-    # send error to android client
-    if request.GET.get("android") or request.POST.get("android"):
-        response = HttpResponse(json.dumps({'message': message}),
-            content_type='application/json')
-        response.status_code = status
-        return response
+    client = ClientFactory.get_client(request)
 
-    # render a error message page
-    else:
-
-        # This needs to be changed
-        return HttpResponse(status=status)
+    return client.handle_error(request, status, message)
 
 # Function to catch the 500 internal error
 def handle_500_error(request):
 
     return handle_error(request, status=500, message="El servidor ha tenido un problema resolviendo la petición")
 
-# Function to handle each response to the android client
-# It serializes the data on the context variable
-def get_for_android(request, context=None):
 
-    token = get_token(request)
-
-    if context is not None:
-
-        # Itera sobre todo el contexto, cuando hay querysets los convierta a listas para poder serializar
-        try:
-
-            for key in context:
-                if isinstance(context[key], QuerySet):
-                    context[key] = list(context[key].values())
-                elif isinstance(context[key], Model):
-                    context[key] = model_to_dict(context[key])
-
-            context["token"] = token
-            print("Contexto en get_for_android: {}".format(context))
-
-            try:
-                return JsonResponse(context, safe=False)
-            except Exception as e:
-                print("Error respondiendo al request: {}".format(str(e)))
-                return HttpResponse(status=500)
-
-        except Exception as e:
-
-            print("Error casteando objetos del context: {}.".format(str(e)))
-            return HttpResponse(status=500)
-
-    else:
-
-        return JsonResponse({'token' : token})
 
 def index(request):
-    ClientFactory.hola()
-    if request.GET.get("android"):
-        return get_for_android(request)
-    else:
-        return render(request, 'index/index.html')
+    client = ClientFactory.get_client(request)
+
+    return client.index(request)
+
 
 def login_app(request):
+    client = ClientFactory.get_client(request)
 
-    if(request.method == 'POST'):
+    return client.login_app(request)
 
-        if request.user.is_authenticated:
-            context = {
-                    'exito' : 'true'
-                }
-            return get_for_android(request, context)
-
-        else:
-
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(username=username, password=password)
-            if user is not None and user.is_active:
-                login(request, user)
-                context = {
-                    'exito' : 'true'
-                }
-                return get_for_android(request, context)
-
-    else:
-
-        return handle_error(
-            request,
-            status=400,
-            message="La petición está formada de manera incorrecta, debe enviar un formulario \"POST\" para que el servidor le pueda dar respuesta."
-            )
 
 def registration(request):
 

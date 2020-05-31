@@ -1,5 +1,5 @@
 <div class="card text-center">
-    
+
     <h5 class="card-header">Imagen seleccionada</h5>
 
     <img class="card-img-top" onerror="this.style.display='none'" src= "{{ url }}">
@@ -10,10 +10,10 @@
         <p class="card-text">{{ class }}</p>
 
         {% if not resultado %}
-        <form method="POST" action="" onsubmit="analizar_click()">
+        <form method="POST"  onsubmit="analizar_click()">
 
             {% csrf_token %}
-            
+
             <input type="hidden" value="{{ index }}" name="index">
             <input type="hidden" value="{{ url }}" name="url">
             <input class="btn btn-primary" type="submit" value="Analizar">
@@ -30,5 +30,5 @@
         {% endif %}
 
     </div>
-    
+
 </div>

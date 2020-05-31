@@ -13,39 +13,21 @@ from django.forms.models import model_to_dict
 from django.utils.safestring import mark_safe
 import numpy as np
 import os
-import csv
-import time
-from datetime import datetime
+from django.conf import settings
+
+
 
 from .Clients import ClientFactory
 
-#Pyrebase and model imports#################################################
-import pyrebase
+#model imports#################################################
+
 from PIL import Image
 from io import BytesIO
 import requests
 
-#Comentado por motivos de falta de espacio en el hosting
 
 from .CNN_src.forward import *
 
-#Firebase auth##############################################################
-
-config = {
-    "apiKey": "AIzaSyArQxRet5XqKI6v8948A2ZnHZOZsu7vCNY",
-    "authDomain": "hacht-7d98d.firebaseapp.com",
-    "databaseURL": "https://hacht-7d98d.firebaseio.com",
-    "projectId": "hacht-7d98d",
-    "storageBucket": "hacht-7d98d.appspot.com",
-    "messagingSenderId": "225406534324",
-    "appId": "1:225406534324:web:f5317f74d07ced54"
-  }
-
-#Firebase Storage reference#
-
-firebase = pyrebase.initialize_app(config)
-
-storage = firebase.storage()
 
 ############################################################################
 
@@ -59,24 +41,7 @@ def user_logged_in_callback(sender, request, user, **kwargs):
     print(user)
     print("Se loggeó correctamente el usuario {}".format(user))
 
-# Auxiliar function to return a list of static images and their corresponding class
-def read_static_list():
 
-    # Obtiene el path del archivo csv con la lista
-    path = os.getcwd()
-    abs_path = os.path.join(path, "hacht","hacht", "main", "static", "index", "assets", "csv", "demo_src.csv")
-
-    with open(abs_path) as file:
-
-        reader = csv.reader(file, delimiter=',')
-        lista = []
-
-        for row in reader:
-
-            y_true, url = row[0], row[1]
-            lista.append((y_true, url))
-
-    return lista
 
 def ayuda(request):
 
@@ -114,105 +79,26 @@ def login_app(request):
 
 
 def registration(request):
+    client = ClientFactory.get_client(request)
 
-    if(request.method == 'POST'):
-
-        form = RegistrationForm(request.POST)
-
-        if(form.is_valid()):
-
-            # Creates the django's user
-            new_user = User(username=request.POST['correo'],
-                            email=request.POST['correo'],
-                            first_name=request.POST['nombre'])
-
-            new_user.set_password(request.POST['password'])
-            new_user.save()
-
-            new_user.profile.rol = request.POST["rol"]
-            new_user.profile.org = request.POST["org"]
-
-            new_user.save()
-            print('NUEVO REGISTRO USER AGREGADO')
-            #messages.success(request, _('El usuario ha sido creado con éxito'))
-
-            return redirect('registration_success')
-
-        else:
-
-            return handle_error(
-                request,
-                status=400,
-                message="No se podido completar la adición del usuario, por favor revise los datos ingresados y que estos sean válidos"
-            )
-
-    if(request.method == 'GET'):
-        form = RegistrationForm()
-
-    context = {'form' : form}
-    return render(request, 'index/registration.html', context)
+    return client.registration(request)
 
 
 def registration_success(request):
-    return render(request, 'index/registration_success.html')
+    client = ClientFactory.get_client(request)
+
+    return client.registration_success(request)
 
 def demo(request):
-    print(request)
-    if request.method == "GET" and request.GET.get("resultado"):
+    client = ClientFactory.get_client(request)
 
-        lista = read_static_list()
-
-        index = int(request.GET["index"])
-        y_true, url = lista[index]
-        resultado = int(request.GET["resultado"])
-        estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
-
-        context = {"class": y_true,
-                   "url": url,
-                   "resultado": estimations[resultado],
-                   "index": index}
-
-        return render(request, 'index/components/comp_demo.html', context)
-
-    elif request.method == "GET" and request.GET.get("index"):
-
-        lista = read_static_list()
-
-        index = int(request.GET["index"])
-        y_true, url = lista[index]
-        context = {"class": y_true,
-                   "url": url,
-                   "index": index}
-
-        return render(request, 'index/components/comp_demo.html', context)
-
-    elif request.method == "GET":
-
-        return render(request, 'index/demo.html')
-
-    elif request.method == "POST":
-
-        time.sleep(1)
-
-        index = int(request.POST["index"])
-        url = request.POST["url"]
-
-        url_fire = storage.child(url)
-        response = requests.get(url)
-
-        img = Image.open(BytesIO(response.content))
-        img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        result = forward_single_img(img_cv)
-
-        context = {
-            "index" : index,
-            "resultado" : result
-        }
-
-        return render(request, "index/demo.html", context)
+    return client.demo(request)
 
 
 def dashboard_pacientes(request):
+    #client = ClientFactory.get_client(request)
+
+    #return client.demo(request) 
 
     # Only the medic user should be seeing "patients"
     if request.user.is_authenticated and request.user.profile.rol == '0':
@@ -486,10 +372,10 @@ def agregar_muestra(request):
                 try:
 
                     if guardada == False:
-                        storage.child(str(file)).put(file)
+                        settings.FIREBASE_STORAGE.child(str(file)).put(file)
                         guardada = True
 
-                    url = storage.child(str(file)).get_url(None)
+                    url = settings.FIREBASE_STORAGE.child(str(file)).get_url(None)
                     response = requests.get(url)
 
                     img = Image.open(BytesIO(response.content))

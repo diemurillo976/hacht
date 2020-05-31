@@ -48,6 +48,26 @@ class android_client:
                 message="La petición está formada de manera incorrecta, debe enviar un formulario \"POST\" para que el servidor le pueda dar respuesta."
                 )
 
+    #la funcionalidad para registration no está implementada en cliente android
+    #Pero se mantiene este método para uniformidad del patrón de diseño
+    #Se redirige a método index
+    def registration(self, request):
+        return self.index(request)
+
+    #la funcionalidad para registration_success no está implementada en cliente android
+    #Pero se mantiene este método para uniformidad del patrón de diseño
+    #Se redirige a método index
+    def registration_success(self, request):
+        return self.index(request)
+
+    #la funcionalidad para demo no está implementada en cliente android
+    #Pero se mantiene este método para uniformidad del patrón de diseño
+    #Se redirige a método index
+    def demo(self, request):
+        return self.index(request)
+
+
+
     # Function to handle each response to the android client
     # It serializes the data on the context variable
     def __get_for_android(self, request, context=None):

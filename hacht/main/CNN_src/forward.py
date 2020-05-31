@@ -6,6 +6,7 @@ import torch.nn as nn
 import torchvision
 import argparse
 
+from django.conf import settings
 from torch.autograd import Variable
 from torch.optim import Adam
 from .models import get_model
@@ -16,8 +17,8 @@ PATH = "C:/Users/Martin/Desktop/Red_CNN/"
 
 def forward_single_img(img_path):
         num_classes = 8
-        path = os.getcwd()
-        dir_weights = os.path.join(path, "hacht","hacht", "main", "CNN_src", "weights_50.pt")
+
+        dir_weights = os.path.join(settings.BASE_DIR, "main", "CNN_src", "weights_50.pt")
         architecture = "squeezenet"
         (model, img_size) = get_model(num_classes, dir_weights, architecture)
         model = model

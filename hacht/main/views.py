@@ -235,8 +235,16 @@ def registration_success(request):
     return render(request, 'index/registration_success.html')
 
 def demo(request):
+    context = {}
+
+    images = [] # Carga los url de las imagenes del csv.
+    for element in read_static_list():
+        url = element[1]
+        images += [url]
+
 
     if request.method == "GET" and request.GET.get("resultado"):
+        # Calcula el nuevo resultado de la imagen.
 
         lista = read_static_list()
 
@@ -245,28 +253,58 @@ def demo(request):
         resultado = int(request.GET["resultado"])
         estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
 
-        context = {"class": y_true,
+        context_aux = {"class": y_true,
                    "url": url,
                    "resultado": estimations[resultado],
-                   "index": index}
+                   "index": index,
+                   "images": images}
+
+        context.update(context_aux)
 
         return render(request, 'index/components/comp_demo.html', context)
 
     elif request.method == "GET" and request.GET.get("index"):
+        # Devuelve la imagen seleccionada.
 
         lista = read_static_list()
 
         index = int(request.GET["index"])
         y_true, url = lista[index]
-        context = {"class": y_true,
+        context_aux = {"class": y_true,
                    "url": url,
                    "index": index}
-
+        context.update(context_aux)
         return render(request, 'index/components/comp_demo.html', context)
 
     elif request.method == "GET":
+        # Carga demo.html por primera vez.
 
-        return render(request, 'index/demo.html')
+        """
+        # Codigo se encarga de leer carpeta de imagenes, las sube a firebase y guardar las referencias en un csv temporal.
+
+        path = os.getcwd()
+        abs_path = os.path.join(path, "main", "static", "index", "assets", "img", "Demo_imgs", "100x")
+
+        all_imgs = []
+        for file in os.listdir(abs_path):
+            storage.child("Demo_subset/"+str(file)).put(os.path.join(abs_path, file))
+
+            csv_line = {
+                'metadata': 'palabra',
+                'link': storage.child("Demo_subset/"+str(file)).get_url(None)
+            }
+
+            csv_path = os.path.join(path, "main", "static", "index", "assets", "csv", "demo_temp.csv")
+            with open(csv_path, 'a') as csv_file:
+                writer = csv.DictWriter(csv_file, fieldnames=['metadata', 'link'])
+                writer.writerow(csv_line)
+        """
+
+        context_aux = {
+            "images" : images
+        }
+        context.update(context_aux)
+        return render(request, 'index/demo.html', context)
 
     elif request.method == "POST":
 
@@ -282,16 +320,16 @@ def demo(request):
         img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
         result = forward_single_img(img_cv)
 
-        context = {
+        context_aux = {
             "index" : index,
-            "resultado" : result
+            "resultado" : result,
+            "images": images
         }
-
+        context.update(context_aux)
         return render(request, "index/demo.html", context)
 
 
 def dashboard_pacientes(request):
-
     # Only the medic user should be seeing "patients"
     if request.user.is_authenticated and request.user.profile.rol == '0':
 

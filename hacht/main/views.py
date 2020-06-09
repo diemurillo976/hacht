@@ -90,11 +90,15 @@ def read_static_list():
     return lista
 
 def ayuda(request):
-
     if request.user.is_authenticated:
+        context = {}
+        if request.user.profile.rol == '0':
+            context.update({"logged_in" : "usr_doctor"})
+        else:
+            context.update({"logged_in" : "usr_investigador"})
 
-        context = {"logged_in" : True}
-        return render(request, 'index/help.html', context)
+        return render(request, 'index/help.html', context) # Acomodar por el cambio de logica con android y web.
+
 
     return render(request, 'index/help.html')
 
@@ -155,11 +159,20 @@ def get_for_android(request, context=None):
         return JsonResponse({'token' : token})
 
 def index(request):
+    if request.user.is_authenticated:
+        context = {}
+        if request.user.profile.rol == '0':
+            context.update({"logged_in" : "usr_doctor"})
+        else:
+            context.update({"logged_in" : "usr_investigador"})
+
+        return render(request, 'index/index.html', context) # Acomodar por el cambio de logica con android y web.
 
     if request.GET.get("android"):
         return get_for_android(request)
     else:
         return render(request, 'index/index.html')
+
 
 def login_app(request):
 
@@ -236,6 +249,13 @@ def registration_success(request):
 
 def demo(request):
     context = {}
+
+    if request.user.is_authenticated:
+        if request.user.profile.rol == '0':
+            context.update({"logged_in" : "usr_doctor"})
+        else:
+            context.update({"logged_in" : "usr_investigador"})
+
 
     images = [] # Carga los url de las imagenes del csv.
     for element in read_static_list():
@@ -331,12 +351,15 @@ def demo(request):
 
 def dashboard_pacientes(request):
     # Only the medic user should be seeing "patients"
+
+    context = {}
     if request.user.is_authenticated and request.user.profile.rol == '0':
+        context.update({"logged_in" : "usr_doctor"})
 
         if request.method == "GET":
 
             all_patients_n = Paciente.objects.filter(id_user=request.user)
-            context = {'pacientes': all_patients_n}
+            context.update({'pacientes': all_patients_n})
 
             if request.GET.get("android"):
                 return get_for_android(request, context)
@@ -361,7 +384,7 @@ def dashboard_pacientes(request):
                 paciente.id_user = request.user
                 paciente.save()
 
-                return redirect('/dashboard_pacientes/')
+                return redirect('/dashboard_pacientes/', context)
 
             else:
 
@@ -371,8 +394,9 @@ def dashboard_pacientes(request):
                     message="No se ha podido agregar el paciente. Se encontraron los errores: \n{}".format(str(form._errors))
                 )
     
-    # If the user is authenticated and is a medic, gets redirected to dashboard_sesiones
+    # If the user is authenticated and is an investigator, gets redirected to dashboard_sesiones.
     elif request.user.is_authenticated:
+        context.update({"logged_in" : "usr_investigador"})
 
         if request.GET.get("android"):
             return redirect('/dashboard_sesiones/?android=1', permanent=True)
@@ -438,7 +462,7 @@ def dashboard_sesiones(request):
                 return HttpResponse(status=403)
 
             sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
-            context = {"paciente" : paciente, "sesiones" : sesiones}
+            context = {"paciente" : paciente, "sesiones" : sesiones, "logged_in" : "usr_doctor"}
 
             if request.GET.get("android"):
 
@@ -452,7 +476,7 @@ def dashboard_sesiones(request):
         elif request.method == "GET":
 
             sesiones = Sesion.objects.filter(id_usuario=request.user.id)
-            context = {'sesiones' : sesiones}
+            context = {'sesiones' : sesiones, "logged_in" : "usr_investigador"}
             
             if request.GET.get("android"):
 
@@ -980,9 +1004,28 @@ def analytics_paciente(request):
             return render(request, 'index/components/paciente_graficos.html', context)
 
 def contact_us(request):
+    if request.user.is_authenticated:
+        context = {}
+        if request.user.profile.rol == '0':
+            context.update({"logged_in" : "usr_doctor"})
+        else:
+            context.update({"logged_in" : "usr_investigador"})
+
+        return render(request, 'index/contact-us.html', context) # Acomodar por el cambio de logica con android y web.
+
+
     return render(request, 'index/contact-us.html')
 
 def features(request):
+    if request.user.is_authenticated:
+        context = {}
+        if request.user.profile.rol == '0':
+            context.update({"logged_in" : "usr_doctor"})
+        else:
+            context.update({"logged_in" : "usr_investigador"})
+
+        return render(request, 'index/features.html', context) # Acomodar por el cambio de logica con android y web.
+
     return render(request, 'index/features.html' )
 
 @register.filter

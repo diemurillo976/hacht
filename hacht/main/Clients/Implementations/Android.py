@@ -1,6 +1,14 @@
 from django.http import HttpResponse, JsonResponse
 from django.middleware.csrf import get_token
+from django.shortcuts import render, redirect, get_object_or_404
+from ...models import User, Profile, Paciente, Sesion
+from ...forms import Data_PacienteN, Data_Comp_Sesion_Completo, Muestra
 from django.contrib.auth import authenticate, login
+from django.db.models.query import QuerySet
+from django.forms.models import model_to_dict
+from PIL import Image
+from io import BytesIO
+import requests
 import json
 
 class android_client:
@@ -101,7 +109,7 @@ class android_client:
 
                 else:
 
-                    return handle_error(
+                    return self.handle_error(
                         request,
                         status=400,
                         message="No se ha podido agregar el paciente. Se encontraron los errores: \n{}".format(str(form._errors))
@@ -114,7 +122,7 @@ class android_client:
 
         else:
 
-            return handle_error(
+            return self.handle_error(
                 request,
                 status=401,
                 message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales"
@@ -305,6 +313,12 @@ class android_client:
 
     def features(self, request):
         return render(request, 'index/features.html' )
+
+    def show_graficos_paciente(self, request, context):
+        return render(request, 'index/components/paciente_graficos_app.html', context)
+
+    def show_graficos_sesion(self, request, context):
+        return render(request, 'index/components/sesion_graficos_app.html', context)
 
     # Function to handle each response to the android client
     # It serializes the data on the context variable

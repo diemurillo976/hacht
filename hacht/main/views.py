@@ -49,7 +49,7 @@ def ayuda(request):
 
     return client.ayuda(request)
 
-
+ 
 # Funcion to handle error responses
 def handle_error(request, status, message):
 

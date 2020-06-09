@@ -1,7 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from ...models import User
-from ...forms import RegistrationForm
+from django.shortcuts import render, redirect, get_object_or_404
+from ...models import User, Profile, Paciente, Sesion
+from ...forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.conf import settings
 from django.contrib import messages
 import json
@@ -10,6 +10,7 @@ import os
 import time
 from PIL import Image
 from io import BytesIO
+import numpy as np
 import requests
 from ...CNN_src.forward import *
 
@@ -63,7 +64,7 @@ class web_client:
 
             else:
 
-                return handle_error(
+                return self.handle_error(
                     request,
                     status=400,
                     message="No se podido completar la adición del usuario, por favor revise los datos ingresados y que estos sean válidos"
@@ -167,7 +168,7 @@ class web_client:
 
                 else:
 
-                    return handle_error(
+                    return self.handle_error(
                         request,
                         status=400,
                         message="No se ha podido agregar el paciente. Se encontraron los errores: \n{}".format(str(form._errors))
@@ -180,7 +181,7 @@ class web_client:
 
         else:
 
-            return handle_error(
+            return self.handle_error(
                 request,
                 status=401,
                 message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales"
@@ -402,7 +403,7 @@ class web_client:
                         steps += 1
 
                 if not exito:
-                    return handle_error(request, status=500, message="Lo sentimos, no se ha podido establecer la conexión con la base de datos para imágenes. Al menos en alguna muestra se han realizado más de 5 intentos para establecer la conexión.")
+                    return self.handle_error(request, status=500, message="Lo sentimos, no se ha podido establecer la conexión con la base de datos para imágenes. Al menos en alguna muestra se han realizado más de 5 intentos para establecer la conexión.")
 
             if request.user.profile.rol == '0':
                 return redirect('/dashboard_sesiones/?id_paciente=' + str(sesion.id_paciente)) # Se procesó correctamente pero no hay contenido
@@ -528,6 +529,12 @@ class web_client:
 
     def features(self, request):
         return render(request, 'index/features.html' )
+
+    def show_graficos_paciente(self, request, context):
+        return render(request, 'index/components/paciente_graficos.html', context)
+
+    def show_graficos_sesion(self, request, context):
+        return render(request, 'index/components/sesion_graficos.html', context)
 
     # Auxiliar function to return a list of static images and their corresponding class
     def __read_static_list(self):

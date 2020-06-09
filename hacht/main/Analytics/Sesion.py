@@ -1,5 +1,9 @@
 from ..forms import Muestra
 import random
+from django.db.models import Count
+import json
+from django.shortcuts import render
+from ..Clients import ClientFactory
 
 # Auxiliar function to assist the analytics for Sesion
 # It gets metrics associated with each class present
@@ -132,7 +136,6 @@ def analytics_sesion(request):
             'cantidad_no_val' : cantidad_no_val
         }
 
-        if request.GET.get("android"):
-            return render(request, 'index/components/sesion_graficos_app.html', context)
-        else:
-            return render(request, 'index/components/sesion_graficos.html', context)
+        client = ClientFactory.get_client(request)
+
+        return client.show_graficos_paciente(request, context)

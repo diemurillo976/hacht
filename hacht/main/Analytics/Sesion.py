@@ -5,6 +5,7 @@ import json
 from django.shortcuts import render
 from ..Clients import ClientFactory
 
+
 # Auxiliar function to assist the analytics for Sesion
 # It gets metrics associated with each class present
 def get_metrics(muestras_general):
@@ -138,4 +139,4 @@ def analytics_sesion(request):
 
         client = ClientFactory.get_client(request)
 
-        return client.show_graficos_paciente(request, context)
+        return client.show_graficos_sesion(request, context)

@@ -41,7 +41,7 @@ sys.path.insert(0, path)
 from .CNN_src.forward import *
 
 #Firebase auth##############################################################
-
+servicePath = os.path.join(os.getcwd(), "main", "static", "index", "assets", "json", "hacht-570b8-firebase-adminsdk-20kun-c743c4033d.json")
 config = {
     "apiKey": "AIzaSyArQxRet5XqKI6v8948A2ZnHZOZsu7vCNY",
     "authDomain": "hacht-7d98d.firebaseapp.com",
@@ -55,9 +55,7 @@ config = {
 #Firebase Storage reference#
 
 firebase = pyrebase.initialize_app(config)
-
 storage = firebase.storage()
-
 ############################################################################
 
 @receiver(user_login_failed)
@@ -333,7 +331,6 @@ def demo(request):
         index = int(request.POST["index"])
         url = request.POST["url"]
 
-        url_fire = storage.child(url)
         response = requests.get(url)
 
         img = Image.open(BytesIO(response.content))

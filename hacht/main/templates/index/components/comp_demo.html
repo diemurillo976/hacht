@@ -1,6 +1,18 @@
-<div class="card text-center">
+<div id="card" class="card text-center">
 
-    <h5 class="card-header">Imagen seleccionada</h5>
+    <script>
+        closeCol(); //Se agrega linea para cargar metodo antes de ser llamado por el boton cerrar.
+    </script>
+
+    <h5 class="card-header">
+        <button style="float:right;" type="button" class="close close-icon" aria-label="Close" onclick="closeCol()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="text-center">
+            <span>Imagen seleccionada</span>
+        </div>
+    </h5>
+
 
     <img class="card-img-top" onerror="this.style.display='none'" src= "{{ url }}">
 

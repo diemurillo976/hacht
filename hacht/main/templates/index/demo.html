@@ -17,7 +17,21 @@
 </head>
 
 <body style="background-color: rgb(246,246,246);">
-    {% include "index/header.html" %}
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+        <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(59,153,224);font-size: 30px;">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div
+                class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav ml-auto" id="header-nav">
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'index' %}">INICIO</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'demo' %}">Demo</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'features' %}">características</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'contact_us' %}">Contacto</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'registration' %}">Registrarse</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'login' %}">Ingresar</a></li>
+                    </ul>
+        </div>
+        </div>
+    </nav>
 
     <main class="page">
             <div class="container-fluid" style="margin-top:2%; margin-bottom: 5%; max-height: 100%">
@@ -29,26 +43,82 @@
                     <div class="text-center" style="padding-bottom: 20px;">
                         <span>Seleccione una de las imágenes para ver su clase correcta y tener la posibilidad de generar la predicción de la clase con el modelo utilizado</span>
                     </div>
-
+                    
                     <div class="row text-center" style="padding-bottom: 10px; max-height: 100%;">
-
-                        <div id="col_grid" class="col col_principal" id="col_gallery">
-                            <div class="grid-container" style="padding-bottom: 10px;">
-                                {% if images %}
-                                    {%for url in images%}
-
-                                        <div class="grid-item"><a href="#"> <img src="{{url}}" onclick="img_onClick({{forloop.counter0}})"> </a></div>
-
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
+                        <div class="col col_principal" id="col_gallery">
+                                <!-- Photo Grid -->
+                                <div class="row"> 
+                                    <div class="column col-img">
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549AB-100-002_0.png' %}" onclick="img_onClick(0, null)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_A-14-22549G-100-009_0.png' %}" onclick="img_onClick(1)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_F-14-14134E-100-032_1.png' %}" onclick="img_onClick(2)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_F-14-23060CD-100-010_1.png' %}" onclick="img_onClick(3)">
+                                        </a>
+                                    </div>
+                
+                                    <div class="column col-img">
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_PT-14-21998AB-100-015_2.png' %}" onclick="img_onClick(4)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_PT-14-21998AB-100-066_2.png' %}" onclick="img_onClick(5)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_TA-14-15275-100-013_3.png' %}" onclick="img_onClick(6)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_B_TA-14-16184CD-100-018_3.png' %}" onclick="img_onClick(7)">
+                                        </a>
+                
+                                    </div>
+                
+                                    <div class="column col-img">
+                                        
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_DC-14-5695-100-020_4.png' %}" onclick="img_onClick(8)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_DC-14-16336-100-010_4.png' %}" onclick="img_onClick(9)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_LC-14-12204-100-059_5.png' %}" onclick="img_onClick(10)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_LC-14-13412-100-020_5.png' %}" onclick="img_onClick(11)">
+                                        </a>
+                
+                                    </div>
+                
+                                    <div class="column col-img">
+                
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_MC-14-12773-100-020_6.png' %}" onclick="img_onClick(12)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_MC-14-16456-100-078_6.png' %}" onclick="img_onClick(13)">
+                                        </a>
+                                        <a href="#">
+                                            <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_PC-14-15704-100-015_7.png' %}" onclick="img_onClick(14)">
+                                        </a>
+                                        <a href="#">
+                                           <img src="{% static '/index/assets/img/Demo_imgs/100x/SOB_M_PC-14-19440-100-033_7.png' %}" onclick="img_onClick(15)">
+                                        </a>
+                
+                                    </div>
+                                </div>
                         </div>
-
+                            
                         <div id="col_demo" class="col col_principal" style="display: none; max-height: 100%">
                         </div>
-
+                            
                     </div>
-
                  </div>
     </main>
 
@@ -60,7 +130,6 @@
     <script src="{% static 'index/assets/js/smoothproducts.min.js' %}"></script>
     <script src="{% static 'index/assets/js/theme.js' %}"></script>
     <script src="{% static 'index/assets/js/demo.js' %}"></script>
-    <script src="{% static 'index/assets/js/header.js' %}"></script>
 
     {% if resultado is not None %}
     <script>

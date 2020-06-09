@@ -16,8 +16,20 @@
 </head>
 
 <body>
-    {% include "index/header.html" %}
-
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+        <div class="container"><a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(59,153,224);font-size: 30px;">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav ml-auto" id="header-nav">
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{% url 'index' %}">INICIO</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'demo' %}">Demo</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'features' %}">características</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'contact_us' %}">Contacto</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'registration' %}">Registrarse</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'login' %}">Ingresar</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <main class="page landing-page">
         <section class="clean-block clean-hero" style="background-image:url(&quot;{% static 'index/assets/img/tech/image5.jpg' %} &quot;);color:rgba(9, 162, 255, 0.85);">
             <div class="text">
@@ -108,7 +120,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="{% static 'index/assets/js/smoothproducts.min.js' %}"></script>
     <script src="{% static 'index/assets/js/theme.js' %}"></script>
-    <script src="{% static 'index/assets/js/header.js' %}"></script>
 </body>
 
 </html>

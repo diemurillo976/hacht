@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
-    <!-- <link rel="stylesheet" href="{% static 'index/assets/css/styles.min.css' %}"> !-->
+
 </head>
 
 <body>
@@ -227,46 +227,7 @@
         </div>
     </main>
 
-    <footer class="page-footer dark" style="margin-top: 25px;">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
-                    <h5>Comenzar</h5>
-                    <ul>
-                        <li><a href="{% url 'index' %}">Inicio</a></li>
-                        <li><a href="{% url 'login' %}">Ingresar</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Acerca de nosotros</h5>
-                    <ul>
-                        <li><a href="#">Information</a></li>
-                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
-                        <li><a href="#">Reseñas</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Soporte</h5>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Ayuda</a></li>
-                        <li><a href="#">Foros</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Legal</h5>
-                    <ul>
-                        <li><a href="#">Términos de servicio</a></li>
-                        <li><a href="#">Términos de uso</a></li>
-                        <li><a href="#">Política de privacidad</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="footer-copyright">
-            <p></p>
-        </div>
-    </footer>
+    {% include "index/footer.html" %}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>

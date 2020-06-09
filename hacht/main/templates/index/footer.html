@@ -1,7 +1,7 @@
-    <footer class="page-footer dark" style="margin-top: 25px;">
+    <footer class="page-footer dark footer-dark" style="margin-top: 25px;">
         <div class="container">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col">
                     <h5>Comenzar</h5>
                     <ul>
                         <li><a href="{% url 'index' %}">Inicio</a></li>
@@ -9,21 +9,32 @@
                         <li><a href="{% url 'login' %}">Ingresar</a></li>
                     </ul>
                 </div>
-                <div class="col-sm-3">
+                <div class="col">
                     <h5>Acerca de nosotros</h5>
                     <ul>
                         <li><a href="#">Información</a></li>
                         <li><a href="{% url 'contact_us' %}">Contacto</a></li>
+                        <li><a href="#">Reseñas</a></li>
                     </ul>
                 </div>
-                <div class="col-sm-3">
+                <div class="col">
                     <h5>Soporte</h5>
                     <ul>
                         <li><a href="{% url 'help' %}">Ayuda</a></li>
                         <li><a href="{% url 'features' %}">Características</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Foros</a></li>
                     </ul>
                 </div>
-                <div class="col-sm-3">
+                <div class="col">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Términos de servicio</a></li>
+                        <li><a href="#">Términos de uso</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
+                    </ul>
+                </div>
+                <div class="col">
                     <h5>Otros</h5>
                     <ul>
                         <li><a href="{% url 'demo' %}">Demo</a></li>
@@ -32,6 +43,6 @@
             </div>
         </div>
         <div class="footer-copyright">
-            <p></p>
+            <p>copyright temporal</p>
         </div>
     </footer>

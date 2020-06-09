@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <link rel="stylesheet" href="{% static 'index/assets/css/smoothproducts.css' %}">
     <link rel="stylesheet" href="{% static 'index/assets/css/untitled.css' %}">
+    <link rel="stylesheet" href="{% static 'index/assets/css/Footer-Dark.css' %}">
 </head>
 
 <body>
@@ -25,52 +26,15 @@
                     <h2 class="text-info" style="color: rgb(38,153,35);">Éxito al registrarse</h2>
                     <p style="color: rgb(33,41,37);">!Gracias por unirse a nuestra herramienta¡<br><br>Se ha enviado un correo a la dirección que ha ingresado con información que le puede ser útil.</p>
                 </div>
-                <div class="block-heading"><a href="{% url 'dashboard_pacientes' %}">
+                <div class="block-heading"><a href="{% url 'index' %}">
 <button class="btn btn-primary" type="button">Continuar a la herramienta</button>
 </a></div>
             </div>
         </section>
     </main>
-    <footer class="page-footer dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
-                    <h5>Comenzar</h5>
-                    <ul>
-                        <li><a href="{% url 'index' %}">Inicio</a></li>
-                        <li><a href="{% url 'login' %}">Ingresar</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Acerca de nosotros</h5>
-                    <ul>
-                        <li><a href="#">Information</a></li>
-                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
-                        <li><a href="#">Reseñas</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Soporte</h5>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Ayuda</a></li>
-                        <li><a href="#">Foros</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h5>Legal</h5>
-                    <ul>
-                        <li><a href="#">Términos de servicio</a></li>
-                        <li><a href="#">Términos de uso</a></li>
-                        <li><a href="#">Política de privacidad</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="footer-copyright">
-            <p></p>
-        </div>
-    </footer>
+
+    {% include "index/footer.html" %}
+
     <script src="{% static 'index/assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'index/assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>

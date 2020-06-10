@@ -93,21 +93,6 @@ def index(request):
     return client.index(request)
 
 
-"""
-    if request.user.is_authenticated:
-        context = {}
-        if request.user.profile.rol == '0':
-            context.update({"logged_in" : "usr_doctor"})
-        else:
-            context.update({"logged_in" : "usr_investigador"})
-        return render(request, 'index/index.html', context) # Acomodar por el cambio de logica con android y web.
-
-    if request.GET.get("android"):
-        return get_for_android(request)
-    else:
-        return render(request, 'index/index.html')
-"""
-
 def login_app(request):
     client = ClientFactory.get_client(request)
 
@@ -157,17 +142,23 @@ def dashboard_pacientes(request):
 
     # Only the medic user should be seeing "patients"
     context = {}
+
     if request.user.is_authenticated and request.user.profile.rol == '0':
-        context.update({"logged_in" : "usr_doctor"})
+
 
         if request.method == "GET":
 
             all_patients_n = Paciente.objects.filter(id_user=request.user)
             context.update({'pacientes': all_patients_n})
 
+            #TODO Change this to factory. Temporal Fix.
             if request.GET.get("android"):
-                return get_for_android(request, context)
+                client = ClientFactory.get_client(request)
+
+                return client.__get_for_android(request, context)
+
             else:
+                context.update({"logged_in" : "usr_doctor"})
                 return render(request, 'index/dashboard_pacientes.html', context)
 
         elif request.method == "POST":
@@ -188,6 +179,7 @@ def dashboard_pacientes(request):
                 paciente.id_user = request.user
                 paciente.save()
 
+                context.update({"logged_in" : "usr_doctor"})
                 return redirect('/dashboard_pacientes/', context)
 
             else:
@@ -200,11 +192,12 @@ def dashboard_pacientes(request):
     
     # If the user is authenticated and is an investigator, gets redirected to dashboard_sesiones.
     elif request.user.is_authenticated:
-        context.update({"logged_in" : "usr_investigador"})
 
         if request.GET.get("android"):
             return redirect('/dashboard_sesiones/?android=1', permanent=True)
         else:
+
+            context.update({"logged_in" : "usr_investigador"})
             return redirect('dashboard_sesiones', permanent=True)
 
     else:
@@ -266,28 +259,30 @@ def dashboard_sesiones(request):
                 return HttpResponse(status=403)
 
             sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
-            context = {"paciente" : paciente, "sesiones" : sesiones, "logged_in" : "usr_doctor"}
+            context = {"paciente" : paciente, "sesiones" : sesiones}
 
+            #TODO Change this to factory. Temporal Fix.
             if request.GET.get("android"):
-
-                return get_for_android(request, context)
+                client = ClientFactory.get_client(request)
+                return client.__get_for_android(request, context)
 
             else:
-
+                context.update({"logged_in" : "usr_doctor"})
                 return render(request, 'index/dashboard_sesiones.html', context)
 
         # Cuando es usuario investigador
         elif request.method == "GET":
 
             sesiones = Sesion.objects.filter(id_usuario=request.user.id)
-            context = {'sesiones' : sesiones, "logged_in" : "usr_investigador"}
-            
-            if request.GET.get("android"):
+            context = {'sesiones' : sesiones}
 
-                return get_for_android(request, context)
+            #TODO Change this to factory. Temporal Fix.
+            if request.GET.get("android"):
+                client = ClientFactory.get_client(request)
+                return client.__get_for_android(request, context)
 
             else:
-
+                context.update({"logged_in" : "usr_investigador"})
                 return render(request, 'index/dashboard_sesiones.html', context)
 
         elif request.method == "POST":
@@ -376,6 +371,7 @@ def muestras_sesion(request):
         id_s = request.GET["id_sesion"]
         sesion = Sesion.objects.get(pk=id_s)
 
+        #TODO Change this to factory. Temporal Fix.
         if request.GET.get("android"):
 
             muestras = Muestra.objects.filter(sesion=id_s)
@@ -384,7 +380,8 @@ def muestras_sesion(request):
                 'muestras' : muestras
             }
 
-            return get_for_android(request, context)
+            client = ClientFactory.get_client(request)
+            return client.__get_for_android(request, context)
 
         else:
 
@@ -469,6 +466,7 @@ def agregar_muestra(request):
 
 def demo_app_muestra(request):
 
+    #TODO Change this to factory. Temporal Fix.
     if request.GET.get("android") and request.GET.get("url"):
 
         url = request.GET["url"]
@@ -483,7 +481,8 @@ def demo_app_muestra(request):
                 'estimacion' : estimations[result]
             }
 
-        return get_for_android(request, context)
+        client = ClientFactory.get_client(request)
+        return client.__get_for_android(request, context)
 
     else:
         return HttpResponse(status=403)

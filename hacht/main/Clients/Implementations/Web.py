@@ -25,6 +25,14 @@ class web_client:
         return HttpResponse(status=status, content=message)
 
     def index(self, request):
+        if request.user.is_authenticated:
+            context = {}
+            if request.user.profile.rol == '0':
+                context.update({"logged_in" : "usr_doctor"})
+            else:
+                context.update({"logged_in" : "usr_investigador"})
+            return render(request, 'index/index.html', context) # Acomodar por el cambio de logica con android y web.
+
         return render(request, 'index/index.html')
 
     #Implementación cubierta por django para el cliente web_client
@@ -79,8 +87,26 @@ class web_client:
     def registration_success(self, request):
         return render(request, 'index/registration_success.html')
 
+
     def demo(self, request):
+
+        context = {}
+
+        # Add the user role to the context if signed in.
+        if request.user.is_authenticated:
+            if request.user.profile.rol == '0':
+                context.update({"logged_in" : "usr_doctor"})
+            else:
+                context.update({"logged_in" : "usr_investigador"})
+
+        # Load url of demo images to the context
+        images = []
+        for element in self.__read_static_list():
+            url = element[1]
+            images += [url]
+
         if request.method == "GET" and request.GET.get("resultado"):
+        # Calcula el nuevo resultado de la imagen.
 
             lista = self.__read_static_list()
 
@@ -89,50 +115,59 @@ class web_client:
             resultado = int(request.GET["resultado"])
             estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
 
-            context = {"class": y_true,
-                       "url": url,
-                       "resultado": estimations[resultado],
-                       "index": index}
 
+            context_aux = {"class": y_true,
+                           "url": url,
+                           "resultado": estimations[resultado],
+                           "index": index,
+                           "images": images}
+
+            context.update(context_aux)
             return render(request, 'index/components/comp_demo.html', context)
 
         elif request.method == "GET" and request.GET.get("index"):
-
+            # Devuelve la imagen seleccionada.
             lista = self.__read_static_list()
 
             index = int(request.GET["index"])
             y_true, url = lista[index]
-            context = {"class": y_true,
-                       "url": url,
-                       "index": index}
-
+            context_aux = {"class": y_true,
+                           "url": url,
+                           "index": index}
+            context.update(context_aux)
             return render(request, 'index/components/comp_demo.html', context)
 
         elif request.method == "GET":
+            # Carga demo.html por primera vez.
 
-            return render(request, 'index/demo.html')
+            context_aux = {
+                "images" : images
+            }
+            context.update(context_aux)
+            return render(request, 'index/demo.html', context)
 
         elif request.method == "POST":
 
-            time.sleep(1)
+            #time.sleep(1)
 
             index = int(request.POST["index"])
             url = request.POST["url"]
 
-            url_fire = settings.FIREBASE_STORAGE.child(url)
+            #url_fire = settings.FIREBASE_STORAGE.child(url)
             response = requests.get(url)
 
             img = Image.open(BytesIO(response.content))
             img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
             result = forward_single_img(img_cv)
 
-            context = {
+            context_aux = {
                 "index" : index,
-                "resultado" : result
+                "resultado" : result,
+                "images": images
             }
+            context.update(context_aux)
 
             return render(request, "index/demo.html", context)
-
 
     # Auxiliar function to return a list of static images and their corresponding class
     def __read_static_list(self):

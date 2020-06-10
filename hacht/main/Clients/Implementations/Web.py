@@ -22,7 +22,9 @@ class web_client:
 
         # render a error message page
         # This needs to be changed
-        return HttpResponse(status=status, content=message)
+        context = {'message': message}
+        #return HttpResponse(status=status, content=message)
+        return render(request, 'index/error.html', context, status=status)
 
     def index(self, request):
         if request.user.is_authenticated:

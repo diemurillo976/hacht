@@ -197,15 +197,18 @@ def dashboard_pacientes(request):
             return redirect('/dashboard_sesiones/?android=1', permanent=True)
         else:
 
-            context.update({"logged_in" : "usr_investigador"})
-            return redirect('dashboard_sesiones', permanent=True)
+            return handle_error(
+                request,
+                status=401,
+                message="El usuario no tiene permiso de acceder a esta funcionalidad."
+            )
 
     else:
 
         return handle_error(
             request,
             status=401,
-            message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales"
+            message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales."
         )
 
 def descriptivo_paciente(request):
@@ -324,7 +327,11 @@ def dashboard_sesiones(request):
             return HttpResponse(status=404)
 
     else:
-        return HttpResponse(status=403)
+        return handle_error(
+            request,
+            status=401,
+            message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales."
+        )
 
 
 def descriptivo_sesion(request):

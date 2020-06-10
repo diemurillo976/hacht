@@ -3,6 +3,15 @@
 <html>
 
 <head>
+  {% if messages %}
+
+      {% for message in messages %}
+
+          <script> alert('{{ message.tags }} : {{ message }}');</script>
+      {% endfor %}
+
+  {% endif %}
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Register - Brand</title>
@@ -20,14 +29,17 @@
     {% include "index/header.html" %}
 
     <main class="page registration-page">
+
         <section class="clean-block clean-form dark">
             <div class="container">
                 <div class="block-heading" style="height: 324px;">
                     <h2 class="text-info">Registro</h2>
                     <p>Al registrarse, es muy importante que seleccione el rol que desempeñará al dar uso a esta herramienta, el cual se divide en MÉDICO o INVESTIGADOR.</p>
                     <p style="padding: 1px;"><br>Es importante que agregue el nombre o el sitio web de la organización a la que pertenece y opcionalmente una pequeña descripción del uso que tiene en mente para la herramienta.</p>
+
                 </div>
                 <form style="height: 803px;" method='POST' action="{% url 'registration' %}">
+
                     {% csrf_token %}
                     <div class="form-group"><label for="name">Nombre</label><label for="name" style="color: rgb(255,0,0);">*</label> {{ form.nombre }} </div>
                     <div class="form-group"><label for="email">Email</label><label for="email" style="color: rgb(255,0,0);">*</label>{{ form.correo }}</div>
@@ -40,7 +52,7 @@
         </section>
     </main>
 
-    {% include "index/footer.html" %}  
+    {% include "index/footer.html" %}
 
     <script src="{% static 'index/assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'index/assets/bootstrap/js/bootstrap.min.js' %}"></script>

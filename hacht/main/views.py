@@ -1,3 +1,4 @@
+import csv
 import sys
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Profile, Paciente, Sesion
@@ -21,6 +22,7 @@ from .Clients import ClientFactory
 
 #model imports#################################################
 
+import pyrebase
 from PIL import Image
 from io import BytesIO
 import requests
@@ -31,15 +33,14 @@ from .CNN_src.forward import *
 #Firebase auth##############################################################
 servicePath = os.path.join(os.getcwd(), "main", "static", "index", "assets", "json", "hacht-570b8-firebase-adminsdk-20kun-c743c4033d.json")
 config = {
-    "apiKey": "AIzaSyArQxRet5XqKI6v8948A2ZnHZOZsu7vCNY",
-    "authDomain": "hacht-7d98d.firebaseapp.com",
-    "databaseURL": "https://hacht-7d98d.firebaseio.com",
-    "projectId": "hacht-7d98d",
-    "storageBucket": "hacht-7d98d.appspot.com",
-    "messagingSenderId": "225406534324",
-    "appId": "1:225406534324:web:f5317f74d07ced54"
-  }
-
+    "apiKey": "AIzaSyAQBVQdmZkLe3LIzcNo8LqAff86WQn9IbI",
+    "authDomain": "hacht-570b8.firebaseapp.com",
+    "databaseURL": "https://hacht-570b8.firebaseio.com",
+    "projectId": "hacht-570b8",
+    "storageBucket": "hacht-570b8.appspot.com",
+    "messagingSenderId": "566493394218",
+    "appId": "1:566493394218:web:535fd251874a297f205a53",
+}
 #Firebase Storage reference#
 
 firebase = pyrebase.initialize_app(config)
@@ -125,105 +126,28 @@ def registration_success(request):
     return client.registration_success(request)
 
 def demo(request):
+    """
+    # Codigo se encarga de leer carpeta de imagenes, las sube a firebase y guardar las referencias en un csv temporal.
+    path = settings.STATIC_ROOT
+    abs_path = os.path.join(path, "index", "assets", "img", "Demo_imgs", "100x")
+
+    for file in os.listdir(abs_path):
+        storage.child("Demo_subset/"+str(file)).put(os.path.join(abs_path, file))
+
+        csv_line = {
+            'metadata': 'palabra',
+            'link': storage.child("Demo_subset/"+str(file)).get_url(None)
+        }
+
+        csv_path = os.path.join(path, "index", "assets", "csv", "demo_temp.csv")
+        with open(csv_path, 'a') as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=['metadata', 'link'])
+            writer.writerow(csv_line)
+    # ------------------------------------------------------------------------------
+    """
+
     client = ClientFactory.get_client(request)
     return client.demo(request)
-"""    
-    context = {}
-    if request.user.is_authenticated:
-        if request.user.profile.rol == '0':
-            context.update({"logged_in" : "usr_doctor"})
-        else:
-            context.update({"logged_in" : "usr_investigador"})
-
-
-    images = [] # Carga los url de las imagenes del csv.
-    for element in read_static_list():
-        url = element[1]
-        images += [url]
-
-
-    if request.method == "GET" and request.GET.get("resultado"):
-        # Calcula el nuevo resultado de la imagen.
-        lista = read_static_list()
-
-        index = int(request.GET["index"])
-        y_true, url = lista[index]
-        resultado = int(request.GET["resultado"])
-        estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
-
-        context_aux = {"class": y_true,
-                   "url": url,
-                   "resultado": estimations[resultado],
-                   "index": index,
-                   "images": images}
-
-        context.update(context_aux)
-
-        return render(request, 'index/components/comp_demo.html', context)
-
-    elif request.method == "GET" and request.GET.get("index"):
-        # Devuelve la imagen seleccionada.
-
-        lista = read_static_list()
-
-        index = int(request.GET["index"])
-        y_true, url = lista[index]
-        context_aux = {"class": y_true,
-                   "url": url,
-                   "index": index}
-        context.update(context_aux)
-        return render(request, 'index/components/comp_demo.html', context)
-
-    elif request.method == "GET":
-        # Carga demo.html por primera vez.
-
-
-        # Codigo se encarga de leer carpeta de imagenes, las sube a firebase y guardar las referencias en un csv temporal.
-
-        path = os.getcwd()
-        abs_path = os.path.join(path, "main", "static", "index", "assets", "img", "Demo_imgs", "100x")
-
-        all_imgs = []
-        for file in os.listdir(abs_path):
-            storage.child("Demo_subset/"+str(file)).put(os.path.join(abs_path, file))
-
-            csv_line = {
-                'metadata': 'palabra',
-                'link': storage.child("Demo_subset/"+str(file)).get_url(None)
-            }
-
-            csv_path = os.path.join(path, "main", "static", "index", "assets", "csv", "demo_temp.csv")
-            with open(csv_path, 'a') as csv_file:
-                writer = csv.DictWriter(csv_file, fieldnames=['metadata', 'link'])
-                writer.writerow(csv_line)
-
-        context_aux = {
-            "images" : images
-        }
-        context.update(context_aux)
-        return render(request, 'index/demo.html', context)
-
-    elif request.method == "POST":
-
-        time.sleep(1)
-
-        index = int(request.POST["index"])
-        url = request.POST["url"]
-
-        response = requests.get(url)
-
-        img = Image.open(BytesIO(response.content))
-        img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        result = forward_single_img(img_cv)
-
-        context_aux = {
-            "index" : index,
-            "resultado" : result,
-            "images": images
-        }
-        context.update(context_aux)
-        return render(request, "index/demo.html", context)
-"""
 
 def dashboard_pacientes(request):
     # Only the medic user should be seeing "patients"

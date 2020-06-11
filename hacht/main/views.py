@@ -1,3 +1,4 @@
+import csv
 import sys
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Profile, Paciente, Sesion
@@ -21,6 +22,7 @@ from .Clients import ClientFactory
 
 #model imports#################################################
 
+import pyrebase
 from PIL import Image
 from io import BytesIO
 import requests
@@ -28,7 +30,21 @@ import requests
 
 from .CNN_src.forward import *
 
+#Firebase auth##############################################################
+servicePath = os.path.join(os.getcwd(), "main", "static", "index", "assets", "json", "hacht-570b8-firebase-adminsdk-20kun-c743c4033d.json")
+config = {
+    "apiKey": "AIzaSyAQBVQdmZkLe3LIzcNo8LqAff86WQn9IbI",
+    "authDomain": "hacht-570b8.firebaseapp.com",
+    "databaseURL": "https://hacht-570b8.firebaseio.com",
+    "projectId": "hacht-570b8",
+    "storageBucket": "hacht-570b8.appspot.com",
+    "messagingSenderId": "566493394218",
+    "appId": "1:566493394218:web:535fd251874a297f205a53",
+}
+#Firebase Storage reference#
 
+firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
 ############################################################################
 
 @receiver(user_login_failed)
@@ -65,6 +81,7 @@ def handle_500_error(request):
 
 
 def index(request):
+
     client = ClientFactory.get_client(request)
 
     return client.index(request)
@@ -88,10 +105,28 @@ def registration_success(request):
     return client.registration_success(request)
 
 def demo(request):
+    """
+    # Codigo se encarga de leer carpeta de imagenes, las sube a firebase y guardar las referencias en un csv temporal.
+    path = settings.STATIC_ROOT
+    abs_path = os.path.join(path, "index", "assets", "img", "Demo_imgs", "100x")
+
+    for file in os.listdir(abs_path):
+        storage.child("Demo_subset/"+str(file)).put(os.path.join(abs_path, file))
+
+        csv_line = {
+            'metadata': 'palabra',
+            'link': storage.child("Demo_subset/"+str(file)).get_url(None)
+        }
+
+        csv_path = os.path.join(path, "index", "assets", "csv", "demo_temp.csv")
+        with open(csv_path, 'a') as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=['metadata', 'link'])
+            writer.writerow(csv_line)
+    # ------------------------------------------------------------------------------
+    """
+
     client = ClientFactory.get_client(request)
-
     return client.demo(request)
-
 
 def dashboard_pacientes(request):
     client = ClientFactory.get_client(request)

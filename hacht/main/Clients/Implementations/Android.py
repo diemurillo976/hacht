@@ -10,6 +10,7 @@ from PIL import Image
 from io import BytesIO
 import requests
 import json
+from ...CNN_src import TumourClasses
 
 class android_client:
     def __init__(self):
@@ -282,10 +283,9 @@ class android_client:
             img = Image.open(BytesIO(response.content))
             img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
             result = forward_single_img(img_cv)
-            estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
 
             context = {
-                    'estimacion' : estimations[result]
+                    'estimacion' : TumourClasses.estimation_labels[result]
                 }
 
             return __get_for_android(request, context)

@@ -20,7 +20,6 @@ from django.conf import settings
 
 from .Clients import ClientFactory
 
-#model imports#################################################
 
 import pyrebase
 from PIL import Image
@@ -30,22 +29,7 @@ import requests
 
 from .CNN_src.forward import *
 
-#Firebase auth##############################################################
-servicePath = os.path.join(os.getcwd(), "main", "static", "index", "assets", "json", "hacht-570b8-firebase-adminsdk-20kun-c743c4033d.json")
-config = {
-    "apiKey": "AIzaSyAQBVQdmZkLe3LIzcNo8LqAff86WQn9IbI",
-    "authDomain": "hacht-570b8.firebaseapp.com",
-    "databaseURL": "https://hacht-570b8.firebaseio.com",
-    "projectId": "hacht-570b8",
-    "storageBucket": "hacht-570b8.appspot.com",
-    "messagingSenderId": "566493394218",
-    "appId": "1:566493394218:web:535fd251874a297f205a53",
-}
-#Firebase Storage reference#
 
-firebase = pyrebase.initialize_app(config)
-storage = firebase.storage()
-############################################################################
 
 @receiver(user_login_failed)
 def user_login_failed_callback(sender, credentials, **kwargs):

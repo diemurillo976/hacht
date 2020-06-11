@@ -13,7 +13,7 @@ from io import BytesIO
 import numpy as np
 import requests
 from ...CNN_src.forward import *
-
+from ...CNN_src import TumourClasses
 
 class web_client:
     def __init__(self):
@@ -116,12 +116,11 @@ class web_client:
             index = int(request.GET["index"])
             y_true, url = lista[index]
             resultado = int(request.GET["resultado"])
-            estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
 
 
             context_aux = {"class": y_true,
                            "url": url,
-                           "resultado": estimations[resultado],
+                           "resultado": TumourClasses.estimation_labels[resultado],
                            "index": index,
                            "images": images}
 
@@ -425,12 +424,11 @@ class web_client:
                         img = Image.open(BytesIO(response.content))
                         img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
                         result = forward_single_img(img_cv)
-                        estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
 
                         muestra = Muestra(
                             sesion=sesion,
                             url_img=url,
-                            pred=estimations[result],
+                            pred=TumourClasses.estimation_labels[result],
                         )
 
                         muestra.save()

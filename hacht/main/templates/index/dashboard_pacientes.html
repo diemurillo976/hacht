@@ -13,37 +13,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <link rel="stylesheet" href="{% static 'index/assets/css/general.css' %}">
     <link rel="stylesheet" href="{% static 'index/assets/css/Pacientes.css' %}">
+    <link rel="stylesheet" href="{% static 'index/assets/css/Footer-Dark.css' %}">
 </head>
 
 <body>
-    
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-        <div class="container">
-            <a class="navbar-brand logo" href="{% url 'index' %}" style="color: rgb(0,123,255);">HACHT</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <span style="font-size: 12px; padding-top: 5px">{{ user.username }}</span>
-            <div
-                class="collapse navbar-collapse" id="navcol-1">
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" href="{% url 'dashboard_pacientes' %}">
-                            <span style="margin-left: 5px">INICIO</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" href="{% url 'help' %}">
-                            <span style="margin-left: 5px">AYUDA</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" href="{% url 'logout' %}" style="margin-left: 5px">
-                            <span style="margin-left: 5px">SALIR</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    
+
+    {% include "index/header.html" %}
+
     <main class="page">
         <section style="margin-top: 2%;">
 
@@ -123,7 +99,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
     <script src="{% static 'index/assets/js/script.min.js' %}"></script>
     <script src="{% static 'index/assets/js/scripts_aux.js' %}"></script>
-
+    <script src="{% static 'index/assets/js/header.js' %}"></script>
 
     {% if pacientes %}
         <script>

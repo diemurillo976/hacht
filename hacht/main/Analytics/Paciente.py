@@ -1,5 +1,9 @@
 from ..forms import Muestra
 import random
+from django.db.models import Count
+import json
+from django.shortcuts import render
+from ..Clients import ClientFactory
 
 def analytics_paciente(request):
 
@@ -133,7 +137,6 @@ def analytics_paciente(request):
             'data_pie' : data_pie_obj
         }
 
-        if request.GET.get("android"):
-            return render(request, 'index/components/paciente_graficos_app.html', context)
-        else:
-            return render(request, 'index/components/paciente_graficos.html', context)
+        client = ClientFactory.get_client(request)
+
+        return client.show_graficos_paciente(request, context)

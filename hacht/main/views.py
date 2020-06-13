@@ -59,6 +59,46 @@ def user_logged_in_callback(sender, request, user, **kwargs):
 
 
 
+def pricing(request):
+    if request.user.is_authenticated:
+        context = {}
+        if request.user.profile.rol == '0':
+            context.update({"logged_in" : "usr_doctor"})
+        else:
+            context.update({"logged_in" : "usr_investigador"})
+
+        return render(request, 'index/pricing.html', context)
+
+
+    return render(request, 'index/pricing.html')
+
+def sobre_nosotros(request):
+    if request.user.is_authenticated:
+        context = {}
+        if request.user.profile.rol == '0':
+            context.update({"logged_in" : "usr_doctor"})
+        else:
+            context.update({"logged_in" : "usr_investigador"})
+
+        return render(request, 'index/about_us.html', context)
+
+
+    return render(request, 'index/about_us.html')
+
+def slider(request):
+    if request.user.is_authenticated:
+        context = {}
+        if request.user.profile.rol == '0':
+            context.update({"logged_in" : "usr_doctor"})
+        else:
+            context.update({"logged_in" : "usr_investigador"})
+
+        return render(request, 'index/slider.html', context)
+
+
+    return render(request, 'index/slider.html')
+
+
 def ayuda(request):
 
     client = ClientFactory.get_client(request)

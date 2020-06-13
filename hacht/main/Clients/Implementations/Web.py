@@ -87,7 +87,16 @@ class web_client:
         return render(request, 'index/registration.html', context)
 
     def registration_success(self, request):
-        return render(request, 'index/registration_success.html')
+        #TODO Este metodo puede ser eliminado si registration_succes es un componente
+        # Por el momento los accesos no autorizados responden como un error 400
+        if request.user.is_authenticated:
+            return render(request, 'index/registration_success.html')
+        else:
+            return self.handle_error(
+                request,
+                status = 400,
+                message="Acceso no autorizado a pagina."
+            )
 
 
     def demo(self, request):

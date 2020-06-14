@@ -38,6 +38,18 @@ class web_client:
 
         return render(request, 'index/index.html')
 
+    def about_us(self, request):
+        if request.user.is_authenticated:
+            context = {}
+            if request.user.profile.rol == '0':
+                context.update({"logged_in" : "usr_doctor"})
+            else:
+                context.update({"logged_in" : "usr_investigador"})
+            return render(request, 'index/index.html', context) # Acomodar por el cambio de logica con android y web.
+
+        return render(request, 'index/about_us.html')
+
+
     #Implementación cubierta por django para el cliente web_client
     #Se mantiene este método dummy para fines de uniformidad con el
     #patrón de diseño

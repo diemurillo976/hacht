@@ -58,10 +58,10 @@ def user_logged_in_callback(sender, request, user, **kwargs):
     print("Se loggeó correctamente el usuario {}".format(user))
 
 
-def sobre_nosotros(request):
+def about_us(request):
     client = ClientFactory.get_client(request)
 
-    return client.sobre_nosotros(request)
+    return client.about_us(request)
 
 
 def ayuda(request):

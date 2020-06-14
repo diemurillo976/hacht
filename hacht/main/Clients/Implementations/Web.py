@@ -4,6 +4,7 @@ from ...models import User, Profile, Paciente, Sesion
 from ...forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 import json
 import csv
 import os
@@ -28,67 +29,90 @@ class web_client:
         return render(request, 'index/error.html', context, status=status)
 
     def index(self, request):
-        if request.user.is_authenticated:
-            context = {}
-            if request.user.profile.rol == '0':
-                context.update({"logged_in" : "usr_doctor"})
-            else:
-                context.update({"logged_in" : "usr_investigador"})
-            return render(request, 'index/index.html', context) # Acomodar por el cambio de logica con android y web.
+        context = {}
+        context.update(self.getUsrAuthentication(request))
+        return render(request, 'index/index.html', context)
 
-        return render(request, 'index/index.html')
+    def about_us(self, request):
+        context = {}
+        context.update(self.getUsrAuthentication(request))
 
-    #Implementación cubierta por django para el cliente web_client
-    #Se mantiene este método dummy para fines de uniformidad con el
-    #patrón de diseño
-    #Se redirige a login
+        return render(request, 'index/about_us.html', context)
+
+
     def login_app(self, request):
-        return redirect('login')
+        if request.user.is_authenticated:
+            if request.user.profile.rol == '0':
+                context = {"logged_in" : "usr_doctor"}
+                return render(request, 'index/dashboard_pacientes.html', context)
+            else:
+                context = {"logged_in" : "usr_investigador"}
+                return render(request, 'index/dashboard_sesiones.html', context)
 
     def registration(self, request):
-        if(request.method == 'POST'):
+        if(not request.user.is_authenticated):
+            if(request.method == 'POST'):
 
-            form = RegistrationForm(request.POST)
+                form = RegistrationForm(request.POST)
 
-            if(form.is_valid()):
-                if(User.objects.filter(email=request.POST['correo'])):
-                    messages.error(request, 'Ya existe una cuenta asociada a este correo')
-                    return render(request, 'index/registration.html', {'form' : RegistrationForm()})
+                if(form.is_valid()):
+                    if(User.objects.filter(email=request.POST['correo'])):
+                        messages.error(request, 'Ya existe una cuenta asociada a este correo')
+                        return render(request, 'index/registration.html', {'form' : RegistrationForm()})
 
-                # Creates the django's user
-                new_user = User(username=request.POST['correo'],
-                                email=request.POST['correo'],
-                                first_name=request.POST['nombre'])
+                    # Creates the django's user
+                    new_user = User(username=request.POST['correo'],
+                                    email=request.POST['correo'],
+                                    first_name=request.POST['nombre'])
 
-                new_user.set_password(request.POST['password'])
-                new_user.save()
+                    new_user.set_password(request.POST['password'])
+                    new_user.save()
 
-                new_user.profile.rol = request.POST["rol"]
-                new_user.profile.org = request.POST["org"]
+                    new_user.profile.rol = request.POST["rol"]
+                    new_user.profile.org = request.POST["org"]
 
-                new_user.save()
-                print('NUEVO REGISTRO USER AGREGADO')
-                #messages.success(request, _('El usuario ha sido creado con éxito'))
+                    new_user.save()
+                    print('NUEVO REGISTRO USER AGREGADO')
+                    #messages.success(request, _('El usuario ha sido creado con éxito'))
 
-                return redirect('registration_success')
+                    user = authenticate(username=new_user.username, password=request.POST['password'])
+                    login(request, user)
 
-            else:
+                    return redirect('registration_success')
 
-                return self.handle_error(
-                    request,
-                    status=400,
-                    message="No se podido completar la adición del usuario, por favor revise los datos ingresados y que estos sean válidos"
-                )
+                else:
 
-        if(request.method == 'GET'):
-            form = RegistrationForm()
+                    return self.handle_error(
+                        request,
+                        status=400,
+                        message="No se podido completar la adición del usuario, por favor revise los datos ingresados y que estos sean válidos"
+                    )
 
-        context = {'form' : form}
+            if(request.method == 'GET'):
+                form = RegistrationForm()
 
-        return render(request, 'index/registration.html', context)
+            context = {'form' : form}
+
+            return render(request, 'index/registration.html', context)
+
+        else:
+            return self.handle_error(
+                request,
+                status = 400,
+                message="Acceso no autorizado a pagina."
+            )
 
     def registration_success(self, request):
-        return render(request, 'index/registration_success.html')
+        #TODO Este metodo puede ser eliminado si registration_succes es un componente
+        # Por el momento los accesos no autorizados responden como un error 400
+        if request.user.is_authenticated:
+            return render(request, 'index/registration_success.html')
+        else:
+            return self.handle_error(
+                request,
+                status = 400,
+                message="Acceso no autorizado a pagina."
+            )
 
 
     def demo(self, request):
@@ -96,11 +120,7 @@ class web_client:
         context = {}
 
         # Add the user role to the context if signed in.
-        if request.user.is_authenticated:
-            if request.user.profile.rol == '0':
-                context.update({"logged_in" : "usr_doctor"})
-            else:
-                context.update({"logged_in" : "usr_investigador"})
+        context.update(self.getUsrAuthentication(request))
 
         # Load url of demo images to the context
         images = []
@@ -180,7 +200,7 @@ class web_client:
 
                 all_patients_n = Paciente.objects.filter(id_user=request.user)
                 context = {'pacientes': all_patients_n}
-
+                context.update({"logged_in" : "usr_doctor"})
                 return render(request, 'index/dashboard_pacientes.html', context)
 
             elif request.method == "POST":
@@ -213,15 +233,17 @@ class web_client:
 
         # If the user is authenticated and is a medic, gets redirected to dashboard_sesiones
         elif request.user.is_authenticated:
-
-            return redirect('dashboard_sesiones', permanent=True)
-
+            return self.handle_error(
+                request,
+                status=401,
+                message="El usuario no tiene permiso de acceder a esta funcionalidad."
+            )
         else:
 
             return self.handle_error(
                 request,
                 status=401,
-                message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales"
+                message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales."
             )
 
     def descriptivo_paciente(self, request):
@@ -277,7 +299,7 @@ class web_client:
 
                 sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
                 context = {"paciente" : paciente, "sesiones" : sesiones}
-
+                context.update({"logged_in" : "usr_doctor"})
                 return render(request, 'index/dashboard_sesiones.html', context)
 
             # Cuando es usuario investigador
@@ -285,6 +307,7 @@ class web_client:
 
                 sesiones = Sesion.objects.filter(id_usuario=request.user.id)
                 context = {'sesiones' : sesiones}
+                context.update({"logged_in" : "usr_investigador"})
 
                 return render(request, 'index/dashboard_sesiones.html', context)
 
@@ -327,7 +350,11 @@ class web_client:
                 return HttpResponse(status=404)
 
         else:
-            return HttpResponse(status=403)
+            return self.handle_error(
+                request,
+                status=401,
+                message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales."
+            )
 
     def descriptivo_sesion(self, request):
 
@@ -551,20 +578,20 @@ class web_client:
             return HttpResponse(status=400) # Problema con el request
 
     def ayuda(self, request):
-
-        if request.user.is_authenticated:
-
-            context = {"logged_in" : True}
-            return render(request, 'index/help.html', context)
-
-        return render(request, 'index/help.html')
+        context = {}
+        context.update(self.getUsrAuthentication(request))
+        return render(request, 'index/help.html', context)
 
 
     def contact_us(self, request):
-        return render(request, 'index/contact-us.html')
+        context = {}
+        context.update(self.getUsrAuthentication(request))
+        return render(request, 'index/contact-us.html', context)
 
     def features(self, request):
-        return render(request, 'index/features.html' )
+        context = {}
+        context.update(self.getUsrAuthentication(request))
+        return render(request, 'index/features.html' , context)
 
     def show_graficos_paciente(self, request, context):
         return render(request, 'index/components/paciente_graficos.html', context)
@@ -590,3 +617,13 @@ class web_client:
                 lista.append((y_true, url))
 
         return lista
+
+    # Auxiliar function to detect the role of the user and send it in a dictionary
+    def getUsrAuthentication(self, request):
+        context = {}
+        if request.user.is_authenticated:
+            if request.user.profile.rol == '0':
+                context.update({"logged_in" : "usr_doctor"})
+            else:
+                context.update({"logged_in" : "usr_investigador"})
+        return context

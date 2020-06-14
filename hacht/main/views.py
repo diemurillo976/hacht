@@ -20,16 +20,8 @@ from django.conf import settings
 
 from .Clients import ClientFactory
 
-
-import pyrebase
-from PIL import Image
-from io import BytesIO
-import requests
-
-
+#model imports#################################################
 from .CNN_src.forward import *
-
-
 
 @receiver(user_login_failed)
 def user_login_failed_callback(sender, credentials, **kwargs):
@@ -41,6 +33,11 @@ def user_logged_in_callback(sender, request, user, **kwargs):
     print(user)
     print("Se loggeó correctamente el usuario {}".format(user))
 
+
+def about_us(request):
+    client = ClientFactory.get_client(request)
+
+    return client.about_us(request)
 
 
 def ayuda(request):

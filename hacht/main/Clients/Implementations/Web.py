@@ -235,15 +235,17 @@ class web_client:
 
         # If the user is authenticated and is a medic, gets redirected to dashboard_sesiones
         elif request.user.is_authenticated:
-
-            return redirect('dashboard_sesiones', permanent=True)
-
+            return self.handle_error(
+                request,
+                status=401,
+                message="El usuario no tiene permiso de acceder a esta funcionalidad."
+            )
         else:
 
             return self.handle_error(
                 request,
                 status=401,
-                message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales"
+                message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales."
             )
 
     def descriptivo_paciente(self, request):
@@ -349,7 +351,11 @@ class web_client:
                 return HttpResponse(status=404)
 
         else:
-            return HttpResponse(status=403)
+            return self.handle_error(
+                request,
+                status=401,
+                message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales."
+            )
 
     def descriptivo_sesion(self, request):
 

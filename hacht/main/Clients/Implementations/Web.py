@@ -28,34 +28,25 @@ class web_client:
         return render(request, 'index/error.html', context, status=status)
 
     def index(self, request):
-        if request.user.is_authenticated:
-            context = {}
-            if request.user.profile.rol == '0':
-                context.update({"logged_in" : "usr_doctor"})
-            else:
-                context.update({"logged_in" : "usr_investigador"})
-            return render(request, 'index/index.html', context) # Acomodar por el cambio de logica con android y web.
-
-        return render(request, 'index/index.html')
+        context = {}
+        context.update(self.getUsrAuthentication(request))
+        return render(request, 'index/index.html', context)
 
     def about_us(self, request):
-        if request.user.is_authenticated:
-            context = {}
-            if request.user.profile.rol == '0':
-                context.update({"logged_in" : "usr_doctor"})
-            else:
-                context.update({"logged_in" : "usr_investigador"})
-            return render(request, 'index/index.html', context) # Acomodar por el cambio de logica con android y web.
+        context = {}
+        context.update(self.getUsrAuthentication(request))
 
-        return render(request, 'index/about_us.html')
+        return render(request, 'index/about_us.html', context)
 
 
-    #Implementación cubierta por django para el cliente web_client
-    #Se mantiene este método dummy para fines de uniformidad con el
-    #patrón de diseño
-    #Se redirige a login
     def login_app(self, request):
-        return redirect('login')
+        if request.user.is_authenticated:
+            if request.user.profile.rol == '0':
+                context = {"logged_in" : "usr_doctor"}
+                return render(request, 'index/dashboard_pacientes.html', context)
+            else:
+                context = {"logged_in" : "usr_investigador"}
+                return render(request, 'index/dashboard_sesiones.html', context)
 
     def registration(self, request):
         if(request.method == 'POST'):
@@ -81,6 +72,7 @@ class web_client:
                 new_user.save()
                 print('NUEVO REGISTRO USER AGREGADO')
                 #messages.success(request, _('El usuario ha sido creado con éxito'))
+
 
                 return redirect('registration_success')
 
@@ -117,11 +109,7 @@ class web_client:
         context = {}
 
         # Add the user role to the context if signed in.
-        if request.user.is_authenticated:
-            if request.user.profile.rol == '0':
-                context.update({"logged_in" : "usr_doctor"})
-            else:
-                context.update({"logged_in" : "usr_investigador"})
+        context.update(self.getUsrAuthentication(request))
 
         # Load url of demo images to the context
         images = []
@@ -202,7 +190,7 @@ class web_client:
 
                 all_patients_n = Paciente.objects.filter(id_user=request.user)
                 context = {'pacientes': all_patients_n}
-
+                context.update({"logged_in" : "usr_doctor"})
                 return render(request, 'index/dashboard_pacientes.html', context)
 
             elif request.method == "POST":
@@ -301,7 +289,7 @@ class web_client:
 
                 sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
                 context = {"paciente" : paciente, "sesiones" : sesiones}
-
+                context.update({"logged_in" : "usr_doctor"})
                 return render(request, 'index/dashboard_sesiones.html', context)
 
             # Cuando es usuario investigador
@@ -309,6 +297,7 @@ class web_client:
 
                 sesiones = Sesion.objects.filter(id_usuario=request.user.id)
                 context = {'sesiones' : sesiones}
+                context.update({"logged_in" : "usr_investigador"})
 
                 return render(request, 'index/dashboard_sesiones.html', context)
 
@@ -580,20 +569,20 @@ class web_client:
             return HttpResponse(status=400) # Problema con el request
 
     def ayuda(self, request):
-
-        if request.user.is_authenticated:
-
-            context = {"logged_in" : True}
-            return render(request, 'index/help.html', context)
-
-        return render(request, 'index/help.html')
+        context = {}
+        context.update(self.getUsrAuthentication(request))
+        return render(request, 'index/help.html', context)
 
 
     def contact_us(self, request):
-        return render(request, 'index/contact-us.html')
+        context = {}
+        context.update(self.getUsrAuthentication(request))
+        return render(request, 'index/contact-us.html', context)
 
     def features(self, request):
-        return render(request, 'index/features.html' )
+        context = {}
+        context.update(self.getUsrAuthentication(request))
+        return render(request, 'index/features.html' , context)
 
     def show_graficos_paciente(self, request, context):
         return render(request, 'index/components/paciente_graficos.html', context)
@@ -619,3 +608,13 @@ class web_client:
                 lista.append((y_true, url))
 
         return lista
+
+    # Auxiliar function to detect the role of the user and send it in a dictionary
+    def getUsrAuthentication(self, request):
+        context = {}
+        if request.user.is_authenticated:
+            if request.user.profile.rol == '0':
+                context.update({"logged_in" : "usr_doctor"})
+            else:
+                context.update({"logged_in" : "usr_investigador"})
+        return context

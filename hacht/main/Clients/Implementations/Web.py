@@ -4,6 +4,7 @@ from ...models import User, Profile, Paciente, Sesion
 from ...forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 import json
 import csv
 import os
@@ -49,47 +50,57 @@ class web_client:
                 return render(request, 'index/dashboard_sesiones.html', context)
 
     def registration(self, request):
-        if(request.method == 'POST'):
+        if(not request.user.is_authenticated):
+            if(request.method == 'POST'):
 
-            form = RegistrationForm(request.POST)
+                form = RegistrationForm(request.POST)
 
-            if(form.is_valid()):
-                if(User.objects.filter(email=request.POST['correo'])):
-                    messages.error(request, 'Ya existe una cuenta asociada a este correo')
-                    return render(request, 'index/registration.html', {'form' : RegistrationForm()})
+                if(form.is_valid()):
+                    if(User.objects.filter(email=request.POST['correo'])):
+                        messages.error(request, 'Ya existe una cuenta asociada a este correo')
+                        return render(request, 'index/registration.html', {'form' : RegistrationForm()})
 
-                # Creates the django's user
-                new_user = User(username=request.POST['correo'],
-                                email=request.POST['correo'],
-                                first_name=request.POST['nombre'])
+                    # Creates the django's user
+                    new_user = User(username=request.POST['correo'],
+                                    email=request.POST['correo'],
+                                    first_name=request.POST['nombre'])
 
-                new_user.set_password(request.POST['password'])
-                new_user.save()
+                    new_user.set_password(request.POST['password'])
+                    new_user.save()
 
-                new_user.profile.rol = request.POST["rol"]
-                new_user.profile.org = request.POST["org"]
+                    new_user.profile.rol = request.POST["rol"]
+                    new_user.profile.org = request.POST["org"]
 
-                new_user.save()
-                print('NUEVO REGISTRO USER AGREGADO')
-                #messages.success(request, _('El usuario ha sido creado con éxito'))
+                    new_user.save()
+                    print('NUEVO REGISTRO USER AGREGADO')
+                    #messages.success(request, _('El usuario ha sido creado con éxito'))
 
+                    user = authenticate(username=new_user.username, password=request.POST['password'])
+                    login(request, user)
 
-                return redirect('registration_success')
+                    return redirect('registration_success')
 
-            else:
+                else:
 
-                return self.handle_error(
-                    request,
-                    status=400,
-                    message="No se podido completar la adición del usuario, por favor revise los datos ingresados y que estos sean válidos"
-                )
+                    return self.handle_error(
+                        request,
+                        status=400,
+                        message="No se podido completar la adición del usuario, por favor revise los datos ingresados y que estos sean válidos"
+                    )
 
-        if(request.method == 'GET'):
-            form = RegistrationForm()
+            if(request.method == 'GET'):
+                form = RegistrationForm()
 
-        context = {'form' : form}
+            context = {'form' : form}
 
-        return render(request, 'index/registration.html', context)
+            return render(request, 'index/registration.html', context)
+
+        else:
+            return self.handle_error(
+                request,
+                status = 400,
+                message="Acceso no autorizado a pagina."
+            )
 
     def registration_success(self, request):
         #TODO Este metodo puede ser eliminado si registration_succes es un componente

@@ -14,6 +14,7 @@ urlpatterns = [
     path('contact_us/', views.contact_us, name='contact_us'),
     path('features/', views.features, name='features'),
     path('demo/', views.demo, name='demo'),
+    path('demo_app/', views.demo, name='demo_cliente_movil'),
     path('dashboard_pacientes/components/descriptivo_paciente/', views.descriptivo_paciente, name="descriptivo_paciente"),
     path('dashboard_sesiones/components/descriptivo_sesion/', views.descriptivo_sesion, name="descriptivo_sesion"),
     path('dashboard_pacientes/eliminar/', views.eliminar_paciente, name="eliminar_paciente"),

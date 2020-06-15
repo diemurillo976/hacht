@@ -15,6 +15,7 @@ import numpy as np
 import requests
 from ...CNN_src.forward import *
 from ...CNN_src import TumourClasses
+from ...Analytics import Sorters
 
 class web_client:
     def __init__(self):
@@ -202,6 +203,10 @@ class web_client:
             if request.method == "GET":
 
                 all_patients_n = Paciente.objects.filter(id_user=request.user)
+
+                #Ordena los pacientes para mostrar primero aquellos con predicciones malignas en la última sesión
+                all_patients_n = sorted(all_patients_n, key=Sorters.pacientes_sort_key, reverse=True)
+
                 context = {'pacientes': all_patients_n}
                 context.update({"logged_in" : "usr_doctor"})
                 return render(request, 'index/dashboard_pacientes.html', context)
@@ -305,7 +310,8 @@ class web_client:
                 if paciente.id_user != request.user:
                     return HttpResponse(status=403)
 
-                sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
+                sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"]).order_by("-date")
+
                 context = {"paciente" : paciente, "sesiones" : sesiones}
                 context.update({"logged_in" : "usr_doctor"})
                 return render(request, 'index/dashboard_sesiones.html', context)
@@ -313,7 +319,7 @@ class web_client:
             # Cuando es usuario investigador
             elif request.method == "GET":
 
-                sesiones = Sesion.objects.filter(id_usuario=request.user.id)
+                sesiones = Sesion.objects.filter(id_usuario=request.user.id).order_by("-date")
                 context = {'sesiones' : sesiones}
                 context.update({"logged_in" : "usr_investigador"})
 
@@ -417,7 +423,10 @@ class web_client:
             for muestra in Muestra.objects.filter(sesion=id_s):
                 form = Data_Sesion_Muestra(instance=muestra)
                 muestras.append(form)
+                print(form.instance.pred_true)
 
+            #Ordena las muestras para mostrar primero aquellas con predicciones malignas
+            muestras = sorted(muestras, key=Sorters.muestras_sort_key, reverse=True)
 
             context = {
                 'sesion' : sesion,
@@ -559,7 +568,7 @@ class web_client:
         context.update(self.getUsrAuthentication(request))
         return render(request, 'index/features.html' , context)
 
-        
+
 
     #Método para mostrar los gráficos de los objetos de analytics del paciente
     def show_graficos_paciente(self, request, context):

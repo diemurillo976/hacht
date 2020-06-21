@@ -5,7 +5,7 @@ from .models import User, Profile, Paciente, Sesion
 from .forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.http import HttpResponse
 from django.db.models import Model, Count
-from django.contrib.auth.signals import user_login_failed, user_logged_in
+from django.contrib.auth.signals import user_login_failed, user_logged_in, user_logged_out
 from django.contrib.auth import authenticate, login
 from django.dispatch import receiver
 from django.db.models.query import QuerySet
@@ -24,14 +24,36 @@ from .Clients import ClientFactory
 from .CNN_src.forward import *
 
 @receiver(user_login_failed)
+# Method called when login failed
 def user_login_failed_callback(sender, credentials, **kwargs):
-    print(credentials)
-    print("Login fallado para las credenciales: {}".format(credentials))
+    print(sender)
+    message = "Login fallado para las credenciales: {}".format(credentials)
+    return HttpResponse(status=412, content=message)
+
 
 @receiver(user_logged_in)
+# Method called when user logs in
 def user_logged_in_callback(sender, request, user, **kwargs):
     print(user)
-    print("Se loggeó correctamente el usuario {}".format(user))
+    message = "Se loggeó correctamente el usuario {}".format(user)
+    return HttpResponse(status=202, content=message)
+
+@receiver(user_logged_out)
+# Method called when user logs out
+def user_logged_out_callback(sender, request, user, **kwargs):
+    print(user)
+    message = "Se deslogueó correctamente el usuario {}".format(user)
+    return HttpResponse(status=202, content=message)
+
+
+#Implementación cubierta por django para el cliente web_client
+#Se mantiene este método dummy para fines de uniformidad con el
+#patrón de diseño
+#Se redirige a login
+def login_app(request):
+    client = ClientFactory.get_client(request)
+
+    return client.login_app(request)
 
 
 def about_us(request):
@@ -60,7 +82,6 @@ def handle_500_error(request):
     return handle_error(request, status=500, message="El servidor ha tenido un problema resolviendo la petición")
 
 
-
 def index(request):
 
     client = ClientFactory.get_client(request)
@@ -68,10 +89,6 @@ def index(request):
     return client.index(request)
 
 
-def login_app(request):
-    client = ClientFactory.get_client(request)
-
-    return client.login_app(request)
 
 
 def registration(request):

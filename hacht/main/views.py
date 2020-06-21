@@ -97,11 +97,6 @@ def registration(request):
     return client.registration(request)
 
 
-def registration_success(request):
-    client = ClientFactory.get_client(request)
-
-    return client.registration_success(request)
-
 def demo(request):
     """
     # Codigo se encarga de leer carpeta de imagenes, las sube a firebase y guardar las referencias en un csv temporal.

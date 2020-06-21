@@ -56,6 +56,7 @@ class web_client:
                 form = RegistrationForm(request.POST)
 
                 if(form.is_valid()):
+
                     if(User.objects.filter(email=request.POST['correo'])):
                         messages.error(request, 'Ya existe una cuenta asociada a este correo')
                         return render(request, 'index/registration.html', {'form' : RegistrationForm()})
@@ -78,7 +79,7 @@ class web_client:
                     user = authenticate(username=new_user.username, password=request.POST['password'])
                     login(request, user)
 
-                    return redirect('registration_success')
+                    return render(request, 'index/registration.html')
 
                 else:
 
@@ -95,18 +96,6 @@ class web_client:
 
             return render(request, 'index/registration.html', context)
 
-        else:
-            return self.handle_error(
-                request,
-                status = 400,
-                message="Acceso no autorizado a pagina."
-            )
-
-    def registration_success(self, request):
-        #TODO Este metodo puede ser eliminado si registration_succes es un componente
-        # Por el momento los accesos no autorizados responden como un error 400
-        if request.user.is_authenticated:
-            return render(request, 'index/registration_success.html')
         else:
             return self.handle_error(
                 request,

@@ -8,7 +8,6 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')), #Agrega pantalla de login
     path('login_app/', views.login_app, name="login_app"), #Engloba logins para implementaciones de clientes
     path('registration/', views.registration, name='registration'),
-    path('registration_success/', views.registration_success, name='registration_success'),
     path('dashboard_pacientes/', views.dashboard_pacientes, name='dashboard_pacientes'),
     path('dashboard_sesiones/', views.dashboard_sesiones, name='dashboard_sesiones'),
     path('contact_us/', views.contact_us, name='contact_us'),

@@ -43,11 +43,10 @@ class web_client:
     def login_app(self, request):
         if request.user.is_authenticated:
             if request.user.profile.rol == '0':
-                context = {"logged_in" : "usr_doctor"}
-                return render(request, 'index/dashboard_pacientes.html', context)
+                return redirect('dashboard_pacientes')
             else:
-                context = {"logged_in" : "usr_investigador"}
-                return render(request, 'index/dashboard_sesiones.html', context)
+                return redirect('dashboard_sesiones')
+
 
     def registration(self, request):
         if(not request.user.is_authenticated):

@@ -29,15 +29,10 @@ class web_client:
         return render(request, 'index/error.html', context, status=status)
 
     def index(self, request):
-        context = {}
-        context.update(self.getUsrAuthentication(request))
-        return render(request, 'index/index.html', context)
+        return render(request, 'index/index.html')
 
     def about_us(self, request):
-        context = {}
-        context.update(self.getUsrAuthentication(request))
-
-        return render(request, 'index/about_us.html', context)
+        return render(request, 'index/about_us.html')
 
 
     def login_app(self, request):
@@ -106,9 +101,6 @@ class web_client:
     def demo(self, request):
 
         context = {}
-
-        # Add the user role to the context if signed in.
-        context.update(self.getUsrAuthentication(request))
 
         # Load url of demo images to the context
         images = []
@@ -568,20 +560,14 @@ class web_client:
             return HttpResponse(status=400) # Problema con el request
 
     def ayuda(self, request):
-        context = {}
-        context.update(self.getUsrAuthentication(request))
-        return render(request, 'index/help.html', context)
+        return render(request, 'index/help.html')
 
 
     def contact_us(self, request):
-        context = {}
-        context.update(self.getUsrAuthentication(request))
-        return render(request, 'index/contact-us.html', context)
+        return render(request, 'index/contact-us.html')
 
     def features(self, request):
-        context = {}
-        context.update(self.getUsrAuthentication(request))
-        return render(request, 'index/features.html' , context)
+        return render(request, 'index/features.html')
 
     def show_graficos_paciente(self, request, context):
         return render(request, 'index/components/paciente_graficos.html', context)
@@ -607,13 +593,3 @@ class web_client:
                 lista.append((y_true, url))
 
         return lista
-
-    # Auxiliar function to detect the role of the user and send it in a dictionary
-    def getUsrAuthentication(self, request):
-        context = {}
-        if request.user.is_authenticated:
-            if request.user.profile.rol == '0':
-                context.update({"logged_in" : "usr_doctor"})
-            else:
-                context.update({"logged_in" : "usr_investigador"})
-        return context

@@ -11,8 +11,8 @@ class Profile(models.Model):
 
     # one to one relationship with the django auth default user
     #user = models.IntegerField()
-    user = models.OneToOneField(User, 
-                                on_delete=models.CASCADE, 
+    user = models.OneToOneField(User,
+                                on_delete=models.CASCADE,
                                 primary_key=True,
                                 default=1) # Default value should exit on "auth_user" table
 
@@ -24,7 +24,7 @@ class Profile(models.Model):
     # attributes that make our "user" different than the django's
     org = models.CharField(max_length=100, null=True)
     rol = models.CharField(max_length=1, null=True)
-        
+
 ## Paciente_N object definition
 class Paciente(models.Model):
 
@@ -85,7 +85,7 @@ class Muestra(models.Model):
     #auto update on data change
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
 
-    #sesion = models.IntegerField(null=True)
+    
     sesion = models.ForeignKey(Sesion, on_delete=models.CASCADE, default=-1)
     url_img = models.URLField(null=True)
     pred = models.CharField(max_length=20, null=True)
@@ -103,7 +103,7 @@ def create_user(sender, instance, created, **kwargs):
 
 # Method that catches the "save User event" and automatically saves the changes made to a profile
 def save_profile(sender, instance, **kwargs):
-    instance.profile.save()  
+    instance.profile.save()
 
 # Creates the callback so that whenever a muestra is deleted; then the image associated is too
 def delete_muestra_callback(sender, instance, **kwargs):

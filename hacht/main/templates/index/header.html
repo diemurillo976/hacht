@@ -1,4 +1,4 @@
-{% if logged_in %}
+{% if request.user.is_authenticated %}
 
 <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
     <div class="container">
@@ -8,12 +8,11 @@
                 class="collapse navbar-collapse" id="navcol-1">
             <ul id="header_nav_elem" class="nav navbar-nav ml-auto">
 
-                {% if logged_in == 'usr_doctor' %}
+                {% if request.user.profile.rol == '0' %}
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" href="{% url 'dashboard_pacientes' %}"><span style="margin-left: 5px">Mis pacientes</span></a>
                 </li>
-                {% endif %}
-                {% if logged_in == 'usr_investigador' %}
+                {% else %}
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" href="{% url 'dashboard_sesiones' %}"><span style="margin-left: 5px">Mis Sesiones</span></a>
                 </li>
@@ -21,8 +20,8 @@
 
                 <li class="nav-item" role="presentation"> <a class="nav-link" href="{% url 'help' %}"> <span style="margin-left: 5px">AYUDA</span></a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'demo' %}">Demo</a></li>
-                <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'features' %}">características</a></li>
-                <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'contact_us' %}">Contacto</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'features' %}">Características</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'about_us' %}">Sobre Nosotros</a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'logout' %}" style="margin-left: 5px"><span style="margin-left: 5px">CERRAR</span></a></li>
             </ul>
         </div>
@@ -38,7 +37,7 @@
                 <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'index' %}">INICIO</a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'demo' %}">Demo</a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'features' %}">características</a></li>
-                <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'contact_us' %}">Contacto</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'about_us' %}">Sobre Nosotros</a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'registration' %}">Registrarse</a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'login' %}">Ingresar</a></li>
             </ul>

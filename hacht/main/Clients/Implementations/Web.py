@@ -4,6 +4,7 @@ from ...models import User, Profile, Paciente, Sesion
 from ...forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 import json
 import csv
 import os
@@ -13,7 +14,8 @@ from io import BytesIO
 import numpy as np
 import requests
 from ...CNN_src.forward import *
-
+from ...CNN_src import TumourClasses
+from ...Analytics import Sorters
 
 class web_client:
     def __init__(self):
@@ -28,79 +30,81 @@ class web_client:
         return render(request, 'index/error.html', context, status=status)
 
     def index(self, request):
-        if request.user.is_authenticated:
-            context = {}
-            if request.user.profile.rol == '0':
-                context.update({"logged_in" : "usr_doctor"})
-            else:
-                context.update({"logged_in" : "usr_investigador"})
-            return render(request, 'index/index.html', context) # Acomodar por el cambio de logica con android y web.
-
         return render(request, 'index/index.html')
 
-    #Implementación cubierta por django para el cliente web_client
-    #Se mantiene este método dummy para fines de uniformidad con el
-    #patrón de diseño
-    #Se redirige a login
+    def about_us(self, request):
+        return render(request, 'index/about_us.html')
+
+
     def login_app(self, request):
-        return redirect('login')
+        if request.user.is_authenticated:
+            if request.user.profile.rol == '0':
+                return redirect('dashboard_pacientes')
+            else:
+                return redirect('dashboard_sesiones')
+
 
     def registration(self, request):
-        if(request.method == 'POST'):
+        if(not request.user.is_authenticated):
+            if(request.method == 'POST'):
 
-            form = RegistrationForm(request.POST)
+                form = RegistrationForm(request.POST)
 
-            if(form.is_valid()):
-                if(User.objects.filter(email=request.POST['correo'])):
-                    messages.error(request, 'Ya existe una cuenta asociada a este correo')
-                    return render(request, 'index/registration.html', {'form' : RegistrationForm()})
+                if(form.is_valid()):
 
-                # Creates the django's user
-                new_user = User(username=request.POST['correo'],
-                                email=request.POST['correo'],
-                                first_name=request.POST['nombre'])
+                    if(User.objects.filter(email=request.POST['correo'])):
+                        messages.error(request, 'Ya existe una cuenta asociada a este correo')
+                        return render(request, 'index/registration.html', {'form' : RegistrationForm()})
 
-                new_user.set_password(request.POST['password'])
-                new_user.save()
+                    # Creates the django's user
+                    new_user = User(username=request.POST['correo'],
+                                    email=request.POST['correo'],
+                                    first_name=request.POST['nombre'])
 
-                new_user.profile.rol = request.POST["rol"]
-                new_user.profile.org = request.POST["org"]
+                    new_user.set_password(request.POST['password'])
+                    new_user.save()
 
-                new_user.save()
-                print('NUEVO REGISTRO USER AGREGADO')
-                #messages.success(request, _('El usuario ha sido creado con éxito'))
+                    new_user.profile.rol = request.POST["rol"]
+                    new_user.profile.org = request.POST["org"]
 
-                return redirect('registration_success')
+                    new_user.save()
+                    print('NUEVO REGISTRO USER AGREGADO')
+                    #messages.success(request, _('El usuario ha sido creado con éxito'))
 
-            else:
+                    user = authenticate(username=new_user.username, password=request.POST['password'])
+                    login(request, user)
 
-                return self.handle_error(
-                    request,
-                    status=400,
-                    message="No se podido completar la adición del usuario, por favor revise los datos ingresados y que estos sean válidos"
-                )
+                    return render(request, 'index/registration.html')
 
-        if(request.method == 'GET'):
-            form = RegistrationForm()
+                else:
 
-        context = {'form' : form}
+                    return self.handle_error(
+                        request,
+                        status=400,
+                        message="No se podido completar la adición del usuario, por favor revise los datos ingresados y que estos sean válidos"
+                    )
 
-        return render(request, 'index/registration.html', context)
+            if(request.method == 'GET'):
+                form = RegistrationForm()
 
-    def registration_success(self, request):
-        return render(request, 'index/registration_success.html')
+            context = {'form' : form}
+
+            return render(request, 'index/registration.html', context)
+
+        else:
+            return self.handle_error(
+                request,
+                status = 400,
+                message="Acceso no autorizado a pagina."
+            )
 
 
+
+    #Para la aplicación web el demo se basa en mostrar imágenes a las que se les puede
+    #consultar sus predicciones con sus categorías.
     def demo(self, request):
 
         context = {}
-
-        # Add the user role to the context if signed in.
-        if request.user.is_authenticated:
-            if request.user.profile.rol == '0':
-                context.update({"logged_in" : "usr_doctor"})
-            else:
-                context.update({"logged_in" : "usr_investigador"})
 
         # Load url of demo images to the context
         images = []
@@ -116,12 +120,11 @@ class web_client:
             index = int(request.GET["index"])
             y_true, url = lista[index]
             resultado = int(request.GET["resultado"])
-            estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
 
 
             context_aux = {"class": y_true,
                            "url": url,
-                           "resultado": estimations[resultado],
+                           "resultado": TumourClasses.estimation_labels[resultado],
                            "index": index,
                            "images": images}
 
@@ -161,7 +164,13 @@ class web_client:
 
             img = Image.open(BytesIO(response.content))
             img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-            result = forward_single_img(img_cv)
+            result, probabilities = forward_single_img(img_cv)
+
+            probabilities = list(probabilities[0,:].tolist())
+            probabilities = [(TumourClasses.estimation_labels[i], probabilities[i]) for i in range(0, len(TumourClasses.estimation_labels))]
+            print("Probabilidades de clase predichas:")
+            print(probabilities)
+
 
             context_aux = {
                 "index" : index,
@@ -173,6 +182,7 @@ class web_client:
             return render(request, "index/demo.html", context)
 
 
+    #Se muestra información y se maneja la creación y edición de pacientes
     def dashboard_pacientes(self, request):
         # Only the medic user should be seeing "patients"
         if request.user.is_authenticated and request.user.profile.rol == '0':
@@ -180,8 +190,12 @@ class web_client:
             if request.method == "GET":
 
                 all_patients_n = Paciente.objects.filter(id_user=request.user)
-                context = {'pacientes': all_patients_n}
 
+                #Ordena los pacientes para mostrar primero aquellos con predicciones malignas en la última sesión
+                all_patients_n = sorted(all_patients_n, key=Sorters.pacientes_sort_key, reverse=True)
+
+                context = {'pacientes': all_patients_n}
+                context.update({"logged_in" : "usr_doctor"})
                 return render(request, 'index/dashboard_pacientes.html', context)
 
             elif request.method == "POST":
@@ -214,17 +228,21 @@ class web_client:
 
         # If the user is authenticated and is a medic, gets redirected to dashboard_sesiones
         elif request.user.is_authenticated:
-
-            return redirect('dashboard_sesiones', permanent=True)
-
+            return self.handle_error(
+                request,
+                status=401,
+                message="El usuario no tiene permiso de acceder a esta funcionalidad."
+            )
         else:
 
             return self.handle_error(
                 request,
                 status=401,
-                message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales"
+                message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales."
             )
 
+    #Método utilizado para el manejo de los forms del html en los que se muestra, edita y crea a los pacientes
+    #Se usa en conjunto con dashboard_pacientes
     def descriptivo_paciente(self, request):
 
         # Si no hay paciente seleccionado se envía el form vacio
@@ -246,6 +264,7 @@ class web_client:
         context = {'form': form}
         return render(request, 'index/components/descriptivo_paciente.html', context)
 
+
     def eliminar_paciente(self, request):
 
         if request.POST.get("id_paciente"):
@@ -262,6 +281,8 @@ class web_client:
             return HttpResponse(status=400) # Problema con el request
 
 
+    #Se muestra información y se maneja la creación y edición de sesiones,
+    #ya sea relacionadas a un paciente o a un investigador
     def dashboard_sesiones(self, request):
 
         if request.user.is_authenticated:
@@ -276,16 +297,18 @@ class web_client:
                 if paciente.id_user != request.user:
                     return HttpResponse(status=403)
 
-                sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
-                context = {"paciente" : paciente, "sesiones" : sesiones}
+                sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"]).order_by("-date")
 
+                context = {"paciente" : paciente, "sesiones" : sesiones}
+                context.update({"logged_in" : "usr_doctor"})
                 return render(request, 'index/dashboard_sesiones.html', context)
 
             # Cuando es usuario investigador
             elif request.method == "GET":
 
-                sesiones = Sesion.objects.filter(id_usuario=request.user.id)
+                sesiones = Sesion.objects.filter(id_usuario=request.user.id).order_by("-date")
                 context = {'sesiones' : sesiones}
+                context.update({"logged_in" : "usr_investigador"})
 
                 return render(request, 'index/dashboard_sesiones.html', context)
 
@@ -328,8 +351,14 @@ class web_client:
                 return HttpResponse(status=404)
 
         else:
-            return HttpResponse(status=403)
+            return self.handle_error(
+                request,
+                status=401,
+                message="El usuario no está autenticado, para acceder a esta funcionalidad primero debe ingresar con sus credenciales."
+            )
 
+    #Método utilizado para el manejo de los forms del html en los que se muestra, edita y crea a las sesiones
+    #Se usa en conjunto con dashboard_sesiones
     def descriptivo_sesion(self, request):
 
         if request.GET.get("id_sesion"):
@@ -367,6 +396,8 @@ class web_client:
             print("El request llegó vacio")
             return HttpResponse(status=400) # Problema con el request
 
+
+    #Las muestras se usan para cargar el componente de html respectivo
     def muestras_sesion(self, request):
 
         if request.GET.get("id_sesion"):
@@ -381,6 +412,9 @@ class web_client:
                 muestras.append(form)
 
 
+            #Ordena las muestras para mostrar primero aquellas con predicciones malignas
+            muestras = sorted(muestras, key=Sorters.muestras_sort_key, reverse=True)
+
             context = {
                 'sesion' : sesion,
                 'forms' : muestras
@@ -394,6 +428,8 @@ class web_client:
             print("El request llegó vacio")
             return HttpResponse(status=400) # Problema con el request
 
+    #Se agrega la muestra y se le adjunta la predicción correspondiente, para volver a cargar
+    #la vista de muestras actualizada
     def agregar_muestra(self, request):
 
         if request.POST.get("id_sesion"):
@@ -424,13 +460,17 @@ class web_client:
 
                         img = Image.open(BytesIO(response.content))
                         img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-                        result = forward_single_img(img_cv)
-                        estimations = ["Adenosis", "Fibroadenoma", "Phyllodes Tumour", "Tubular Adenon", "Carcinoma", "Lobular Carcinoma", "Mucinous Carcinoma", "Papillary Carcinoma"]
+                        result, probabilities = forward_single_img(img_cv)
+
+                        probabilities = list(probabilities[0,:].tolist())
+                        probabilities = [(TumourClasses.estimation_labels[i], probabilities[i]) for i in range(0, len(TumourClasses.estimation_labels))]
+                        print("Probabilidades de clase predichas:")
+                        print(probabilities)
 
                         muestra = Muestra(
                             sesion=sesion,
                             url_img=url,
-                            pred=estimations[result],
+                            pred=TumourClasses.estimation_labels[result],
                         )
 
                         muestra.save()
@@ -453,14 +493,9 @@ class web_client:
             print("El request llegó vacio")
             return HttpResponse(status=400) # Problema con el request
 
-    #Implementación cubierta por el cliente android
-    #Se mantiene este método dummy para fines de uniformidad con el
-    #patrón de diseño mientras se refactoriza el codigo
-    #Se redirige a index
-    def demo_app_muestra(self, request):
-        return self.index(request)
 
-
+    #Se actualiza la información de una muestra o se borra de la base de datos
+    #Pero no se elimina la foto del repositorio de imágenes
     def modificar_muestra(self, request):
 
         if request.POST.get("id_muestra") and request.POST.get("update"):
@@ -507,58 +542,9 @@ class web_client:
             return HttpResponse(status=400) # Problema con el request
 
 
-    def modificar_muestra(self, request):
 
-        if request.POST.get("id_muestra") and request.POST.get("update"):
-
-            id_m = request.POST["id_muestra"]
-            muestra = Muestra.objects.get(pk=id_m)
-
-            id_s = request.POST["id_sesion"]
-            sesion = Sesion.objects.get(pk=id_s)
-
-            id_m = request.POST["id_muestra"]
-            muestra = Muestra.objects.get(pk=id_m)
-
-            if request.POST.get("consent"):
-                muestra.consent = request.POST["consent"]
-            if request.POST.get("pred_true"):
-                muestra.pred_true = request.POST["pred_true"]
-
-            muestra.obs = request.POST["obs"]
-
-            muestra.save()
-
-            if request.user.profile.rol == '0':
-                return redirect('/dashboard_sesiones/?id_paciente=' + str(sesion.id_paciente)) # Se procesó correctamente pero no hay contenido
-            else:
-                return redirect('/dashboard_sesiones/')
-
-        elif request.POST.get("id_muestra") and request.POST.get("delete"):
-
-            id_s = request.POST["id_sesion"]
-            sesion = Sesion.objects.get(pk=id_s)
-
-            id_m = request.POST["id_muestra"]
-            muestra = Muestra.objects.get(pk=id_m)
-
-            muestra.delete()
-
-            return redirect('/dashboard_sesiones/?id_paciente=' + str(sesion.id_paciente))
-
-        else:
-
-            # Maneja el error de que no llegue id_paciente
-            print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
 
     def ayuda(self, request):
-
-        if request.user.is_authenticated:
-
-            context = {"logged_in" : True}
-            return render(request, 'index/help.html', context)
-
         return render(request, 'index/help.html')
 
 
@@ -566,11 +552,15 @@ class web_client:
         return render(request, 'index/contact-us.html')
 
     def features(self, request):
-        return render(request, 'index/features.html' )
+        return render(request, 'index/features.html')
 
+
+
+    #Método para mostrar los gráficos de los objetos de analytics del paciente
     def show_graficos_paciente(self, request, context):
         return render(request, 'index/components/paciente_graficos.html', context)
 
+    #Método para mostrar los gráficos de los objetos de analytics de la sesión
     def show_graficos_sesion(self, request, context):
         return render(request, 'index/components/sesion_graficos.html', context)
 

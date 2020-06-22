@@ -1,4 +1,4 @@
-{% if logged_in %}
+{% if request.user.is_authenticated %}
 
 <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
     <div class="container">
@@ -8,12 +8,11 @@
                 class="collapse navbar-collapse" id="navcol-1">
             <ul id="header_nav_elem" class="nav navbar-nav ml-auto">
 
-                {% if logged_in == 'usr_doctor' %}
+                {% if request.user.profile.rol == '0' %}
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" href="{% url 'dashboard_pacientes' %}"><span style="margin-left: 5px">Mis pacientes</span></a>
                 </li>
-                {% endif %}
-                {% if logged_in == 'usr_investigador' %}
+                {% else %}
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" href="{% url 'dashboard_sesiones' %}"><span style="margin-left: 5px">Mis Sesiones</span></a>
                 </li>

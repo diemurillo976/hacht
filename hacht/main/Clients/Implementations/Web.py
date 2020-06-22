@@ -30,25 +30,19 @@ class web_client:
         return render(request, 'index/error.html', context, status=status)
 
     def index(self, request):
-        context = {}
-        context.update(self.getUsrAuthentication(request))
-        return render(request, 'index/index.html', context)
+        return render(request, 'index/index.html')
 
     def about_us(self, request):
-        context = {}
-        context.update(self.getUsrAuthentication(request))
-
-        return render(request, 'index/about_us.html', context)
+        return render(request, 'index/about_us.html')
 
 
     def login_app(self, request):
         if request.user.is_authenticated:
             if request.user.profile.rol == '0':
-                context = {"logged_in" : "usr_doctor"}
-                return render(request, 'index/dashboard_pacientes.html', context)
+                return redirect('dashboard_pacientes')
             else:
-                context = {"logged_in" : "usr_investigador"}
-                return render(request, 'index/dashboard_sesiones.html', context)
+                return redirect('dashboard_sesiones')
+
 
     def registration(self, request):
         if(not request.user.is_authenticated):
@@ -57,6 +51,7 @@ class web_client:
                 form = RegistrationForm(request.POST)
 
                 if(form.is_valid()):
+
                     if(User.objects.filter(email=request.POST['correo'])):
                         messages.error(request, 'Ya existe una cuenta asociada a este correo')
                         return render(request, 'index/registration.html', {'form' : RegistrationForm()})
@@ -79,7 +74,7 @@ class web_client:
                     user = authenticate(username=new_user.username, password=request.POST['password'])
                     login(request, user)
 
-                    return redirect('registration_success')
+                    return render(request, 'index/registration.html')
 
                 else:
 
@@ -103,17 +98,6 @@ class web_client:
                 message="Acceso no autorizado a pagina."
             )
 
-    def registration_success(self, request):
-        #TODO Este metodo puede ser eliminado si registration_succes es un componente
-        # Por el momento los accesos no autorizados responden como un error 401
-        if request.user.is_authenticated:
-            return render(request, 'index/registration_success.html')
-        else:
-            return self.handle_error(
-                request,
-                status = 401,
-                message="Acceso no autorizado a pagina."
-            )
 
 
     #Para la aplicación web el demo se basa en mostrar imágenes a las que se les puede
@@ -121,9 +105,6 @@ class web_client:
     def demo(self, request):
 
         context = {}
-
-        # Add the user role to the context if signed in.
-        context.update(self.getUsrAuthentication(request))
 
         # Load url of demo images to the context
         images = []
@@ -564,20 +545,14 @@ class web_client:
 
 
     def ayuda(self, request):
-        context = {}
-        context.update(self.getUsrAuthentication(request))
-        return render(request, 'index/help.html', context)
+        return render(request, 'index/help.html')
 
 
     def contact_us(self, request):
-        context = {}
-        context.update(self.getUsrAuthentication(request))
-        return render(request, 'index/contact-us.html', context)
+        return render(request, 'index/contact-us.html')
 
     def features(self, request):
-        context = {}
-        context.update(self.getUsrAuthentication(request))
-        return render(request, 'index/features.html' , context)
+        return render(request, 'index/features.html')
 
 
 
@@ -607,13 +582,3 @@ class web_client:
                 lista.append((y_true, url))
 
         return lista
-
-    # Auxiliar function to detect the role of the user and send it in a dictionary
-    def getUsrAuthentication(self, request):
-        context = {}
-        if request.user.is_authenticated:
-            if request.user.profile.rol == '0':
-                context.update({"logged_in" : "usr_doctor"})
-            else:
-                context.update({"logged_in" : "usr_investigador"})
-        return context

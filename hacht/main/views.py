@@ -9,15 +9,26 @@ from .Clients import ClientFactory
 
 
 @receiver(user_login_failed)
+# Method called when login failed
 def user_login_failed_callback(sender, credentials, **kwargs):
-    print(credentials)
-    print("Login fallado para las credenciales: {}".format(credentials))
+    print(sender)
+    message = "Login fallado para las credenciales: {}".format(credentials)
+    return HttpResponse(status=412, content=message)
+
 
 @receiver(user_logged_in)
+# Method called when user logs in
 def user_logged_in_callback(sender, request, user, **kwargs):
     print(user)
-    print("Se loggeó correctamente el usuario {}".format(user))
+    message = "Se loggeó correctamente el usuario {}".format(user)
+    return HttpResponse(status=202, content=message)
 
+@receiver(user_logged_out)
+# Method called when user logs out
+def user_logged_out_callback(sender, request, user, **kwargs):
+    print(user)
+    message = "Se deslogueó correctamente el usuario {}".format(user)
+    return HttpResponse(status=202, content=message)
 #Los siguientes métodos determinan el comportamiento de la aplicación
 #al establecer las respuestas que dará el server a las peticiones a Los
 #sitios de urls.py
@@ -26,6 +37,17 @@ def user_logged_in_callback(sender, request, user, **kwargs):
 #Las implementaciones concretas de estos comportamientos están en la carpeta Clients/Implementations
 
 #método para mostrar la página de "sobre nosotros"
+
+#Implementación cubierta por django para el cliente web_client
+#Se mantiene este método dummy para fines de uniformidad con el
+#patrón de diseño
+#Se redirige a login
+def login_app(request):
+    client = ClientFactory.get_client(request)
+
+    return client.login_app(request)
+
+
 def about_us(request):
     client = ClientFactory.get_client(request)
 
@@ -59,12 +81,8 @@ def index(request):
 
     return client.index(request)
 
-#Método para realizar proceso de login en clientes distintos al web;
-#para el cliente web este método funciona para redirigir al usuario después de loggears
-def login_app(request):
-    client = ClientFactory.get_client(request)
 
-    return client.login_app(request)
+
 
 
 #Método para el manejo del registro de usuarios
@@ -74,11 +92,6 @@ def registration(request):
     return client.registration(request)
 
 
-#Método para mostrar mensajes de éxito al registrarse
-def registration_success(request):
-    client = ClientFactory.get_client(request)
-
-    return client.registration_success(request)
 
 #Método que se encarga del funcionamiento del demo de la aplicación según el tipo de cliente
 def demo(request):

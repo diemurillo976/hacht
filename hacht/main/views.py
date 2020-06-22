@@ -1,8 +1,9 @@
 
-from django.contrib.auth.signals import user_login_failed, user_logged_in
+from django.contrib.auth.signals import user_login_failed, user_logged_in, user_logged_out
 from django.dispatch import receiver
 from django.template.defaulttags import register
 from django.utils.safestring import mark_safe
+from django.http import HttpResponse
 
 
 from .Clients import ClientFactory
@@ -23,12 +24,15 @@ def user_logged_in_callback(sender, request, user, **kwargs):
     message = "Se loggeó correctamente el usuario {}".format(user)
     return HttpResponse(status=202, content=message)
 
-@receiver(user_logged_out)
+
 # Method called when user logs out
+@receiver(user_logged_out)
 def user_logged_out_callback(sender, request, user, **kwargs):
     print(user)
     message = "Se deslogueó correctamente el usuario {}".format(user)
     return HttpResponse(status=202, content=message)
+
+
 #Los siguientes métodos determinan el comportamiento de la aplicación
 #al establecer las respuestas que dará el server a las peticiones a Los
 #sitios de urls.py

@@ -22,9 +22,9 @@
         <section class="clean-block clean-hero" style="background-image:url(&quot;{% static 'index/assets/img/tech/image5.jpg' %} &quot;);color:rgba(9, 162, 255, 0.85);">
             <div class="text">
                 <h2 style="font-size: 35px;">HACHT</h2>
-                <p style="font-size: 24px;"><br><strong>Herramienta Automática de Clasificación de imágenes Histopatológicas de Tumores de mama</strong><br><br></p><a href="{% url 'login' %}" >
-<button class="btn btn-outline-light btn-lg" type="button">Comenzar</button>
-</a></div>
+                <p style="font-size: 24px;"><br><strong>Herramienta Automática de Clasificación de imágenes Histopatológicas de Tumores de mama</strong><br><br></p>
+                {% if not request.user.is_authenticated %}<a href="{% url 'login' %}" > <button class="btn btn-outline-light btn-lg" type="button">Comenzar</button></a>{% else %}{% endif %}
+            </div>
         </section>
         <section class="clean-block clean-info dark">
             <div class="container">
@@ -51,7 +51,7 @@
                 </div>
             </div>
         </section>
-        
+
         <section class="clean-block slider dark">
             <div class="container">
                 <div class="block-heading">

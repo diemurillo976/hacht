@@ -423,7 +423,7 @@ class web_client:
             for muestra in Muestra.objects.filter(sesion=id_s):
                 form = Data_Sesion_Muestra(instance=muestra)
                 muestras.append(form)
-                print(form.instance.pred_true)
+
 
             #Ordena las muestras para mostrar primero aquellas con predicciones malignas
             muestras = sorted(muestras, key=Sorters.muestras_sort_key, reverse=True)

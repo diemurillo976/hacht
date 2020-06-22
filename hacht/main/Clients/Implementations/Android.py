@@ -78,7 +78,11 @@ class android_client:
 
             img = Image.open(BytesIO(response.content))
             img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-            result = forward_single_img(img_cv)
+            result, probabilities = forward_single_img(img_cv)
+            
+            probabilities = list(probabilities[0,:].tolist())
+            probabilities = [(TumourClasses.estimation_labels[i], probabilities[i]) for i in range(0, len(TumourClasses.estimation_labels))]
+
 
             context = {
                     'estimacion' : TumourClasses.estimation_labels[result]

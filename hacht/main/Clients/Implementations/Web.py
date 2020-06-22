@@ -105,13 +105,13 @@ class web_client:
 
     def registration_success(self, request):
         #TODO Este metodo puede ser eliminado si registration_succes es un componente
-        # Por el momento los accesos no autorizados responden como un error 400
+        # Por el momento los accesos no autorizados responden como un error 401
         if request.user.is_authenticated:
             return render(request, 'index/registration_success.html')
         else:
             return self.handle_error(
                 request,
-                status = 400,
+                status = 401,
                 message="Acceso no autorizado a pagina."
             )
 
@@ -183,7 +183,13 @@ class web_client:
 
             img = Image.open(BytesIO(response.content))
             img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-            result = forward_single_img(img_cv)
+            result, probabilities = forward_single_img(img_cv)
+
+            probabilities = list(probabilities[0,:].tolist())
+            probabilities = [(TumourClasses.estimation_labels[i], probabilities[i]) for i in range(0, len(TumourClasses.estimation_labels))]
+            print("Probabilidades de clase predichas:")
+            print(probabilities)
+
 
             context_aux = {
                 "index" : index,
@@ -473,7 +479,12 @@ class web_client:
 
                         img = Image.open(BytesIO(response.content))
                         img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-                        result = forward_single_img(img_cv)
+                        result, probabilities = forward_single_img(img_cv)
+
+                        probabilities = list(probabilities[0,:].tolist())
+                        probabilities = [(TumourClasses.estimation_labels[i], probabilities[i]) for i in range(0, len(TumourClasses.estimation_labels))]
+                        print("Probabilidades de clase predichas:")
+                        print(probabilities)
 
                         muestra = Muestra(
                             sesion=sesion,

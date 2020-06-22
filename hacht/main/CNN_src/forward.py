@@ -11,7 +11,6 @@ from .BreakHisDataset import *
 from .SqueezeNet import get_model
 
 
-
 def forward_single_img(img_path):
     num_classes = 8
 
@@ -27,4 +26,4 @@ def forward_single_img(img_path):
         output = model(data)
         _, predict = torch.max(output, dim=1)
         result = predict.cpu().tolist()
-        return result[0]
+        return result[0], output

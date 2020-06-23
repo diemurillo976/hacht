@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from ...models import User, Profile, Paciente, Sesion
-from ...forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
+from ...forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra, ContactUsForm
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -608,9 +608,34 @@ class web_client:
     def ayuda(self, request):
         return render(request, 'index/help.html')
 
-
+    #TODO este metodo lee el mensaje pero nunca es guardado en la BD.
     def contact_us(self, request):
-        return render(request, 'index/contact-us.html')
+
+        if request.method == "GET":
+
+            form = ContactUsForm()
+            context = {'form' : form}
+            return render(request, 'index/contact-us.html', context)
+
+        elif request.method == "POST":
+            form = ContactUsForm(request.POST)
+
+            if(form.is_valid()):
+                nombre = request.POST["nombre"]
+                asunto = request.POST["asunto"]
+                email = request.POST["email"]
+                mensaje = request.POST["mensaje"]
+
+
+                return redirect('contact_us')
+
+        else:
+            return self.handle_error(
+                request,
+                status=404,
+                message="Ha ocurrido un problema realizando la acción."
+            )
+
 
     def features(self, request):
         return render(request, 'index/features.html')

@@ -59,6 +59,14 @@ class RegistrationForm(forms.Form):
     rol = forms.CharField(widget=forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=roles))
     uso = forms.CharField(max_length=200, widget=forms.Textarea(attrs={'class' : 'form-control item', 'rows':5, 'cols':10}))
 
+class ContactUsForm(forms.Form):
+
+    nombre = forms.CharField(max_length=40, widget=forms.TextInput(attrs={'class' : 'form-control item', 'pattern' : '[A-Za-z ]+', 'title' : 'Ingrese caracteres solamente' }))
+    asunto = forms.CharField(max_length=40, widget=forms.TextInput(attrs={'class' : 'form-control item', 'pattern' : '[A-Za-z ]+', 'title' : 'Ingrese caracteres solamente' }))
+    email = forms.EmailField(max_length=40, widget=forms.TextInput(attrs={'class' : 'form-control item', 'type' : 'email', 'id' : 'email'}))
+    mensaje = forms.CharField(max_length=200, widget=forms.Textarea(attrs={'class' : 'form-control item', 'rows':10, 'cols':10}))
+
+
 class Data_PacienteN(forms.ModelForm):
 
     class Meta:

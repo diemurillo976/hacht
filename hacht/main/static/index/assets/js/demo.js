@@ -16,20 +16,15 @@ function img_onClick(img_index, resultado){
 }
 
 function analizar_click(){
-    
+
     $("#cont_bolita").addClass("loader");
-    
-    //code before the pause
-    /*setTimeout(function(){
-        return true;
-    }, 1000);*/
 
     return true;
 }
 
 function closeCol(){
     $('.close-icon').on('click', function(){
-        //$(this).closest('.card').fadeOut();
+  
         $('#col_demo').fadeOut();
     })
 }

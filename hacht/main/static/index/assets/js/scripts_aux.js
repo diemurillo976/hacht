@@ -37,7 +37,7 @@ function highlight_titles(element){
     $(str).css("color", "rgb(73,80,87)");
 
     str = element + " .titulo-descriptivo"
-    
+
     // Then the selected value will show a "selected state"
     $(element).css("border","solid 1px");
     $(element).css("border-color", "rgb(0,123,255)");
@@ -57,7 +57,7 @@ function agregar_paciente(){
 
 function cargar_form_paciente(url, id_paciente){
 
-    if (id_paciente){ 
+    if (id_paciente){
 
         // Alista el request GET mediante una url
         apendice = "?id_paciente=" + id_paciente
@@ -107,13 +107,13 @@ function cargar_analytics_paciente(url, id_paciente){
 }
 
 function eliminar_onclick(e, id_paciente){
-    
+
     // previene el href
     e.preventDefault();
-    
+
     // Confirma que se quiera eliminar el paciente
     var val = confirm("¿Está seguro que desea eliminar el paciente?");
-    
+
     if(val){
 
         // Realiza un request post para eliminar el paciente
@@ -145,7 +145,7 @@ function inicializar_graficos(data_pie, data_line){
 
 }
 
-$(document).ready(function() { 
+$(document).ready(function() {
 
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
@@ -155,18 +155,8 @@ $(document).ready(function() {
             }
         }
     });
-    
 
-    /*
-    $(".columna_paciente").on("load", function() { 
-        
-    }); */
 
-    /*
-    $(".sesion_compacto").on("dblclick", function() { 
-        toggle_vis($(".contenedor_sesion_completo"));
-        
-        highlight_titles(".sesion_compacto");
-    }); */
 
-}); 
+
+});

@@ -98,27 +98,8 @@ def registration(request):
 
 
 def demo(request):
-    """
-    # Codigo se encarga de leer carpeta de imagenes, las sube a firebase y guardar las referencias en un csv temporal.
-    path = settings.STATIC_ROOT
-    abs_path = os.path.join(path, "index", "assets", "img", "Demo_imgs", "100x")
-
-    for file in os.listdir(abs_path):
-        storage.child("Demo_subset/"+str(file)).put(os.path.join(abs_path, file))
-
-        csv_line = {
-            'metadata': 'palabra',
-            'link': storage.child("Demo_subset/"+str(file)).get_url(None)
-        }
-
-        csv_path = os.path.join(path, "index", "assets", "csv", "demo_temp.csv")
-        with open(csv_path, 'a') as csv_file:
-            writer = csv.DictWriter(csv_file, fieldnames=['metadata', 'link'])
-            writer.writerow(csv_line)
-    # ------------------------------------------------------------------------------
-    """
-
     client = ClientFactory.get_client(request)
+
     return client.demo(request)
 
 def dashboard_pacientes(request):
@@ -197,6 +178,28 @@ def features(request):
     client = ClientFactory.get_client(request)
 
     return client.features(request)
+
+
+# Metodos utilarios
+def crear_csv_demo():
+    # Codigo se encarga de leer carpeta de imagenes, las sube a firebase y guardar las referencias en un csv temporal.
+
+    path = settings.STATIC_ROOT
+    abs_path = os.path.join(path, "index", "assets", "img", "Demo_imgs", "100x")
+
+    for file in os.listdir(abs_path):
+        settings.storage.child("Demo_subset/"+str(file)).put(os.path.join(abs_path, file))
+
+        csv_line = {
+            'metadata': 'palabra',
+            'link': settings.storage.child("Demo_subset/"+str(file)).get_url(None)
+        }
+
+        csv_path = os.path.join(path, "index", "assets", "csv", "demo_temp.csv")
+        with open(csv_path, 'a') as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=['metadata', 'link'])
+            writer.writerow(csv_line)
+
 
 @register.filter
 def get_item(dictionary, key):

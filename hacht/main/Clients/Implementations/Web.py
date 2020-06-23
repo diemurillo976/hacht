@@ -255,13 +255,24 @@ class web_client:
             id_p = request.POST["id_paciente"]
             paciente = Paciente.objects.get(pk=id_p)
             paciente.delete()
-            return HttpResponse(status=204) # Se procesó correctamente pero no hay contenido
+            # Se procesó correctamente pero no hay contenido
+            return self.handle_error(
+                request,
+                status=204,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
         else:
 
             # Maneja el error de que no llegue id_paciente
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
+
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=400,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
 
     def dashboard_sesiones(self, request):
@@ -276,7 +287,11 @@ class web_client:
 
                 # Evita que con la dirección correcta se obtenga el valor
                 if paciente.id_user != request.user:
-                    return HttpResponse(status=403)
+                    return self.handle_error(
+                        request,
+                        status=403,
+                        message="Ha ocurrido un problema realizando la acción."
+                    )
 
                 sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"])
                 context = {"paciente" : paciente, "sesiones" : sesiones}
@@ -328,7 +343,11 @@ class web_client:
                 return render(request, 'index/dashboard_sesiones.html')
 
             else:
-                return HttpResponse(status=404)
+                return self.handle_error(
+                    request,
+                    status=404,
+                    message="Ha ocurrido un problema realizando la acción."
+                )
 
         else:
             return self.handle_error(
@@ -366,14 +385,23 @@ class web_client:
             id_s = request.POST["id_sesion"]
             sesion = Sesion.objects.get(pk=id_s)
             sesion.delete()
-            return HttpResponse(status=204) # Se procesó correctamente pero no hay contenido
+            # Se procesó correctamente pero no hay contenido
+            return self.handle_error(
+                request,
+                status=204,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
         else:
 
             # Maneja el error de que no llegue id_paciente
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
-
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=404,
+                message="Ha ocurrido un problema realizando la acción."
+            )
     def muestras_sesion(self, request):
 
         if request.GET.get("id_sesion"):
@@ -399,8 +427,12 @@ class web_client:
 
             # Maneja el error de que no llegue id_paciente
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
-
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=404,
+                message="Ha ocurrido un problema realizando la acción."
+            )
     def agregar_muestra(self, request):
 
         if request.POST.get("id_sesion"):
@@ -458,7 +490,12 @@ class web_client:
         else:
             # Maneja el error de que no llegue id_sesion
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=400,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
     #Implementación cubierta por el cliente android
     #Se mantiene este método dummy para fines de uniformidad con el
@@ -511,8 +548,12 @@ class web_client:
 
             # Maneja el error de que no llegue id_paciente
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
-
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=400,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
     def modificar_muestra(self, request):
 
@@ -557,7 +598,12 @@ class web_client:
 
             # Maneja el error de que no llegue id_paciente
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=400,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
     def ayuda(self, request):
         return render(request, 'index/help.html')

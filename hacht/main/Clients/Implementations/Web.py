@@ -42,7 +42,7 @@ class web_client:
             else:
                 return redirect('dashboard_sesiones')
 
-
+    #TODO no se guarda el input 'uso' en la BD.
     def registration(self, request):
         if(not request.user.is_authenticated):
             if(request.method == 'POST'):

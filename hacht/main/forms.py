@@ -107,4 +107,3 @@ class Data_Sesion_Muestra(forms.ModelForm):
             "pred_true" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=estimations),
             "consent" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline radio-propio'}, choices=booleano)  
         }
-        

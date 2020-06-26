@@ -28,6 +28,7 @@
                 <div class="text-center" style="padding-bottom: 15px;"><span class="text-center" style="color: rgb(0,123,255);font-size: 28px;">Tablero de Sesiones</span></div>
                 {% if paciente %}
                 <div class="text-center" >
+                    <a>Cédula del paciente: {{paciente.ced}}</a> <br>
                     <a onclick="agregar_sesion('{{ paciente.id }}')" href="#"><img src="{% static 'index/assets/img/icons8-plus-50.png' %}"><span style="margin-left: 5px;color: rgb(0,0,0);">Agregar Sesión</span></a>
                 </div>
                 {% else %}
@@ -124,6 +125,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="{% static 'index/assets/js/script.min.js' %}"></script>
     <script src="{% static 'index/assets/js/scripts_sesiones.js' %}"></script>
     <script src="{% static 'index/assets/js/header.js' %}"></script>

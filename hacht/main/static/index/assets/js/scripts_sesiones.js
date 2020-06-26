@@ -160,7 +160,7 @@ function eliminar_onclick(e, id_paciente, id_sesion){
     e.preventDefault();
     
     // Confirma que se quiera eliminar el paciente
-    var val = confirm("¿Está seguro que desea eliminar la sesión");
+    var val = confirm("¿Está seguro que desea eliminar la sesión?");
     
     if(val){
 

@@ -57,6 +57,15 @@ class RegistrationForm(forms.Form):
     password = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control item',  'type' : 'password' }))
     org = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control item' }))
     rol = forms.CharField(widget=forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=roles))
+    uso = forms.CharField(max_length=200, widget=forms.Textarea(attrs={'class' : 'form-control item', 'rows':5, 'cols':10}))
+
+class ContactUsForm(forms.Form):
+
+    nombre = forms.CharField(max_length=40, widget=forms.TextInput(attrs={'class' : 'form-control item', 'pattern' : '[A-Za-z ]+', 'title' : 'Ingrese caracteres solamente' }))
+    asunto = forms.CharField(max_length=40, widget=forms.TextInput(attrs={'class' : 'form-control item', 'pattern' : '[A-Za-z ]+', 'title' : 'Ingrese caracteres solamente' }))
+    email = forms.EmailField(max_length=40, widget=forms.TextInput(attrs={'class' : 'form-control item', 'type' : 'email', 'id' : 'email'}))
+    mensaje = forms.CharField(max_length=200, widget=forms.Textarea(attrs={'class' : 'form-control item', 'rows':10, 'cols':10}))
+
 
 class Data_PacienteN(forms.ModelForm):
 
@@ -81,7 +90,7 @@ class Data_Comp_Sesion_Completo(forms.ModelForm):
         model = Sesion
         fields = ["id", "date", "obs", "estado"]
         widgets = {
-            "date" : forms.DateInput(format='%Y-%m-%d', attrs={'class':'form-control', 'type':'date'}),
+            "date" : forms.DateInput(format='%Y-%m-%d', attrs={'class':'form-control', 'type':'date', 'value':'mm/dd/yyyy', 'pattern' : '[0-1][0-2]/[0-3][0-1]/[0-9][0-9][0-9][0-9]'}),
             "estado" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=estados),
             "obs" : forms.Textarea(attrs={'class':'form-control', 'type':'text', 'style':'max-height: 75px'})
         }
@@ -98,4 +107,3 @@ class Data_Sesion_Muestra(forms.ModelForm):
             "pred_true" : forms.Select(attrs={'class': 'btn btn-primary dropdown-toggle', 'data-toggle' : 'dropdown', 'aria-expanded' : 'false', 'type' : 'button', 'style' : 'height: 37px;'}, choices=estimations),
             "consent" : forms.RadioSelect(attrs={'class' : 'form-check form-check-inline radio-propio'}, choices=booleano)  
         }
-        

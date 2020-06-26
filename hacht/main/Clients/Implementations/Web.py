@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from ...models import User, Profile, Paciente, Sesion
-from ...forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra
+from ...forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra, ContactUsForm
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -43,7 +43,7 @@ class web_client:
             else:
                 return redirect('dashboard_sesiones')
 
-
+    #TODO no se guarda el input 'uso' en la BD.
     def registration(self, request):
         if(not request.user.is_authenticated):
             if(request.method == 'POST'):
@@ -272,13 +272,24 @@ class web_client:
             id_p = request.POST["id_paciente"]
             paciente = Paciente.objects.get(pk=id_p)
             paciente.delete()
-            return HttpResponse(status=204) # Se procesó correctamente pero no hay contenido
+            # Se procesó correctamente pero no hay contenido
+            return self.handle_error(
+                request,
+                status=204,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
         else:
 
             # Maneja el error de que no llegue id_paciente
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
+
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=400,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
 
     #Se muestra información y se maneja la creación y edición de sesiones,
@@ -295,7 +306,11 @@ class web_client:
 
                 # Evita que con la dirección correcta se obtenga el valor
                 if paciente.id_user != request.user:
-                    return HttpResponse(status=403)
+                    return self.handle_error(
+                        request,
+                        status=403,
+                        message="Ha ocurrido un problema realizando la acción."
+                    )
 
                 sesiones = Sesion.objects.filter(id_paciente=request.GET["id_paciente"]).order_by("-date")
 
@@ -348,7 +363,11 @@ class web_client:
                 return render(request, 'index/dashboard_sesiones.html')
 
             else:
-                return HttpResponse(status=404)
+                return self.handle_error(
+                    request,
+                    status=404,
+                    message="Ha ocurrido un problema realizando la acción."
+                )
 
         else:
             return self.handle_error(
@@ -388,15 +407,25 @@ class web_client:
             id_s = request.POST["id_sesion"]
             sesion = Sesion.objects.get(pk=id_s)
             sesion.delete()
-            return HttpResponse(status=204) # Se procesó correctamente pero no hay contenido
+            # Se procesó correctamente pero no hay contenido
+            return self.handle_error(
+                request,
+                status=204,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
         else:
 
             # Maneja el error de que no llegue id_paciente
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
 
-
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=400,
+                message="Ha ocurrido un problema realizando la acción."
+            )
+  
     #Las muestras se usan para cargar el componente de html respectivo
     def muestras_sesion(self, request):
 
@@ -426,7 +455,13 @@ class web_client:
 
             # Maneja el error de que no llegue id_paciente
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
+
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=400,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
     #Se agrega la muestra y se le adjunta la predicción correspondiente, para volver a cargar
     #la vista de muestras actualizada
@@ -491,7 +526,12 @@ class web_client:
         else:
             # Maneja el error de que no llegue id_sesion
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=400,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
 
     #Se actualiza la información de una muestra o se borra de la base de datos
@@ -539,17 +579,45 @@ class web_client:
 
             # Maneja el error de que no llegue id_paciente
             print("El request llegó vacio")
-            return HttpResponse(status=400) # Problema con el request
-
-
+            # Problema con el request
+            return self.handle_error(
+                request,
+                status=400,
+                message="Ha ocurrido un problema realizando la acción."
+            )
 
 
     def ayuda(self, request):
         return render(request, 'index/help.html')
 
-
+    #TODO este metodo lee el mensaje pero nunca es guardado en la BD.
     def contact_us(self, request):
-        return render(request, 'index/contact-us.html')
+
+        if request.method == "GET":
+
+            form = ContactUsForm()
+            context = {'form' : form}
+            return render(request, 'index/contact-us.html', context)
+
+        elif request.method == "POST":
+            form = ContactUsForm(request.POST)
+
+            if(form.is_valid()):
+                nombre = request.POST["nombre"]
+                asunto = request.POST["asunto"]
+                email = request.POST["email"]
+                mensaje = request.POST["mensaje"]
+
+
+                return redirect('contact_us')
+
+        else:
+            return self.handle_error(
+                request,
+                status=404,
+                message="Ha ocurrido un problema realizando la acción."
+            )
+
 
     def features(self, request):
         return render(request, 'index/features.html')

@@ -112,6 +112,13 @@ class web_client:
             url = element[1]
             images += [url]
 
+        matrix = []
+        for i in range(0, len(images), 4):
+            r = []
+            for j in range(0, 4):
+                r.append((images[i + j], i + j))
+            matrix.append(r)
+
         if request.method == "GET" and request.GET.get("resultado"):
         # Calcula el nuevo resultado de la imagen.
 
@@ -126,7 +133,7 @@ class web_client:
                            "url": url,
                            "resultado": TumourClasses.estimation_labels[resultado],
                            "index": index,
-                           "images": images}
+                           "images": matrix}
 
             context.update(context_aux)
             return render(request, 'index/components/comp_demo.html', context)
@@ -147,7 +154,7 @@ class web_client:
             # Carga demo.html por primera vez.
 
             context_aux = {
-                "images" : images
+                "images" : matrix
             }
             context.update(context_aux)
             return render(request, 'index/demo.html', context)
@@ -175,7 +182,7 @@ class web_client:
             context_aux = {
                 "index" : index,
                 "resultado" : result,
-                "images": images
+                "images": matrix
             }
             context.update(context_aux)
 

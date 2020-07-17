@@ -67,3 +67,5 @@ torch==1.2.0+cpu
 torchvision==0.4.0+cpu
 uritemplate==3.0.0
 urllib3==1.25.3
+django-nose==1.4.5
+coverage==4.5.1

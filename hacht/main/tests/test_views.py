@@ -5,7 +5,9 @@ from django.contrib.auth.models import User, AnonymousUser
 from django.test import TestCase, Client, RequestFactory
 from django.conf import settings as s
 
+from ..Analytics import Sorters
 from ..forms import RegistrationForm, Data_PacienteN
+from ..models import Paciente, Sesion
 from ..views import login_app, index, ayuda, handle_error, crear_csv_demo
 
 #from ..Clients.Implementations import Web
@@ -173,20 +175,20 @@ class WebTestCase(TestCase):
         response = self.client.get('/dashboard_pacientes/')
         self.assertEquals(response.status_code, 401)
         self.assertTemplateUsed(response, 'index/error.html')
-
-    #TODO this fails
+    #todo
     def test_dashboard_pacientes_post_nuevo_paciente(self):
-        self.client.login(username='medico', password='12345')
+
+
         data = {
-            'ced':['12345'],
-            'nombre':['Nombre'],
-            'res':['Lugar.'],
-            'edad':['80'],
-            'sexo':['0']
+            'ced' : ['12345'],
+            'nombre': ['Nombre'],
+            'res': ['Lugar'],
+            'edad': 100,
+            'sexo': 0
         }
 
-        #response = self.client.post('/dashboard_pacientes/', data)
 
+        #response = self.client.post('/index/components/descriptivo_paciente.html/', data)
 
         #self.assertEquals(response.status_code, 302)
         #self.assertRedirects(response, '/dashboard_pacientes/')
@@ -211,45 +213,43 @@ class WebTestCase(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'index/components/descriptivo_paciente.html')
 
-    #Todo
+
     def test_eliminar_paciente(self):
-        """
+        self.client.login(username='investigador', password='12345')
+        response = self.client.get('/')
+        paciente = Paciente(id_user=response.context['user'],
+                            nombre="Nombre",
+                            ced=12345,
+                            sexo=0,
+                            edad=100,
+                            res='Lugar')
+        paciente.save()
+
+
+        response = self.client.post('/dashboard_pacientes/eliminar/', {'id_paciente':paciente.id})
+        self.assertEquals(response.status_code, 204)
+
+        lista = Paciente.objects.filter(id_user=response.context['user'])
+        lista = sorted(lista, key=Sorters.pacientes_sort_key, reverse=True)
+        self.assertEquals(0, len(lista))
+
+
+    def test_dashboard_sesiones_get_medico(self):
         self.client.login(username='medico', password='12345')
         response = self.client.get('/')
-        print("\n PRUEBA", response.context['user'].id)
+        paciente = Paciente(id_user=response.context['user'],
+                            nombre="Nombre",
+                            ced=12345,
+                            sexo=0,
+                            edad=100,
+                            res='Lugar')
+        paciente.save()
 
-        data = {
-            'ced':['12345'],
-            'nombre':['Nombre'],
-            'res':['Lugar.'],
-            'edad':80,
-            'sexo':0
-        }
-
-
-        form = Data_PacienteN(data)
-        print(form.errors)
-        if (form.is_valid()):
-            paciente = form.save()
-            paciente.id_user = response.context['user'].id
-            paciente.save()
-
-
-        data = {'id_paciente':paciente.id_user}
-        response = self.client.post('/dashboard_pacientes/eliminar/', data)
-
-        self.assertEquals(response.status_code, 204)
-    """
-
-    #todo FALTA ID PACIEEEENTEEE
-    def test_dashboard_sesiones_get_medico(self):
-        """
-        self.client.login(username='medico', password='12345')
-
-        response = self.client.get('/dashboard_sesiones/', {'id_paciente':0})
+        response = self.client.get('/dashboard_sesiones/', {'id_paciente':paciente.id})
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'index/dashboard_sesiones.html')
-        """
+        self.assertEquals(paciente.id, response.context['paciente'].id)
+
 
     def test_dashboard_sesiones_get_investigador(self):
         self.client.login(username='investigador', password='12345')
@@ -264,13 +264,64 @@ class WebTestCase(TestCase):
         self.assertTemplateUsed(response, 'index/error.html')
 
     def test_descriptivo_sesion(self):
-        pass
+        self.client.login(username='medico', password='12345')
+        response = self.client.get('/')
+        paciente = Paciente(id_user=response.context['user'],
+                            nombre="Nombre",
+                            ced=12345,
+                            sexo=0,
+                            edad=100,
+                            res='Lugar')
+        paciente.save()
+
+        sesion = Sesion(id_paciente=paciente.id, id_usuario=self.medico.id, date='2020-10-10', obs="", estado="")
+        sesion.save()
+
+        response = self.client.get('/dashboard_sesiones/components/descriptivo_sesion/', {'id_sesion':sesion.id})
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index/components/descriptivo_sesion.html')
+
 
     def test_eliminar_sesion(self):
-        pass
+        self.client.login(username='medico', password='12345')
+        response = self.client.get('/')
+        paciente = Paciente(id_user=response.context['user'],
+                            nombre="Nombre",
+                            ced=12345,
+                            sexo=0,
+                            edad=100,
+                            res='Lugar')
+        paciente.save()
+
+        sesion = Sesion(id_paciente=paciente.id, id_usuario=self.medico.id, date='2020-10-10', obs="", estado="")
+        sesion.save()
+
+        response = self.client.post('/dashboard_sesiones/eliminar/', {'id_sesion': sesion.id})
+
+        self.assertEquals(response.status_code, 204)
+        self.assertTemplateUsed(response, 'index/error.html')
+
 
     def test_muestras_sesion(self):
-        pass
+        self.client.login(username='medico', password='12345')
+        response = self.client.get('/')
+        paciente = Paciente(id_user=response.context['user'],
+                            nombre="Nombre",
+                            ced=12345,
+                            sexo=0,
+                            edad=100,
+                            res='Lugar')
+        paciente.save()
+
+        sesion = Sesion(id_paciente=paciente.id, id_usuario=self.medico.id, date='2020-10-10', obs="", estado="")
+        sesion.save()
+
+        response = self.client.post('/dashboard_sesiones/components/muestras_sesion/', {'id_sesion': sesion.id})
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index/components/muestras_sesion.html')
+
 
     def test_agregar_muestra(self):
         pass

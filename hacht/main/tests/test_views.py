@@ -2,12 +2,13 @@ import codecs
 import os
 import json
 from django.contrib.auth.models import User, AnonymousUser
+from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase, Client, RequestFactory
 from django.conf import settings as s
 
 from ..Analytics import Sorters
 from ..forms import RegistrationForm, Data_PacienteN
-from ..models import Paciente, Sesion
+from ..models import Paciente, Sesion, Muestra
 from ..views import login_app, index, ayuda, handle_error, crear_csv_demo
 
 #from ..Clients.Implementations import Web
@@ -40,8 +41,6 @@ class WebTestCase(TestCase):
         self.investigador.profile.rol = '1' #Rol de investigador
         self.investigador.profile.org = 'Ejemplo inc.'
         self.investigador.save()
-
-
 
     def tearDown(self):
         medico = User.objects.get(username='medico')
@@ -76,7 +75,6 @@ class WebTestCase(TestCase):
         self.assertTemplateUsed(response, 'index/help.html')
 
     def test_handle_error(self):
-        response = self.client.get('/help/')
         request = self.factory.get('')
         request.user = AnonymousUser()
 
@@ -317,17 +315,62 @@ class WebTestCase(TestCase):
         sesion = Sesion(id_paciente=paciente.id, id_usuario=self.medico.id, date='2020-10-10', obs="", estado="")
         sesion.save()
 
-        response = self.client.post('/dashboard_sesiones/components/muestras_sesion/', {'id_sesion': sesion.id})
+        response = self.client.get('/dashboard_sesiones/components/muestras_sesion/', {'id_sesion': sesion.id})
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'index/components/muestras_sesion.html')
 
 
-    def test_agregar_muestra(self):
-        pass
+    def test_agregar_muestra_no_archivo_investigador(self):
 
-    def test_modificar_muestra(self):
-        pass
+        self.client.login(username='investigador', password='12345')
+        response = self.client.get('/')
+        paciente = Paciente(id_user=response.context['user'],
+                            nombre="Nombre",
+                            ced=12345,
+                            sexo=0,
+                            edad=100,
+                            res='Lugar')
+        paciente.save()
+
+        sesion = Sesion(id_paciente=paciente.id, id_usuario=self.medico.id, date='2020-10-10', obs="", estado="")
+        sesion.save()
+
+        response = self.client.post('/dashboard_sesiones/agregar_muestra/', {'id_sesion': sesion.id})
+
+        self.assertEquals(response.status_code, 302)
+        self.assertRedirects(response, '/dashboard_sesiones/')
+
+    def test_modificar_muestra_delete(self):
+
+        self.client.login(username='medico', password='12345')
+        response = self.client.get('/')
+        paciente = Paciente(id_user=response.context['user'],
+                            nombre="Nombre",
+                            ced=12345,
+                            sexo=0,
+                            edad=100,
+                            res='Lugar')
+        paciente.save()
+
+        sesion = Sesion(id_paciente=paciente.id, id_usuario=self.medico.id, date='2020-10-10', obs="", estado="")
+        sesion.save()
+
+        muestra = Muestra(sesion=sesion, url_img=None, pred="")
+        muestra.save()
+
+        response = self.client.post('/dashboard_sesiones/modificar_muestra/', {'id_muestra': muestra.id, 'id_sesion': sesion.id, 'delete':True})
+
+
+        self.assertEquals(response.status_code, 302)
+        self.assertRedirects(response, '/dashboard_sesiones/?id_paciente=' + str(sesion.id_paciente) )
+
+        try:
+            Muestra.objects.get(pk=muestra.id)
+            self.fail("Muestra todavia existe.")
+
+        except Muestra.DoesNotExist:
+            self.assertTrue(True)
 
     def test_contact_us_get(self):
         response = self.client.get('/contact_us/')

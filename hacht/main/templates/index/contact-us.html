@@ -13,11 +13,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <link rel="stylesheet" href="{% static 'index/assets/css/smoothproducts.css' %}">
     <link rel="stylesheet" href="{% static 'index/assets/css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'index/assets/css/modal.css' %}">
+
 </head>
 
 <body>
     {% include "index/header.html" %}
-    {% csrf_token %}
     <main class="page contact-us-page">
         <section class="clean-block clean-form dark">
             <div class="container">
@@ -37,6 +38,10 @@
             </div>
         </section>
     </main>
+
+    {% if email_successful %}
+        {% include "index/components/email_success.html" %}
+    {% endif %}
 
     {% include "index/footer.html" %}  
     

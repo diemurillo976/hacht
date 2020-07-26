@@ -1,4 +1,4 @@
-"# hacht"
+# Proyecto HACHT
 
 En este repositorio se encuentra la versión más actualizada del proyecto "HACHT". Esto comprende la aplicación en django, por lo que se tiene tanto el cliente web de la aplicación, como el server que alimenta las peticiones dicho cliente y el cliente móvil.
 

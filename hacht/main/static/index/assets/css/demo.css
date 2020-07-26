@@ -35,8 +35,6 @@
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.5);
 }
 
-
-
 .loader {
   border: 16px solid #f3f3f3;
   border-radius: 50%;
@@ -46,30 +44,6 @@
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
-
-.grid-container {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 4px;
-}
-
-.grid-item {
-  max-width: 25%;
-}
-
-.grid-item img {
-  margin-top: 8px;
-  vertical-align: middle;
-  width: 95%;
-  transition: width 0.5s;
-}
-
-.grid-item img:hover{
-  width: 100%;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.5);
-}
-
-
 
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media screen and (max-width: 800px) {
@@ -104,7 +78,6 @@
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
   }
-
 }
 
   /* Safari */
@@ -117,4 +90,3 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-

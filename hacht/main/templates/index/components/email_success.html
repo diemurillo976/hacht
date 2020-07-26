@@ -1,0 +1,36 @@
+{% load static%}
+<div id="registration_success" class="modal">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <img src="{% static 'index/assets/img/icons8-tick-box-96.png' %}">
+            <h1 style="color: white;">Email enviado exitosamente</h1>
+        </div>
+        <div class="modal-body">
+            <p style="color: rgb(33,41,37);"><br><br> Gracias por contactarnos, su informacion nos ha sido enviada con exito. </p>
+        </div>
+        <div class="modal-footer">
+            <div class="block-heading"><a href="{% url 'contact_us' %}">
+                <button class="btn btn-primary close" type="button" id="exit">Continuar</button>
+            </a></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var exit = document.getElementById("exit");
+    var modal_registration_success = document.getElementById("registration_success");
+
+    // Cerrar el modal por el boton.
+    exit.onclick = function () {
+        window.location = '/contact_us/';
+    }
+
+    // Si se da click afuera del modal actuar como si fuera el boton.
+    window.onclick = function (event) {
+        if(event.target == modal_registration_success){
+            window.location = '/contact_us/';
+        }
+    }
+</script>

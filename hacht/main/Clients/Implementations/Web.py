@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.mail import BadHeaderError, send_mail
 from ...models import User, Profile, Paciente, Sesion
 from ...forms import RegistrationForm, Data_PacienteN, Data_Comp_Sesion_Completo, Muestra, Data_Sesion_Muestra, ContactUsForm
 from django.conf import settings
@@ -597,7 +598,7 @@ class web_client:
     def ayuda(self, request):
         return render(request, 'index/help.html')
 
-    #TODO este metodo lee el mensaje pero nunca es guardado en la BD.
+
     def contact_us(self, request):
 
         if request.method == "GET":
@@ -610,13 +611,32 @@ class web_client:
             form = ContactUsForm(request.POST)
 
             if(form.is_valid()):
+
                 nombre = request.POST["nombre"]
-                asunto = request.POST["asunto"]
+                subject = settings.SUBJECT + ' ' + request.POST["asunto"]
                 email = request.POST["email"]
-                mensaje = request.POST["mensaje"]
 
+                message = "El sujeto '" + nombre + "' del correo '" + email + "' dice: \n \n\"" + request.POST["mensaje"] + "\""
 
-                return redirect('contact_us')
+                try:
+                    send_mail(subject, message, [email], settings.TO_EMAIL)
+
+                except BadHeaderError:
+                    return self.handle_error(
+                        request,
+                        status=404,
+                        message="Ha ocurrido un problema realizando la acción."
+                    )
+
+                context = {'form': ContactUsForm(), 'email_successful': True}
+                return render(request, 'index/contact-us.html', context)
+
+            else:
+                return self.handle_error(
+                    request,
+                    status=404,
+                    message="Ha ocurrido un problema realizando la acción."
+                )
 
         else:
             return self.handle_error(
